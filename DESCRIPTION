@@ -1,0 +1,28 @@
+Package: chandwich
+Title: Chandler-Bate Loglikelihood Adjustment
+Version: 0.0.0.9000
+Date: 2017-09-14
+Authors@R: c(
+    person(c("Paul", "J."), "Northrop", email = "p.northrop@ucl.ac.uk", 
+      role = c("aut", "cre", "cph")),
+    person("Richard", "Chandler", role = c("aut", "cph"))
+    )
+Description: Performs adjustments of the independence log-likelihood using 
+    a robust sandwich estimator of the parameter covariance matrix, based on
+    the methodology in Chandler and Beta (2007) <doi:10.1093/biomet/asm015>.
+    This can be used for cluster correlated data when interest lies in the 
+    parameters of the marginal distributions. 
+Imports: graphics,
+    methods,
+    stats
+License: GPL (>= 2)
+LazyData: TRUE
+Depends:
+    R (>= 3.3.1)
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
+URL: http://github.com/paulnorthrop/chandwich
+BugReports: http://github.com/paulnorthrop/chandiwch/issues

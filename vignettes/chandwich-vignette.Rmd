@@ -1,0 +1,21 @@
+---
+title: "Introducing chandwich: Chandler-Bate Loglikelihood Adjustment"
+author: "Paul J. Northrop and Richard E. Chandler"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Introducing chandwich: Chandler-Bate Loglikelihood Adjustment}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: chandwich.bib
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
+```
+
+The *chandwich* package 
+
+@CB2007
