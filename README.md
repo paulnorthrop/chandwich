@@ -11,6 +11,18 @@ The `chandwich` package performs adjustments of an independence loglikelihood us
 
 The main function in the threshr package is `adjust_loglik`. It finds the maximum likelihood estimate (MLE) of model parameters based on an independence loglikelihood in which cluster dependence in the data is ignored. The independence loglikelihood is adjusted in a way that ensures that the Hessian of the adjusted loglikelihood conicides with a robuest sandwich estimate of the parameter covariance at the MLE. Three adjustments are available: one in which the independence loglikelihood itself is scaled (vertical scaling) and two others where the scaling is in the parameter vector (horizontal scaling).
 
+``` r
+#' binom_loglik <- function(prob, data) {
+#'   if (prob < 0 || prob > 1) {
+#'     return(-Inf)
+#'   }
+#'   return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
+#' }
+#' cluster <- 1:nrow(rats)
+#'
+#' rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, cluster = cluster)
+```
+
 ### Installation
 
 To get the current released version from CRAN:
