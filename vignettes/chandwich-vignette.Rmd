@@ -6,7 +6,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Introducing chandwich: Chandler-Bate Loglikelihood Adjustment}
+  %\VignetteIndexEntry{Introducing chandwich: Chandler-Bate Sandwich Loglikelihood Adjustment}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: chandwich.bib
@@ -19,3 +19,16 @@ knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 The *chandwich* package 
 
 @CB2007
+
+```{r}
+library(chandwich)
+binom_loglik <- function(prob, data) {
+  if (prob < 0 || prob > 1) {
+    return(-Inf)
+   }
+   return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
+}
+cluster <- 1:nrow(rats)
+rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, cluster = cluster)
+plot(rat_res, type = 1:4)
+```
