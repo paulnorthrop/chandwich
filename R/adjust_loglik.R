@@ -68,18 +68,17 @@
 #'   if (prob < 0 || prob > 1) {
 #'     return(-Inf)
 #'   }
-#'   return(dbinom(data[, "x"], data[, "size"], prob, log = TRUE))
+#'   return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
 #' }
-#' prob <- 0.1
-#' binom_data <- cbind(size = 10, x = rbinom(20, 10, prob))
-#' cluster <- 1:nrow(binom_data)
+#' cluster <- 1:nrow(rats)
 #'
-#' pjn <- adjust_loglik(loglik = binom_loglik, data = binom_data, cluster = cluster)
+#' rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, cluster = cluster)
+#' # NB. C < 1 and compare HA to HI
 #' x <- seq(0.01, 0.99, by = 0.01)
-#' y1 <- pjn(x, adjust = FALSE)
-#' y2 <- pjn(x, type = "vertical")
-#' y3 <- pjn(x, type = "cholesky")
-#' y4 <- pjn(x, type = "dilation")
+#' y1 <- rat_res(x, adjust = FALSE)
+#' y2 <- rat_res(x, type = "vertical")
+#' y3 <- rat_res(x, type = "cholesky")
+#' y4 <- rat_res(x, type = "dilation")
 #' matplot(x, cbind(y1, y2, y3, y4), type = "l", lwd = 2)
 #'
 #'
