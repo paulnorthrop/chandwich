@@ -4,34 +4,116 @@
 \alias{adjust_loglik}
 \title{Loglikelihood adjustment}
 \usage{
-adjust_loglik(loglik, ..., cluster, d = 1, init = 0.1)
+adjust_loglik(loglik, ..., cluster = NULL, d = 1, init = rep(0.1, d),
+  par_names = NULL)
 }
 \arguments{
-\item{loglik}{An R function.  The first argument must be the vector of
-model parameter(s).  Returns a vector - use the length of this to check
-that cluster is the correct length!}
+\item{loglik}{An R function.  Returns a vector of the
+loglikelihood contributions of individual observations.  The first
+argument must be the vector of model parameter(s). If any of the model
+parameters are out-of-bounds then \code{loglik} should return either
+\code{-Inf} or a vector with at least one element equal to \code{-Inf}.}
 
-\item{...}{Further arguments to be passed to logf.}
+\item{...}{Further arguments to be passed either to \code{loglik} or to
+\code{\link[stats]{optim}}.  The latter may include \code{gr},
+\code{method}, \code{lower}, \code{upper} or \code{control}.
+\code{hessian = TRUE} will be used regardless of any value supplied.
+The function \code{loglik} must \emph{not} have arguments with names
+that match any of these arguments to \code{\link[stats]{optim}}.}
 
-\item{cluster}{A numeric vector.  Must have length \code{length(data)} (if
-\code{data} is a vector) or \code{nrow(data)} (if \code{data} is a matrix.}
+\item{cluster}{A vector or factor indicating from which cluster the
+respective loglikelihood contributions from \code{loglik} originate.
+Must have the same length as the vector returned by \code{loglik}.
+By default each observation is its own cluster.}
+
+\item{d}{A numeric scalar.  The number of model parameters.}
+
+\item{init}{A numeric vector of initial values for use in the search for
+the MLE.  If \code{length(init)} is not equal to \code{d} then
+\code{length(init)} is taken as the number of model parameters.}
+
+\item{par_names}{A character vector.  Names of the parameters.}
 }
 \value{
-A function that evaluates the adjusted loglikelihood.
-   + ARGUMENTS horizontal1, horizontal2, vertical
+A function of class \code{"chandwich"} to evaluate an adjusted
+  loglikelihood, or the independence loglikelihood, at one or more sets
+  of model parameters, with arguments
+  \item{x}{A numeric vector or matrix of model parameter values.
+    If \code{d = 1} this may be a numeric vector or a matrix with 1 column.
+    If \code{d > 1} this may be a numeric vector of length \code{d}
+    (one set of model parameters) or a numeric matrix with \code{d}
+    columns (\code{ncol(x)} sets of model parameters).}
+  \item{adjust}{A logical scalar.  Whether or not to adjust the
+    independence loglikelihood.}
+  \item{type}{A character scalar.  The type of adjustment to use if
+    \code{adjust = TRUE}.  One of \code{"vertical"}, \code{"cholesky"} or
+    \code{"dilation"}.}
+  The function has (additional) attributes
+  \item{d}{The number of models parameters.}
+  \item{MLE}{The maximum likelihood estimate.}
+  \item{SE}{The unadjusted standard errors.}
+  \item{adjSE}{The adjusted standard errors.}
+  \item{HI}{The Hessian of the independence loglikelihood.}
+  \item{HA}{The Hessian of the adjusted loglikelihood.}
+  \item{C_cholesky}{The matrix C in equation (14) of Chandler and Bate
+    (2007), calculated using Cholesky decomposition.}
+  \item{C_dilation}{The matrix C in equation (14) of Chandler and Bate
+    (2007), calculated using spectral decomposition.}
+  \item{par_names}{The argument \code{par_names}, if this was supplied.}
 }
 \description{
-Chandler-Bate
+Performs adjustments of a user-supplied independence loglikelihood for the
+presence of cluster dependence, following
+\href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
+The user provides a function that returns observation-specifc
+loglikelihood contributions and a vector that indicates cluster membership.
+}
+\details{
+Three adjustments to the independence loglikelihood are available.
+  The `vertical' adjustment is described in Section 6 of
+  Chandler and Bate (2007) and two `horizontal' adjustments are desribed in
+  Sections 3.2 to 3.4 of Chandler and Bate (2007).
+  See the descriptions of \code{type} and, for the
+  horizontal adjustments, the descriptions of \code{C_cholesky} and
+  \code{C_dilation}, in \strong{Value}.
 }
 \examples{
 binom_loglik <- function(prob, data) {
+  if (prob < 0 || prob > 1) {
+    return(-Inf)
+  }
   return(dbinom(data[, "x"], data[, "size"], prob, log = TRUE))
 }
 prob <- 0.1
 binom_data <- cbind(size = 10, x = rbinom(20, 10, prob))
-binom_loglik(prob, binom_data)
-cluster <- rep(1, nrow(binom_data))
-adjust_loglik(loglik = binom_loglik, data = binom_data, cluster = cluster)
+cluster <- 1:nrow(binom_data)
+
+pjn <- adjust_loglik(loglik = binom_loglik, data = binom_data, cluster = cluster)
+x <- seq(0.01, 0.99, by = 0.01)
+y1 <- pjn(x, adjust = FALSE)
+y2 <- pjn(x, type = "vertical")
+y3 <- pjn(x, type = "cholesky")
+y4 <- pjn(x, type = "dilation")
+matplot(x, cbind(y1, y2, y3, y4), type = "l", lwd = 2)
+
+
+norm_loglik <- function(params, data) {
+  mu <- params[1]
+  sigma <- params[2]
+  if (sigma <= 0) {
+    return(-Inf)
+  }
+  return(dnorm(data, mean = mu, sd = sigma, log = TRUE))
+}
+mu <- 0
+sigma <- 1
+norm_data <- rnorm(2000, mean = mu, sd = sigma)
+mu_sigma <- c(0, 1)
+cluster <- 1:length(norm_data)
+cluster <- rep(1:40, 50)
+
+pjn <- adjust_loglik(loglik = norm_loglik, data = norm_data, cluster = cluster,
+              init = 0:1)
 }
 \references{
 Chandler, R. E. and Bate, S. (2007). Inference for clustered
