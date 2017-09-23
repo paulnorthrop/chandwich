@@ -73,7 +73,6 @@
 #' cluster <- 1:nrow(rats)
 #'
 #' rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, cluster = cluster)
-#' # NB. C < 1 and compare HA to HI
 #' x <- seq(0.01, 0.99, by = 0.01)
 #' y1 <- rat_res(x, adjust = FALSE)
 #' y2 <- rat_res(x, type = "vertical")
