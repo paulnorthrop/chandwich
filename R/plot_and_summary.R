@@ -1,3 +1,71 @@
+# ============================== plot.chandwich ===============================
+
+#' Plot diagnostics a chandwich object
+#'
+#' \code{plot} method for class "chandwich".
+#'
+#' @param x an object of class "chandwich", a result of a call to
+#'   \code{\link{adjust_loglik}}.
+#' @param y Not used.
+#' @param lower,upper Numeric vectors specifying the lower and upper limits
+#'   on the parameter values to appear in the plot.  If either \code{lower}
+#'   or \code{upper} are not provided then the MLE minus (for \code{lower})
+#'   or plus (for \code{upper}) three (adjusted) standard errors is used.
+#' @param type An integer vector, a subset of the numbers \code{1:4}.
+#'   Indicates which loglikelihoods to plot: \code{1} for \code{"vertical"}
+#'   adjustment; \code{2} for \code{"cholesky"} (horizontal adjustment);
+#'   \code{3} for \code{"dilation"} (horizontal adjustment); \code{4}
+#'   for no adjustment, i.e. based on the independence loglikelihood.
+#' @param ... Additional arguments passed on to ...
+#' @return A list containing the graphical parameters using in producing the
+#'   plot including any arguments supplied via ... is returned (invisibly).
+#' @examples
+#' binom_loglik <- function(prob, data) {
+#'   if (prob < 0 || prob > 1) {
+#'     return(-Inf)
+#'   }
+#'   return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
+#' }
+#' cluster <- 1:nrow(rats)
+#' rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, cluster = cluster)
+#' plot(rat_res)
+#' plot(rat_res, which = 1:4)
+#' plot(rat_res, which = 1:4, lower = 0, upper = 1)
+#' @seealso \code{\link{adjust_loglik}}.
+#' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
+#'   and unadjusted and adjusted standard errors.
+#' @export
+plot.chandwich <- function(x, y, ..., lower = NULL, upper = NULL,
+                           type = 1) {
+  if (!inherits(x, "chandwich")) {
+    stop("use only with \"chandwich\" objects")
+  }
+  n_pars <- attr(x, "d")
+  # Single parameter model
+  if (n_pars == 1) {
+    if (is.null(lower)) {
+      lower <- attr(x, "MLE") - 3 * attr(x, "adjSE")
+      upper <- attr(x, "MLE") + 3 * attr(x, "adjSE")
+    }
+    x_vals <- seq(lower, upper, len = 100)
+    y <- NULL
+    if (any(type == 1)) {
+      y <- cbind(y, x(x_vals, type = "vertical"))
+    }
+    if (any(type == 2)) {
+      y <- cbind(y, x(x_vals, type = "cholesky"))
+    }
+    if (any(type == 3)) {
+      y <- cbind(y, x(x_vals, type = "dilation"))
+    }
+    if (any(type == 4)) {
+      y <- cbind(y, x(x_vals, adjust = FALSE))
+    }
+    matplot(x_vals, y, type = "l", ...)
+  }
+  return(invisible())
+}
+
 # ============================ summary.chandwich =============================
 
 #' Summarizing adjusted loglikelihoods
