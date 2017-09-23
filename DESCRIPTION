@@ -1,13 +1,13 @@
 Package: chandwich
-Title: Chandler-Bate Loglikelihood Adjustment
+Title: Chandler-Bate Sandwich Estimator Loglikelihood Adjustment
 Version: 0.0.0.9000
-Date: 2017-09-14
+Date: 2017-09-23
 Authors@R: c(
     person(c("Paul", "J."), "Northrop", email = "p.northrop@ucl.ac.uk", 
       role = c("aut", "cre", "cph")),
     person("Richard", "Chandler", role = c("aut", "cph"))
     )
-Description: Performs adjustments of the independence log-likelihood using 
+Description: Performs adjustments of the independence loglikelihood using 
     a robust sandwich estimator of the parameter covariance matrix, based on
     the methodology in Chandler and Beta (2007) <doi:10.1093/biomet/asm015>.
     This can be used for cluster correlated data when interest lies in the 
