@@ -1,6 +1,6 @@
-#' chandwich: Chandler-Bate Sandwich Estimator Loglikelihood Adjustment
+#' chandwich: Chandler-Bate Sandwich Loglikelihood Adjustment
 #'
-#' Performs adjustments of the independence loglikelihood using
+#' Performs adjustments of an independence loglikelihood using
 #' a robust sandwich estimator of the parameter covariance matrix, based on
 #' the methodology in
 #' \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Beta (2007)}.

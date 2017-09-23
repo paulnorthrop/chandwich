@@ -2,7 +2,7 @@
 % Please edit documentation in R/adjust_loglik.R
 \name{adjust_loglik}
 \alias{adjust_loglik}
-\title{Loglikelihood adjustment}
+\title{Loglikelihood adjustment using the sandwich estimator}
 \usage{
 adjust_loglik(loglik, ..., cluster = NULL, d = 1, init = rep(0.1, d),
   par_names = NULL)
