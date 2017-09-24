@@ -118,3 +118,12 @@ Chandler, R. E. and Bate, S. (2007). Inference for clustered
   data using the independence loglikelihood. \emph{Biometrika},
   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
 }
+\seealso{
+\code{\link{adjust_object}}: to adjust a fitted model object.
+
+\code{\link{summary.chandwich}} for maximum likelihood estimates
+  and unadjusted and adjusted standard errors.
+
+\code{\link{plot.chandwich}} for one- and two- dimensional plots
+  of of adjusted loglikelihoods.
+}
