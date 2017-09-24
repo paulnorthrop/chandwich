@@ -42,8 +42,8 @@ binom_loglik <- function(prob, data) {
 cluster <- 1:nrow(rats)
 rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, cluster = cluster)
 plot(rat_res)
-plot(rat_res, which = 1:4)
-plot(rat_res, which = 1:4, lower = 0, upper = 1)
+plot(rat_res, type = 1:4)
+plot(rat_res, type = 1:4, lower = 0, upper = 1)
 }
 \seealso{
 \code{\link{adjust_loglik}}.
