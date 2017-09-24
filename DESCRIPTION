@@ -7,15 +7,14 @@ Authors@R: c(
       role = c("aut", "cre", "cph")),
     person("Richard", "Chandler", role = c("aut", "cph"))
     )
-Description: Performs adjustments of an independence loglikelihood using 
-    a robust sandwich estimator of the parameter covariance matrix, based on
-    the methodology in Chandler and Beta (2007) <doi:10.1093/biomet/asm015>.
-    This can be used for cluster correlated data when interest lies in the 
-    parameters of the marginal distributions. 
+Description: Performs adjustments of a user-supplied independence loglikelihood 
+    function using a robust sandwich estimator of the parameter covariance 
+    matrix, based on the methodology in Chandler and Beta (2007) 
+    <doi:10.1093/biomet/asm015>.  This can be used for cluster correlated data 
+    when interest lies in the parameters of the marginal distributions.  
 Imports: graphics,
     methods,
     numDeriv,
-    sandwich,
     stats
 License: GPL (>= 2)
 LazyData: TRUE
@@ -24,6 +23,7 @@ Depends:
 RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown,
+    sandwich,
     testthat
 VignetteBuilder: knitr
 URL: http://github.com/paulnorthrop/chandwich
