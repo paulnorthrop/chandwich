@@ -5,17 +5,18 @@
 \title{Loglikelihood adjustment using the sandwich estimator}
 \usage{
 adjust_loglik(loglik, ..., cluster = NULL, d = 1, init = rep(0.1, d),
-  par_names = NULL)
+  par_names = NULL, alg_deriv = NULL, alg_hess = NULL)
 }
 \arguments{
-\item{loglik}{An R function.  Returns a vector of the
+\item{loglik}{A function.  Returns a vector of the
 loglikelihood contributions of individual observations.  The first
 argument must be the vector of model parameter(s). If any of the model
 parameters are out-of-bounds then \code{loglik} should return either
 \code{-Inf} or a vector with at least one element equal to \code{-Inf}.}
 
-\item{...}{Further arguments to be passed either to \code{loglik} or to
-\code{\link[stats]{optim}}.  The latter may include \code{gr},
+\item{...}{Further arguments to be passed either to \code{loglik}
+(and to \code{alg_deriv} and \code{alg_hess} if these are supplied) or
+to \code{\link[stats]{optim}}.  The latter may include \code{gr},
 \code{method}, \code{lower}, \code{upper} or \code{control}.
 \code{hessian = TRUE} will be used regardless of any value supplied.
 The function \code{loglik} must \emph{not} have arguments with names
@@ -33,6 +34,16 @@ the MLE.  If \code{length(init)} is not equal to \code{d} then
 \code{length(init)} is taken as the number of model parameters.}
 
 \item{par_names}{A character vector.  Names of the parameters.}
+
+\item{alg_deriv}{A function with the vector of model parameter(s) as its
+first argument.  Returns a \code{length(cluster)} by \code{d} numeric
+matrix. Column i contains the derivatives of each of the loglikelihood
+contributions in \code{loglik} with respect to model parameter i.}
+
+\item{alg_hess}{A function with the vector of model parameter(s) as its
+first argument.  Returns a \code{d} by \code{d} numeric matrix equal to
+the Hessian of \code{loglik}, i.e. the matrix of second derivatives of
+the function \code{loglik}.}
 }
 \value{
 A function of class \code{"chandwich"} to evaluate an adjusted
@@ -71,11 +82,16 @@ loglikelihood contributions and a vector that indicates cluster membership.
 \details{
 Three adjustments to the independence loglikelihood are available.
   The `vertical' adjustment is described in Section 6 of
-  Chandler and Bate (2007) and two `horizontal' adjustments are desribed in
-  Sections 3.2 to 3.4 of Chandler and Bate (2007).
+  Chandler and Bate (2007) and two `horizontal' adjustments are described
+  in Sections 3.2 to 3.4 of Chandler and Bate (2007).
   See the descriptions of \code{type} and, for the
   horizontal adjustments, the descriptions of \code{C_cholesky} and
   \code{C_dilation}, in \strong{Value}.
+
+  The adjustments involve first and second derviatives of the loglikelihood
+  with respect to the model parameters.  These are estimated using
+  \code{\link[numDeriv]{jacobian}} and \code{\link[stats]{optimHess}}
+  unless \code{alg_deriv} and/or \code{alg_hess} are supplied.
 }
 \examples{
 binom_loglik <- function(prob, data) {
@@ -84,8 +100,7 @@ binom_loglik <- function(prob, data) {
   }
   return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
 }
-cluster <- 1:nrow(rats)
-rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, cluster = cluster)
+rat_res <- adjust_loglik(loglik = binom_loglik, data = rats)
 
 x <- seq(0.01, 0.99, by = 0.01)
 y1 <- rat_res(x, adjust = FALSE)
@@ -94,6 +109,35 @@ y3 <- rat_res(x, type = "cholesky")
 y4 <- rat_res(x, type = "dilation")
 matplot(x, cbind(y1, y2, y3, y4), type = "l", lwd = 2)
 
+
+set.seed(123)
+x <- rnorm(250)
+y <- rnbinom(250, mu = exp(1 + x), size = 1)
+fm_pois <- glm(y ~ x + I(x^2), family = poisson)
+adj_fn <- adjust_object(fm_pois)
+
+pois_glm_loglik <- function(pars, y, x) {
+  log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
+  return(dpois(y, lambda = exp(log_mu), log = TRUE))
+}
+pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, d = 3)
+
+pois_alg_deriv <- function(pars, y, x) {
+  mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)
+  return(cbind(y - mu, x * (y - mu), x ^2 * (y - mu)))
+}
+
+pois_alg_hess <- function(pars, y, x) {
+  mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)
+  alg_hess <- matrix(0, 3, 3)
+  alg_hess[1, ] <- -c(sum(mu), sum(x * mu), sum(x ^ 2 * mu))
+  alg_hess[2, ] <- -c(sum(x * mu), sum(x ^ 2 * mu), sum(x ^ 3 * mu))
+  alg_hess[3, ] <- -c(sum(x ^ 2 * mu), sum(x ^ 3 * mu), sum(x ^ 4 * mu))
+  return(alg_hess)
+}
+
+pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, d = 3,
+                          alg_deriv = pois_alg_deriv, alg_hess = pois_alg_hess)
 
 norm_loglik <- function(params, data) {
   mu <- params[1]
