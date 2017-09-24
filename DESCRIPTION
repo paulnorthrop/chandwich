@@ -15,6 +15,7 @@ Description: Performs adjustments of an independence loglikelihood using
 Imports: graphics,
     methods,
     numDeriv,
+    sandwich,
     stats
 License: GPL (>= 2)
 LazyData: TRUE
