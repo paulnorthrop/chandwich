@@ -27,7 +27,8 @@ respective loglikelihood contributions from \code{loglik} originate.
 Must have the same length as the vector returned by \code{loglik}.
 By default each observation is its own cluster.}
 
-\item{d}{A numeric scalar.  The number of model parameters.}
+\item{d}{A numeric scalar.  The dimension of the parameter vector,
+i.e. the number of parameters in the model.}
 
 \item{init}{A numeric vector of initial values for use in the search for
 the MLE.  If \code{length(init)} is not equal to \code{d} then
@@ -94,6 +95,8 @@ Three adjustments to the independence loglikelihood are available.
   unless \code{alg_deriv} and/or \code{alg_hess} are supplied.
 }
 \examples{
+# Binomial model, rats data ----------
+
 binom_loglik <- function(prob, data) {
   if (prob < 0 || prob > 1) {
     return(-Inf)
@@ -109,6 +112,11 @@ y3 <- rat_res(x, type = "cholesky")
 y4 <- rat_res(x, type = "dilation")
 matplot(x, cbind(y1, y2, y3, y4), type = "l", lwd = 2)
 
+# Misspecified Poisson model for negative binomial data ----------
+# ... following Section 5.1 of the
+"Object-Oriented Computation of Sandwich Estimators" vignette of the
+sandwich package
+#https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf
 
 set.seed(123)
 x <- rnorm(250)
@@ -139,6 +147,7 @@ pois_alg_hess <- function(pars, y, x) {
 pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, d = 3,
                           alg_deriv = pois_alg_deriv, alg_hess = pois_alg_hess)
 
+
 norm_loglik <- function(params, data) {
   mu <- params[1]
   sigma <- params[2]
@@ -156,6 +165,33 @@ cluster <- rep(1:40, 50)
 
 pjn <- adjust_loglik(loglik = norm_loglik, data = norm_data, cluster = cluster,
               init = 0:1)
+
+
+# GEV model, owtemps data ----------
+# ... following Section 5.2 of Chandler and Bate (2007)
+
+if (requireNamespace("revdbayes", quietly = TRUE)) {
+  gev_loglik <- function(pars, data) {
+    o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
+    w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
+    o_loglik <- revdbayes::dgev(data[, "Oxford"], o_pars[1], o_pars[2],
+                                o_pars[3], log = TRUE)
+    w_loglik <- revdbayes::dgev(data[, "Worthing"], w_pars[1], w_pars[2],
+                                w_pars[3], log = TRUE)
+    return(o_loglik + w_loglik)
+  }
+}
+# Initial estimates (method of moments for the Gumbel case)
+sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
+mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
+init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
+# Perform the log-likelihood adjustment
+ow_res <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+          par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
+# Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
+round(attr(ow_res, "MLE"), 4)
+round(attr(ow_res, "SE"), 4)
+round(attr(ow_res, "adjSE"), 4)
 }
 \references{
 Chandler, R. E. and Bate, S. (2007). Inference for clustered
