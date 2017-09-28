@@ -4,8 +4,8 @@
 \alias{adjust_loglik}
 \title{Loglikelihood adjustment using the sandwich estimator}
 \usage{
-adjust_loglik(loglik, ..., cluster = NULL, d = 1, init = rep(0.1, d),
-  par_names = NULL, alg_deriv = NULL, alg_hess = NULL)
+adjust_loglik(loglik, ..., cluster = NULL, p = 1, init = rep(0.1, p),
+  par_names = NULL, alg_deriv = NULL, alg_hess = NULL, delta = NULL)
 }
 \arguments{
 \item{loglik}{A function.  Returns a vector of the
@@ -27,33 +27,35 @@ respective loglikelihood contributions from \code{loglik} originate.
 Must have the same length as the vector returned by \code{loglik}.
 By default each observation is its own cluster.}
 
-\item{d}{A numeric scalar.  The dimension of the parameter vector,
-i.e. the number of parameters in the model.}
+\item{p}{A numeric scalar.  The dimension of the \emph{full} parameter
+vector, i.e. the number of parameters in the full model.}
 
 \item{init}{A numeric vector of initial values for use in the search for
-the MLE.  If \code{length(init)} is not equal to \code{d} then
+the MLE.  If \code{length(init)} is not equal to \code{p} then
 \code{length(init)} is taken as the number of model parameters.}
 
 \item{par_names}{A character vector.  Names of the parameters.}
 
 \item{alg_deriv}{A function with the vector of model parameter(s) as its
-first argument.  Returns a \code{length(cluster)} by \code{d} numeric
+first argument.  Returns a \code{length(cluster)} by \code{p} numeric
 matrix. Column i contains the derivatives of each of the loglikelihood
 contributions in \code{loglik} with respect to model parameter i.}
 
 \item{alg_hess}{A function with the vector of model parameter(s) as its
-first argument.  Returns a \code{d} by \code{d} numeric matrix equal to
+first argument.  Returns a \code{p} by \code{p} numeric matrix equal to
 the Hessian of \code{loglik}, i.e. the matrix of second derivatives of
 the function \code{loglik}.}
+
+\item{delta}{A q by \code{p} numeric matrix.}
 }
 \value{
 A function of class \code{"chandwich"} to evaluate an adjusted
   loglikelihood, or the independence loglikelihood, at one or more sets
   of model parameters, with arguments
   \item{x}{A numeric vector or matrix of model parameter values.
-    If \code{d = 1} this may be a numeric vector or a matrix with 1 column.
-    If \code{d > 1} this may be a numeric vector of length \code{d}
-    (one set of model parameters) or a numeric matrix with \code{d}
+    If \code{p = 1} this may be a numeric vector or a matrix with 1 column.
+    If \code{p > 1} this may be a numeric vector of length \code{p}
+    (one set of model parameters) or a numeric matrix with \code{p}
     columns (\code{ncol(x)} sets of model parameters).}
   \item{adjust}{A logical scalar.  Whether or not to adjust the
     independence loglikelihood.}
@@ -61,7 +63,10 @@ A function of class \code{"chandwich"} to evaluate an adjusted
     \code{adjust = TRUE}.  One of \code{"vertical"}, \code{"cholesky"} or
     \code{"dilation"}.}
   The function has (additional) attributes
-  \item{d}{The number of models parameters.}
+  \item{q}{The number of parameters in the model to which the returned
+    adjusted loglikelihood applies.  If \code{delta = NULL} then
+    \code{q = p}, the number of parameters in the full model.
+    Otherwise \code{q} is the number of parameters in a restricted model.}
   \item{MLE}{The maximum likelihood estimate.}
   \item{SE}{The unadjusted standard errors.}
   \item{adjSE}{The adjusted standard errors.}
@@ -72,6 +77,8 @@ A function of class \code{"chandwich"} to evaluate an adjusted
   \item{C_dilation}{The matrix C in equation (14) of Chandler and Bate
     (2007), calculated using spectral decomposition.}
   \item{par_names}{The argument \code{par_names}, if this was supplied.}
+  \item{loglik_args}{A list of the extra arguments supplied to
+    \code{loglik} via \code{...}.}
 }
 \description{
 Performs adjustments of a user-supplied independence loglikelihood for the
@@ -128,7 +135,7 @@ pois_glm_loglik <- function(pars, y, x) {
   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
   return(dpois(y, lambda = exp(log_mu), log = TRUE))
 }
-pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, d = 3)
+pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3)
 
 pois_alg_deriv <- function(pars, y, x) {
   mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)
@@ -144,7 +151,7 @@ pois_alg_hess <- function(pars, y, x) {
   return(alg_hess)
 }
 
-pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, d = 3,
+pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
                           alg_deriv = pois_alg_deriv, alg_hess = pois_alg_hess)
 
 
@@ -174,6 +181,7 @@ if (requireNamespace("revdbayes", quietly = TRUE)) {
   gev_loglik <- function(pars, data) {
     o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
     w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
+    if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
     o_loglik <- revdbayes::dgev(data[, "Oxford"], o_pars[1], o_pars[2],
                                 o_pars[3], log = TRUE)
     w_loglik <- revdbayes::dgev(data[, "Worthing"], w_pars[1], w_pars[2],
@@ -199,8 +207,6 @@ Chandler, R. E. and Bate, S. (2007). Inference for clustered
   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
 }
 \seealso{
-\code{\link{adjust_object}}: to adjust a fitted model object.
-
 \code{\link{summary.chandwich}} for maximum likelihood estimates
   and unadjusted and adjusted standard errors.
 

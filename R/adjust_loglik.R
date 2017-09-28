@@ -24,20 +24,21 @@
 #'   respective loglikelihood contributions from \code{loglik} originate.
 #'   Must have the same length as the vector returned by \code{loglik}.
 #'   By default each observation is its own cluster.
-#' @param d A numeric scalar.  The dimension of the parameter vector,
-#'   i.e. the number of parameters in the model.
+#' @param p A numeric scalar.  The dimension of the \emph{full} parameter
+#'   vector, i.e. the number of parameters in the full model.
 #' @param init A numeric vector of initial values for use in the search for
-#'   the MLE.  If \code{length(init)} is not equal to \code{d} then
+#'   the MLE.  If \code{length(init)} is not equal to \code{p} then
 #'   \code{length(init)} is taken as the number of model parameters.
 #' @param par_names A character vector.  Names of the parameters.
 #' @param alg_deriv A function with the vector of model parameter(s) as its
-#'   first argument.  Returns a \code{length(cluster)} by \code{d} numeric
+#'   first argument.  Returns a \code{length(cluster)} by \code{p} numeric
 #'   matrix. Column i contains the derivatives of each of the loglikelihood
 #'   contributions in \code{loglik} with respect to model parameter i.
 #' @param alg_hess A function with the vector of model parameter(s) as its
-#'   first argument.  Returns a \code{d} by \code{d} numeric matrix equal to
+#'   first argument.  Returns a \code{p} by \code{p} numeric matrix equal to
 #'   the Hessian of \code{loglik}, i.e. the matrix of second derivatives of
 #'   the function \code{loglik}.
+#' @param delta A q by \code{p} numeric matrix.
 #' @details Three adjustments to the independence loglikelihood are available.
 #'   The `vertical' adjustment is described in Section 6 of
 #'   Chandler and Bate (2007) and two `horizontal' adjustments are described
@@ -54,9 +55,9 @@
 #'   loglikelihood, or the independence loglikelihood, at one or more sets
 #'   of model parameters, with arguments
 #'   \item{x}{A numeric vector or matrix of model parameter values.
-#'     If \code{d = 1} this may be a numeric vector or a matrix with 1 column.
-#'     If \code{d > 1} this may be a numeric vector of length \code{d}
-#'     (one set of model parameters) or a numeric matrix with \code{d}
+#'     If \code{p = 1} this may be a numeric vector or a matrix with 1 column.
+#'     If \code{p > 1} this may be a numeric vector of length \code{p}
+#'     (one set of model parameters) or a numeric matrix with \code{p}
 #'     columns (\code{ncol(x)} sets of model parameters).}
 #'   \item{adjust}{A logical scalar.  Whether or not to adjust the
 #'     independence loglikelihood.}
@@ -64,7 +65,10 @@
 #'     \code{adjust = TRUE}.  One of \code{"vertical"}, \code{"cholesky"} or
 #'     \code{"dilation"}.}
 #'   The function has (additional) attributes
-#'   \item{d}{The number of models parameters.}
+#'   \item{q}{The number of parameters in the model to which the returned
+#'     adjusted loglikelihood applies.  If \code{delta = NULL} then
+#'     \code{q = p}, the number of parameters in the full model.
+#'     Otherwise \code{q} is the number of parameters in a restricted model.}
 #'   \item{MLE}{The maximum likelihood estimate.}
 #'   \item{SE}{The unadjusted standard errors.}
 #'   \item{adjSE}{The adjusted standard errors.}
@@ -75,10 +79,11 @@
 #'   \item{C_dilation}{The matrix C in equation (14) of Chandler and Bate
 #'     (2007), calculated using spectral decomposition.}
 #'   \item{par_names}{The argument \code{par_names}, if this was supplied.}
+#'   \item{loglik_args}{A list of the extra arguments supplied to
+#'     \code{loglik} via \code{...}.}
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
 #'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
-#' @seealso \code{\link{adjust_object}}: to adjust a fitted model object.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
 #'   and unadjusted and adjusted standard errors.
 #' @seealso \code{\link{plot.chandwich}} for one- and two- dimensional plots
@@ -117,7 +122,7 @@
 #'   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
 #'   return(dpois(y, lambda = exp(log_mu), log = TRUE))
 #' }
-#' pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, d = 3)
+#' pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3)
 #'
 #' pois_alg_deriv <- function(pars, y, x) {
 #'   mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)
@@ -133,7 +138,7 @@
 #'   return(alg_hess)
 #' }
 #'
-#' pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, d = 3,
+#' pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
 #'                           alg_deriv = pois_alg_deriv, alg_hess = pois_alg_hess)
 #'
 #'
@@ -163,6 +168,7 @@
 #'   gev_loglik <- function(pars, data) {
 #'     o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
 #'     w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
+#'     if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
 #'     o_loglik <- revdbayes::dgev(data[, "Oxford"], o_pars[1], o_pars[2],
 #'                                 o_pars[3], log = TRUE)
 #'     w_loglik <- revdbayes::dgev(data[, "Worthing"], w_pars[1], w_pars[2],
@@ -182,15 +188,16 @@
 #' round(attr(ow_res, "SE"), 4)
 #' round(attr(ow_res, "adjSE"), 4)
 #' @export
-adjust_loglik <- function(loglik, ..., cluster = NULL, d = 1,
-                          init = rep(0.1, d), par_names = NULL,
-                          alg_deriv = NULL, alg_hess = NULL) {
+adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
+                          init = rep(0.1, p), par_names = NULL,
+                          alg_deriv = NULL, alg_hess = NULL,
+                          delta = NULL) {
   #
   # Setup and checks -----------------------------------------------------------
   #
   # If d and length(init) don't agree then use length(init)
-  if (d != length(init)) {
-    d <- length(init)
+  if (p != length(init)) {
+    p <- length(init)
   }
   # Extract from ... the arguments to be passed to stats::optim
   user_args <- list(...)
@@ -207,6 +214,9 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, d = 1,
   }
   # Number of terms in the loglikelihood
   n_loglik <- length(check_vals)
+  if (n_loglik == 1) {
+    stop("There must be more than one cluster")
+  }
   # If cluster is not supplied then put observations in separate clusters
   # Otherwise, check that cluster is a vector of the correct length: n_loglik
   if (is.null(cluster)) {
@@ -226,11 +236,11 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, d = 1,
       stop("cluster must have the same length as the vector returned by loglik")
     }
   }
-  # Use "BFGS", unless the user has chosen the method or if d = 1 and they
-  # have (inappropriately) chosen "Nelder-Mead" when d = 1
+  # Use "BFGS", unless the user has chosen the method or if p = 1 and they
+  # have (inappropriately) chosen "Nelder-Mead" when p = 1
   if (is.null(optim_args$method)) {
     optim_args$method <- "BFGS"
-  } else if (d == 1 & optim_args$method == "Nelder-Mead") {
+  } else if (p == 1 & optim_args$method == "Nelder-Mead") {
     optim_args$method <- "BFGS"
   }
   # Define a function to minimise to find the MLE
@@ -317,9 +327,9 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, d = 1,
   C_cholesky <- solve(MI) %*% MA
   z <- eigen(-HI, symmetric = TRUE)
   # We need nrow and ncol arguments to diag() so that the d = 1 case is correct
-  MI <- z$vectors %*% diag(sqrt(z$values), d, d) %*% t(z$vectors)
+  MI <- z$vectors %*% diag(sqrt(z$values), p, p) %*% t(z$vectors)
   z <- eigen(-HA, symmetric = TRUE)
-  MA <- z$vectors %*% diag(sqrt(z$values), d, d) %*% t(z$vectors)
+  MA <- z$vectors %*% diag(sqrt(z$values), p, p) %*% t(z$vectors)
   C_dilation <- solve(MI) %*% MA
   # Return a function to calculate the adjusted loglikelihood
   # If x = mle then we return the maximum of the independence loglikelihood
@@ -327,10 +337,10 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, d = 1,
                                type = c("vertical", "cholesky", "dilation")) {
     type <- match.arg(type)
     x <- as.matrix(x)
-    if (d > 1 & ncol(x) == 1) {
+    if (p > 1 & ncol(x) == 1) {
       x <- t(x)
     }
-    if (ncol(x) != d) {
+    if (ncol(x) != p) {
       stop("x does not have the correct dimensions")
     }
     if (!adjust) {
@@ -369,7 +379,7 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, d = 1,
       return(apply(x, 1, fn))
     }
   }
-  attr(adjust_loglik_fn, "d") <- d
+  attr(adjust_loglik_fn, "p") <- p
   attr(adjust_loglik_fn, "MLE") <- mle
   attr(adjust_loglik_fn, "SE") <- SE
   attr(adjust_loglik_fn, "adjSE") <- adjSE
@@ -378,6 +388,8 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, d = 1,
   attr(adjust_loglik_fn, "C_cholesky") <- C_cholesky
   attr(adjust_loglik_fn, "C_dilation") <- C_dilation
   attr(adjust_loglik_fn, "par_names") <- par_names
+  attr(adjust_loglik_fn, "loglik_args") <- loglik_args
+  attr(adjust_loglik_fn, "max_loglik") <- max_loglik
   class(adjust_loglik_fn) <- "chandwich"
   return(adjust_loglik_fn)
 }
