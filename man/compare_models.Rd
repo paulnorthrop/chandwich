@@ -4,8 +4,8 @@
 \alias{compare_models}
 \title{Comparison of nested models}
 \usage{
-compare_models(larger, smaller = NULL, fixed_pars = NULL, fixed_at = 0,
-  init = NULL, approx = TRUE, ...)
+compare_models(larger, smaller = NULL, approx = FALSE, fixed_pars = NULL,
+  fixed_at = 0, init = NULL, ...)
 }
 \arguments{
 \item{larger}{An object of class \code{"chandwich"} returned by
@@ -14,17 +14,18 @@ compare_models(larger, smaller = NULL, fixed_pars = NULL, fixed_at = 0,
 \item{smaller}{An object of class \code{"chandwich"} returned by
 \code{adjust_loglik}.  The smaller of the two models.}
 
+\item{approx}{A logical scalar.  If \code{approx = TRUE} then the
+approximation detailed by equations (18)-(20) of Chandler and Bates(2007)
+is used.  This option is only used if \code{smaller} is supplied.
+If \code{approx = FALSE} then the adjusted likelihood is
+maximised under the restriction imposed by \code{delta}.}
+
 \item{fixed_pars}{A numeric vector.}
 
 \item{fixed_at}{A numeric vector.}
 
 \item{init}{A numeric vector of initial values for use in the search for
 the MLE under the smaller model.}
-
-\item{approx}{A logical scalar.  If \code{approx = TRUE} then the
-approximation detailed by equations (18)-(20) of Chandler and Bates(2007)
-is used.  If \code{approx = FALSE} then the adjusted likelihood is
-maximised under the restriction imposed by \code{delta}.}
 
 \item{...}{Further arguments to be passed to \code{\link[stats]{optim}}.
 These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
@@ -62,14 +63,20 @@ sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
 mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 # Perform the log-likelihood adjustment
-ow_res <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+larger <- adjust_loglik(gev_loglik, data = owtemps, init = init,
           par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
 round(attr(ow_res, "MLE"), 4)
 round(attr(ow_res, "SE"), 4)
 round(attr(ow_res, "adjSE"), 4)
 
-compare_models(ow_res, fixed_pars = 6)
+smaller <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+           par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"),
+           fixed_pars = 6)
+
+compare_models(larger, smaller)
+compare_models(larger, fixed_pars = 6)
+compare_models(larger, smaller, approx = TRUE)
 }
 \references{
 Chandler, R. E. and Bate, S. (2007). Inference for clustered

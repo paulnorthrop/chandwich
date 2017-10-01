@@ -12,14 +12,15 @@
 #'   \code{adjust_loglik}.  The larger of the two models.
 #' @param smaller An object of class \code{"chandwich"} returned by
 #'   \code{adjust_loglik}.  The smaller of the two models.
+#' @param approx A logical scalar.  If \code{approx = TRUE} then the
+#'   approximation detailed by equations (18)-(20) of Chandler and Bates(2007)
+#'   is used.  This option is only used if \code{smaller} is supplied.
+#'   If \code{approx = FALSE} then the adjusted likelihood is
+#'   maximised under the restriction imposed by \code{delta}.
 #' @param fixed_pars A numeric vector.
 #' @param fixed_at A numeric vector.
 #' @param init A numeric vector of initial values for use in the search for
 #'   the MLE under the smaller model.
-#' @param approx A logical scalar.  If \code{approx = TRUE} then the
-#'   approximation detailed by equations (18)-(20) of Chandler and Bates(2007)
-#'   is used.  If \code{approx = FALSE} then the adjusted likelihood is
-#'   maximised under the restriction imposed by \code{delta}.
 #' @param ... Further arguments to be passed to \code{\link[stats]{optim}}.
 #'   These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
 #'   or \code{control}.
@@ -55,30 +56,72 @@
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 #' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 #' # Perform the log-likelihood adjustment
-#' ow_res <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+#' larger <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'           par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 #' # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
-#' round(attr(ow_res, "MLE"), 4)
-#' round(attr(ow_res, "SE"), 4)
-#' round(attr(ow_res, "adjSE"), 4)
+#' round(attr(larger, "MLE"), 4)
+#' round(attr(larger, "SE"), 4)
+#' round(attr(larger, "adjSE"), 4)
 #'
-#' compare_models(ow_res, fixed_pars = 6)
+#' smaller <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+#'            par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"),
+#'            fixed_pars = 6)
+#'
+#' compare_models(larger, smaller)
+#' compare_models(larger, fixed_pars = 6)
+#' compare_models(larger, smaller, approx = TRUE)
 #' @export
-compare_models <- function(larger, smaller = NULL, fixed_pars = NULL,
-                           fixed_at = 0, init = NULL, approx = TRUE, ...) {
+compare_models <- function(larger, smaller = NULL, approx = FALSE,
+                           fixed_pars = NULL, fixed_at = 0, init = NULL, ...) {
   #
   # Setup and checks -----------------------------------------------------------
   #
+  # If smaller is supplied then .......
+  if (!is.null(smaller)) {
+    fixed_pars <- attr(smaller, "fixed_pars")
+    fixed_at <- attr(smaller, "fixed_at")
+    qq <- length(fixed_pars)
+    p <- attr(larger, "p_current")
+    pars <- numeric(p)
+    s_mle <- attr(smaller, "MLE")
+    l_mle <- attr(larger, "MLE")
+    pars[fixed_pars] <- fixed_at
+    free_pars <- (1:p)[-fixed_pars]
+    pars[free_pars] <- s_mle
+    max_loglik_smaller <- sum(do.call(larger, list(pars)))
+    if (approx) {
+      HA <- attr(larger, "HA")
+      R <- solve(-HA)
+      pjn <- solve(-R[fixed_pars, fixed_pars])
+      num <- t(l_mle[fixed_pars] - fixed_at) %*% pjn %*%
+        (l_mle[fixed_pars] - fixed_at)
+      den <- t(l_mle - pars) %*% HA %*% (l_mle - pars)
+      const <- num / den
+      alrts <- 2 * const * (attr(larger, "max_loglik") - max_loglik_smaller)
+      return(list(alrts = alrts, df = qq, p_value = 1 - pchisq(alrts, qq),
+                  larger_mle = l_mle, smaller_mle = s_mle))
+    } else {
+      if (is.null(init)) {
+        init <- attr(smaller, "MLE")
+      }
+    }
+  }
   if (is.null(fixed_pars)) {
     stop("'fixed_pars' must be supplied")
   }
-  # Indices and/or numbers ...................................
+  # The number of parameters in the larger model
+#  p <- length(attr(larger, "MLE"))
+  p <- attr(larger, "p_current")
+  # The number of parameters that are fixed
   qq <- length(fixed_pars)
+  if (qq >= p) {
+    stop("length(fixed_pars) must be smaller than attr(larger, ''MLE'')")
+  }
   if (!(length(fixed_at) %in% c(1, qq))) {
     stop("the lengths of 'fixed_pars' and 'fixed_at' are not compatible")
   }
   fixed_at <- rep_len(fixed_at, qq)
-  other_pars <- (1:attr(ow_res, "p"))[-fixed_pars]
+  free_pars <- (1:p)[-fixed_pars]
   #
   # Extract arguments to be passed to optim()
   optim_args <- list(...)
@@ -89,14 +132,16 @@ compare_models <- function(larger, smaller = NULL, fixed_pars = NULL,
   } else if (p == 1 & optim_args$method == "Nelder-Mead") {
     optim_args$method <- "BFGS"
   }
-  # If quick = FALSE then we need to maximise the adjusted loglikelihood
+  # If approx = TRUE then we maximise the independence loglikelihood
   # under the constraint that certain parameter(s) are fixed.
   #
+  # If approx = FALSE then we maximise the adjusted loglikelihood
+  # under the constraint that certain parameter(s) are fixed.
   # Function to minimise to find restricted MLE of adjusted loglikelihood
   neg_adj_loglik <- function(x) {
-    pars <- numeric(qq)
+    pars <- numeric(p)
     pars[fixed_pars] <- fixed_at
-    pars[other_pars] <- x
+    pars[free_pars] <- x
     loglik_vals <- do.call(larger, list(pars))
     return(-sum(loglik_vals))
   }
@@ -104,10 +149,10 @@ compare_models <- function(larger, smaller = NULL, fixed_pars = NULL,
   if (optim_args$method == "L-BFGS-B" || optim_args$method == "Brent") {
     big_finite_val <- 10 ^ 10
     neg_adj_loglik <- function(x) {
-      pars <- numeric(qq)
+      pars <- numeric(p)
       pars[fixed_pars] <- fixed_at
-      pars[other_pars] <- x
-      loglik_vals <- do.call(larger, list(x))
+      pars[free_pars] <- x
+      loglik_vals <- do.call(larger, list(pars))
       check <- -sum(loglik_vals)
       if (!is.finite(check)) {
         check <- big_finite_val
