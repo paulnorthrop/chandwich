@@ -43,10 +43,10 @@
 #'     o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
 #'     w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
 #'     if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
-#'     o_loglik <- dgev(data[, "Oxford"], o_pars[1], o_pars[2], o_pars[3],
-#'                      log = TRUE)
-#'     w_loglik <- dgev(data[, "Worthing"], w_pars[1], w_pars[2], w_pars[3],
-#'                      log = TRUE)
+#'     o_loglik <- gev_dens(data[, "Oxford"], o_pars[1], o_pars[2], o_pars[3],
+#'                          log = TRUE)
+#'     w_loglik <- gev_dens(data[, "Worthing"], w_pars[1], w_pars[2], w_pars[3],
+#'                           log = TRUE)
 #'     return(o_loglik + w_loglik)
 #'   }
 #'
