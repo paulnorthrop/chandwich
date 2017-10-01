@@ -26,10 +26,27 @@
 #'   By default each observation is its own cluster.
 #' @param p A numeric scalar.  The dimension of the \emph{full} parameter
 #'   vector, i.e. the number of parameters in the full model.
-#' @param init A numeric vector of initial values for use in the search for
-#'   the MLE.  If \code{length(init)} is not equal to \code{p} then
-#'   \code{length(init)} is taken as the number of model parameters.
-#' @param par_names A character vector.  Names of the parameters.
+#' @param init A numeric vector of initial values.  Must have length equal
+#'   to the number of parameters in the full model.  If \code{init} is
+#'   supplied then \code{p} is set to \code{length(init)}.
+#'   If \code{fixed_pars} is not \code{NULL} then \code{init[-fixed_pars]}
+#'   is used in the search for the MLE.
+#' @param par_names A character vector.  Names of the \code{p} parameters
+#'   in the full model.
+#' @param fixed_pars A numeric vector.  Indices of the components of the
+#'   parameter vector that are restricted to be equal to the value(s) in
+#'   \code{fixed_at}.
+#' @param fixed_at A numeric vector of length 1 or \code{length(fixed_pars)}.
+#'   If \code{length(fixed_at) = 1} then the components \code{fixed_pars}
+#'   of the parameter vector are fixed at \code{fixed_at}.
+#'   If \code{length(fixed_at) = length(fixed_pars)} then the component
+#'   \code{fixed_pars[i]} is fixed at \code{fixed_at[i]}.
+#' @param larger Only relevant if \code{fixed_pars} is not \code{NULL}.
+#'   An object of class \code{"chandwich"} returned by \code{adjust_loglik}
+#'   corresponding to a model in which the model implied by \code{fixed_pars}
+#'   is nested.  If \code{large} is supplied then \code{init} is set to
+#'   \code{attr(larger, "MLE")}, with the elements in \code{fixed_pars} set to
+#'   \code{fixed_at}.
 #' @param alg_deriv A function with the vector of model parameter(s) as its
 #'   first argument.  Returns a \code{length(cluster)} by \code{p} numeric
 #'   matrix. Column i contains the derivatives of each of the loglikelihood
@@ -38,7 +55,6 @@
 #'   first argument.  Returns a \code{p} by \code{p} numeric matrix equal to
 #'   the Hessian of \code{loglik}, i.e. the matrix of second derivatives of
 #'   the function \code{loglik}.
-#' @param delta A q by \code{p} numeric matrix.
 #' @details Three adjustments to the independence loglikelihood are available.
 #'   The `vertical' adjustment is described in Section 6 of
 #'   Chandler and Bate (2007) and two `horizontal' adjustments are described
@@ -54,7 +70,9 @@
 #' @return A function of class \code{"chandwich"} to evaluate an adjusted
 #'   loglikelihood, or the independence loglikelihood, at one or more sets
 #'   of model parameters, with arguments
-#'   \item{x}{A numeric vector or matrix of model parameter values.
+#'   \item{x}{A numeric vector or matrix giving values of the \code{n_pars}
+#'     (see below) parameters in the model to which the returned adjusted
+#'     loglikelihood applies.
 #'     If \code{p = 1} this may be a numeric vector or a matrix with 1 column.
 #'     If \code{p > 1} this may be a numeric vector of length \code{p}
 #'     (one set of model parameters) or a numeric matrix with \code{p}
@@ -65,10 +83,8 @@
 #'     \code{adjust = TRUE}.  One of \code{"vertical"}, \code{"cholesky"} or
 #'     \code{"dilation"}.}
 #'   The function has (additional) attributes
-#'   \item{q}{The number of parameters in the model to which the returned
-#'     adjusted loglikelihood applies.  If \code{delta = NULL} then
-#'     \code{q = p}, the number of parameters in the full model.
-#'     Otherwise \code{q} is the number of parameters in a restricted model.}
+#'   \item{p_full}{The number of parameters in the full model}
+#'   \item{p_current}{The number of parameters in the current model}
 #'   \item{MLE}{The maximum likelihood estimate.}
 #'   \item{SE}{The unadjusted standard errors.}
 #'   \item{adjSE}{The adjusted standard errors.}
@@ -79,8 +95,12 @@
 #'   \item{C_dilation}{The matrix C in equation (14) of Chandler and Bate
 #'     (2007), calculated using spectral decomposition.}
 #'   \item{par_names}{The argument \code{par_names}, if this was supplied.}
-#'   \item{loglik_args}{A list of the extra arguments supplied to
-#'     \code{loglik} via \code{...}.}
+#'   \item{max_loglik}{The common maximised value of the independence and
+#'     adjusted loglikelihoods.}
+#'   If \code{fixed_pars} is not \code{NULL} then there are further attributes
+#'   \item{p_res}{The number of parameters in the restricted model.}
+#'   \item{fixed_pars}{The argument \code{fixed_pars}.}
+#'   \item{fixed_at}{The argument \code{fixed_at}.}
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
 #'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
@@ -108,9 +128,9 @@
 #'
 #' # Misspecified Poisson model for negative binomial data ----------
 #' # ... following Section 5.1 of the
-#' "Object-Oriented Computation of Sandwich Estimators" vignette of the
-#' sandwich package
-#' #https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf
+#' # "Object-Oriented Computation of Sandwich Estimators" vignette of the
+#' # sandwich package
+#' # https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf
 #'
 #' set.seed(123)
 #' x <- rnorm(250)
@@ -181,23 +201,30 @@
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 #' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 #' # Perform the log-likelihood adjustment
-#' ow_res <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+#' larger <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'           par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 #' # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
 #' round(attr(ow_res, "MLE"), 4)
 #' round(attr(ow_res, "SE"), 4)
 #' round(attr(ow_res, "adjSE"), 4)
+#'
+#' smaller <- adjust_loglik(gev_loglik, data = owtemps, p = 6,
+#'            par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"),
+#'            fixed_pars = 6, larger = larger)
 #' @export
 adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
                           init = rep(0.1, p), par_names = NULL,
-                          alg_deriv = NULL, alg_hess = NULL,
-                          delta = NULL) {
+                          fixed_pars = NULL, fixed_at = 0, larger = NULL,
+                          alg_deriv = NULL, alg_hess = NULL) {
   #
   # Setup and checks -----------------------------------------------------------
   #
-  # If d and length(init) don't agree then use length(init)
-  if (p != length(init)) {
+  if (!is.null(init)) {
     p <- length(init)
+  }
+  # If par_names is supplied then force it to have length p
+  if (!is.null(par_names)) {
+    par_names <- rep_len(par_names, p)
   }
   # Extract from ... the arguments to be passed to stats::optim
   user_args <- list(...)
@@ -207,8 +234,36 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
   loglik_args <- user_args[!optim_cond]
   # Remove hessian, in case the user supplied it
   optim_args$hessian <- NULL
-  # Check that all the contributions to loglikelihood are finite at init
-  check_vals <- do.call(loglik, c(list(init), loglik_args))
+  # Set the number of parameters and the initial estimates
+  if (is.null(fixed_pars)) {
+    n_pars <- p
+    # Check that all the contributions to loglikelihood are finite at init
+    check_vals <- do.call(loglik, c(list(init), loglik_args))
+  } else {
+    # If larger is supplied then use as initial estimates the MLE with
+    # fixed_pars set at the values in fixed_at
+    if (!is.null(larger)) {
+      init <- attr(larger, "MLE")[-fixed_pars]
+    } else {
+      init <- init[-fixed_pars]
+    }
+    qq <- length(fixed_pars)
+    n_pars <- p - qq
+    if (qq >= p) {
+      stop("length(fixed_pars) must be smaller than p")
+    }
+    if (!(length(fixed_at) %in% c(1, qq))) {
+      stop("the lengths of 'fixed_pars' and 'fixed_at' are not compatible")
+    }
+    fixed_at <- rep_len(fixed_at, qq)
+    free_pars <- (1:p)[-fixed_pars]
+    par_names <- par_names[free_pars]
+    # Check that all the contributions to loglikelihood are finite at init
+    pars <- numeric(p)
+    pars[fixed_pars] <- fixed_at
+    pars[free_pars] <- init
+    check_vals <- do.call(loglik, c(list(pars), loglik_args))
+  }
   if (any(!is.finite(check_vals))) {
     stop("The loglikelihood is not finite at init")
   }
@@ -243,21 +298,46 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
   } else if (p == 1 & optim_args$method == "Nelder-Mead") {
     optim_args$method <- "BFGS"
   }
-  # Define a function to minimise to find the MLE
-  neg_loglik <- function(x) {
-    loglik_vals <- do.call(loglik, c(list(x), loglik_args))
-    return(-sum(loglik_vals))
-  }
-  # L-BFGS-B and Brent don't like Inf or NA or NaN
-  if (optim_args$method == "L-BFGS-B" || optim_args$method == "Brent") {
-    big_finite_val <- 10 ^ 10
+  if (is.null(fixed_pars)) {
+    # Define a function to minimise to find the MLE
     neg_loglik <- function(x) {
       loglik_vals <- do.call(loglik, c(list(x), loglik_args))
-      check <- -sum(loglik_vals)
-      if (!is.finite(check)) {
-        check <- big_finite_val
+      return(-sum(loglik_vals))
+    }
+    # L-BFGS-B and Brent don't like Inf or NA or NaN
+    if (optim_args$method == "L-BFGS-B" || optim_args$method == "Brent") {
+      big_finite_val <- 10 ^ 10
+      neg_loglik <- function(x) {
+        loglik_vals <- do.call(loglik, c(list(x), loglik_args))
+        check <- -sum(loglik_vals)
+        if (!is.finite(check)) {
+          check <- big_finite_val
+        }
+        return(check)
       }
-      return(check)
+    }
+  } else {
+    neg_loglik <- function(x) {
+      pars <- numeric(p)
+      pars[fixed_pars] <- fixed_at
+      pars[free_pars] <- x
+      loglik_vals <- do.call(loglik, c(list(pars), loglik_args))
+      return(-sum(loglik_vals))
+    }
+    # L-BFGS-B and Brent don't like Inf or NA or NaN
+    if (optim_args$method == "L-BFGS-B" || optim_args$method == "Brent") {
+      big_finite_val <- 10 ^ 10
+      neg_loglik <- function(x) {
+        pars <- numeric(p)
+        pars[fixed_pars] <- fixed_at
+        pars[free_pars] <- x
+        loglik_vals <- do.call(loglik, c(list(pars), loglik_args))
+        check <- -sum(loglik_vals)
+        if (!is.finite(check)) {
+          check <- big_finite_val
+        }
+        return(check)
+      }
     }
   }
   for_optim <- c(list(par = init, fn = neg_loglik, hessian = TRUE), optim_args)
@@ -284,9 +364,19 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
   if (is.null(alg_deriv)) {
     # Function to aggregate the loglikelihood contributions within each cluster
     # [, 2] ensures that the correct *vector* is returned
-    clus_loglik <- function(x, cluster) {
-      loglik_vals <- do.call(loglik, c(list(x), loglik_args))
-      return(aggregate(loglik_vals, list(cluster), sum)[, 2])
+    if (is.null(fixed_pars)) {
+        clus_loglik <- function(x, cluster) {
+          loglik_vals <- do.call(loglik, c(list(x), loglik_args))
+          return(aggregate(loglik_vals, list(cluster), sum)[, 2])
+        }
+    } else {
+      clus_loglik <- function(x, cluster) {
+        pars <- numeric(p)
+        pars[fixed_pars] <- fixed_at
+        pars[free_pars] <- x
+        loglik_vals <- do.call(loglik, c(list(pars), loglik_args))
+        return(aggregate(loglik_vals, list(cluster), sum)[, 2])
+      }
     }
     # Estimate the k x p matrix of derivatives of the k cluster-specific
     # loglikelihood contributions with respect to the p model parameters
@@ -327,9 +417,9 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
   C_cholesky <- solve(MI) %*% MA
   z <- eigen(-HI, symmetric = TRUE)
   # We need nrow and ncol arguments to diag() so that the d = 1 case is correct
-  MI <- z$vectors %*% diag(sqrt(z$values), p, p) %*% t(z$vectors)
+  MI <- z$vectors %*% diag(sqrt(z$values), n_pars, n_pars) %*% t(z$vectors)
   z <- eigen(-HA, symmetric = TRUE)
-  MA <- z$vectors %*% diag(sqrt(z$values), p, p) %*% t(z$vectors)
+  MA <- z$vectors %*% diag(sqrt(z$values), n_pars, n_pars) %*% t(z$vectors)
   C_dilation <- solve(MI) %*% MA
   # Return a function to calculate the adjusted loglikelihood
   # If x = mle then we return the maximum of the independence loglikelihood
@@ -337,10 +427,10 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
                                type = c("vertical", "cholesky", "dilation")) {
     type <- match.arg(type)
     x <- as.matrix(x)
-    if (p > 1 & ncol(x) == 1) {
+    if (n_pars > 1 & ncol(x) == 1) {
       x <- t(x)
     }
-    if (ncol(x) != p) {
+    if (ncol(x) != n_pars) {
       stop("x does not have the correct dimensions")
     }
     if (!adjust) {
@@ -379,7 +469,12 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
       return(apply(x, 1, fn))
     }
   }
-  attr(adjust_loglik_fn, "p") <- p
+  attr(adjust_loglik_fn, "p_full") <- p
+  attr(adjust_loglik_fn, "p_current") <- n_pars
+  if (!is.null(fixed_pars)) {
+    attr(adjust_loglik_fn, "fixed_pars") <- fixed_pars
+    attr(adjust_loglik_fn, "fixed_at") <- fixed_at
+  }
   attr(adjust_loglik_fn, "MLE") <- mle
   attr(adjust_loglik_fn, "SE") <- SE
   attr(adjust_loglik_fn, "adjSE") <- adjSE
@@ -388,7 +483,6 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
   attr(adjust_loglik_fn, "C_cholesky") <- C_cholesky
   attr(adjust_loglik_fn, "C_dilation") <- C_dilation
   attr(adjust_loglik_fn, "par_names") <- par_names
-  attr(adjust_loglik_fn, "loglik_args") <- loglik_args
   attr(adjust_loglik_fn, "max_loglik") <- max_loglik
   class(adjust_loglik_fn) <- "chandwich"
   return(adjust_loglik_fn)
