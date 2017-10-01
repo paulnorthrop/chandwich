@@ -385,7 +385,7 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
     U <- do.call(numDeriv::jacobian, for_jacobian)
   } else {
     U <- alg_deriv(mle, ...)
-    U <- as.matrix(aggregate(U, list(cluster), sum)[, 2:(d+1)])
+    U <- as.matrix(aggregate(U, list(cluster), sum)[, 2:(p + 1)])
   }
   #
   # Unadjusted inverse Hessian and standard errors

@@ -144,9 +144,9 @@ matplot(x, cbind(y1, y2, y3, y4), type = "l", lwd = 2)
 
 # Misspecified Poisson model for negative binomial data ----------
 # ... following Section 5.1 of the
-"Object-Oriented Computation of Sandwich Estimators" vignette of the
-sandwich package
-#https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf
+# "Object-Oriented Computation of Sandwich Estimators" vignette of the
+# sandwich package
+# https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf
 
 set.seed(123)
 x <- rnorm(250)
