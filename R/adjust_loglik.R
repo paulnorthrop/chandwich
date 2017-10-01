@@ -183,7 +183,6 @@
 #' # GEV model, owtemps data ----------
 #' # ... following Section 5.2 of Chandler and Bate (2007)
 #'
-#' if (requireNamespace("revdbayes", quietly = TRUE)) {
 #'   gev_loglik <- function(pars, data) {
 #'     o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
 #'     w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
@@ -194,7 +193,7 @@
 #'                                 w_pars[3], log = TRUE)
 #'     return(o_loglik + w_loglik)
 #'   }
-#' }
+#'
 #' # Initial estimates (method of moments for the Gumbel case)
 #' sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)

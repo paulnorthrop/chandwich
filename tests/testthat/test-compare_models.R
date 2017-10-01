@@ -3,7 +3,6 @@ context("compare_models")
 # GEV independence loglikelihood for the Oxford-Worthing annual maximum
 # temperature dataset owtemps
 
-if (requireNamespace("revdbayes", quietly = TRUE)) {
   gev_loglik <- function(pars, data) {
     o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
     w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
@@ -14,7 +13,6 @@ if (requireNamespace("revdbayes", quietly = TRUE)) {
                                 w_pars[3], log = TRUE)
     return(o_loglik + w_loglik)
   }
-}
 
 # Initial estimates (method of moments for the Gumbel case)
 sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
