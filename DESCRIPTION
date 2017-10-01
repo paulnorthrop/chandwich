@@ -28,4 +28,4 @@ Suggests: knitr,
     testthat
 VignetteBuilder: knitr
 URL: http://github.com/paulnorthrop/chandwich
-BugReports: http://github.com/paulnorthrop/chandiwch/issues
+BugReports: http://github.com/paulnorthrop/chandwich/issues
