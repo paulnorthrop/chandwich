@@ -7,7 +7,7 @@ chandwich: Chandler-Bate Sandwich Loglikelihood Adjustment
 
 ### What does chandwich do?
 
-The `chandwich` package performs adjustments of an independence loglikelihood using a robust sandwich estimator of the parameter covariance matrix, based on the methodology in . This can be used for cluster correlated data when interest lies in the parameters of the marginal distributions.
+The `chandwich` package performs adjustments of an independence loglikelihood using a robust sandwich estimator of the parameter covariance matrix, based on the methodology in [Chandler and Bate (2007)](http://dx.doi.org/10.1093/biomet/asm015). This can be used for cluster correlated data when interest lies in the parameters of the marginal distributions.
 
 ### A simple example
 
