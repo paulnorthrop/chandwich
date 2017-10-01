@@ -23,7 +23,6 @@ Depends:
 RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown,
-    sandwich,
     testthat
 VignetteBuilder: knitr
 URL: http://github.com/paulnorthrop/chandwich
