@@ -40,7 +40,7 @@ plot.chandwich <- function(x, y, ..., lower = NULL, upper = NULL,
   if (!inherits(x, "chandwich")) {
     stop("use only with \"chandwich\" objects")
   }
-  n_pars <- attr(x, "d")
+  n_pars <- attr(x, "p_current")
   # Single parameter model
   if (n_pars == 1) {
     if (is.null(lower)) {
@@ -61,7 +61,7 @@ plot.chandwich <- function(x, y, ..., lower = NULL, upper = NULL,
     if (any(type == 4)) {
       y <- cbind(y, x(x_vals, adjust = FALSE))
     }
-    matplot(x_vals, y, type = "l", ...)
+    graphics::matplot(x_vals, y, type = "l", ...)
   }
   return(invisible())
 }
