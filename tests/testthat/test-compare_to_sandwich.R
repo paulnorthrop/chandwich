@@ -15,7 +15,6 @@ set.seed(123)
 x <- rnorm(250)
 y <- rnbinom(250, mu = exp(1 + x), size = 1)
 fm_pois <- glm(y ~ x + I(x^2), family = poisson)
-adj_fn <- adjust_object(fm_pois)
 
 pois_glm_loglik <- function(pars, y, x) {
   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
