@@ -98,7 +98,8 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
       den <- t(l_mle - pars) %*% HA %*% (l_mle - pars)
       const <- num / den
       alrts <- 2 * const * (attr(larger, "max_loglik") - max_loglik_smaller)
-      return(list(alrts = alrts, df = qq, p_value = 1 - pchisq(alrts, qq),
+      return(list(alrts = alrts, df = qq,
+                  p_value = 1 - stats::pchisq(alrts, qq),
                   larger_mle = l_mle, smaller_mle = s_mle))
     } else {
       if (is.null(init)) {
@@ -166,8 +167,8 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   }
   for_optim <- c(list(par = init, fn = neg_adj_loglik), optim_args)
   #
-  temp <- do.call(optim, for_optim)
+  temp <- do.call(stats::optim, for_optim)
   alrts <- 2 * (attr(larger, "max_loglik") + temp$value)
-  return(list(alrts = alrts, df = qq, p_value = 1 - pchisq(alrts, qq),
+  return(list(alrts = alrts, df = qq, p_value = 1 - stats::pchisq(alrts, qq),
               larger_mle = attr(larger, "MLE"), smaller_mle = temp$par))
 }
