@@ -135,7 +135,7 @@
 #' set.seed(123)
 #' x <- rnorm(250)
 #' y <- rnbinom(250, mu = exp(1 + x), size = 1)
-#' fm_pois <- glm(y ~ x + I(x^2), family = poisson)
+#' fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
 #'
 #' pois_glm_loglik <- function(pars, y, x) {
 #'   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
@@ -187,10 +187,10 @@
 #'     o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
 #'     w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
 #'     if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
-#'     o_loglik <- revdbayes::dgev(data[, "Oxford"], o_pars[1], o_pars[2],
-#'                                 o_pars[3], log = TRUE)
-#'     w_loglik <- revdbayes::dgev(data[, "Worthing"], w_pars[1], w_pars[2],
-#'                                 w_pars[3], log = TRUE)
+#'     o_loglik <- dgev(data[, "Oxford"], o_pars[1], o_pars[2], o_pars[3],
+#'                      log = TRUE)
+#'     w_loglik <- dgev(data[, "Worthing"], w_pars[1], w_pars[2], w_pars[3],
+#'                      log = TRUE)
 #'     return(o_loglik + w_loglik)
 #'   }
 #'
