@@ -66,9 +66,9 @@ init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 larger <- adjust_loglik(gev_loglik, data = owtemps, init = init,
           par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
-round(attr(ow_res, "MLE"), 4)
-round(attr(ow_res, "SE"), 4)
-round(attr(ow_res, "adjSE"), 4)
+round(attr(larger, "MLE"), 4)
+round(attr(larger, "SE"), 4)
+round(attr(larger, "adjSE"), 4)
 
 smaller <- adjust_loglik(gev_loglik, data = owtemps, init = init,
            par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"),
