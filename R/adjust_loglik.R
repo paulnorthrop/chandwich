@@ -136,7 +136,6 @@
 #' x <- rnorm(250)
 #' y <- rnbinom(250, mu = exp(1 + x), size = 1)
 #' fm_pois <- glm(y ~ x + I(x^2), family = poisson)
-#' adj_fn <- adjust_object(fm_pois)
 #'
 #' pois_glm_loglik <- function(pars, y, x) {
 #'   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
@@ -204,9 +203,9 @@
 #' larger <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'           par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 #' # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
-#' round(attr(ow_res, "MLE"), 4)
-#' round(attr(ow_res, "SE"), 4)
-#' round(attr(ow_res, "adjSE"), 4)
+#' round(attr(larger, "MLE"), 4)
+#' round(attr(larger, "SE"), 4)
+#' round(attr(larger, "adjSE"), 4)
 #'
 #' smaller <- adjust_loglik(gev_loglik, data = owtemps, p = 6,
 #'            par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"),
@@ -344,7 +343,7 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
   #
   # Find the MLE and Hessian of the (negated) loglikelihood at the MLE -------
   #
-  temp <- do.call(optim, for_optim)
+  temp <- do.call(stats::optim, for_optim)
   # Extract the MLE and the Hessian of independence loglikelihood at the MLE
   # Note the negation to change from Hessian of negated loglikelihood
   # to Hessian HI of loglikelihood
@@ -367,7 +366,7 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
     if (is.null(fixed_pars)) {
         clus_loglik <- function(x, cluster) {
           loglik_vals <- do.call(loglik, c(list(x), loglik_args))
-          return(aggregate(loglik_vals, list(cluster), sum)[, 2])
+          return(stats::aggregate(loglik_vals, list(cluster), sum)[, 2])
         }
     } else {
       clus_loglik <- function(x, cluster) {
@@ -375,7 +374,7 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
         pars[fixed_pars] <- fixed_at
         pars[free_pars] <- x
         loglik_vals <- do.call(loglik, c(list(pars), loglik_args))
-        return(aggregate(loglik_vals, list(cluster), sum)[, 2])
+        return(stats::aggregate(loglik_vals, list(cluster), sum)[, 2])
       }
     }
     # Estimate the k x p matrix of derivatives of the k cluster-specific
@@ -385,7 +384,7 @@ adjust_loglik <- function(loglik, ..., cluster = NULL, p = 1,
     U <- do.call(numDeriv::jacobian, for_jacobian)
   } else {
     U <- alg_deriv(mle, ...)
-    U <- as.matrix(aggregate(U, list(cluster), sum)[, 2:(p + 1)])
+    U <- as.matrix(stats::aggregate(U, list(cluster), sum)[, 2:(p + 1)])
   }
   #
   # Unadjusted inverse Hessian and standard errors

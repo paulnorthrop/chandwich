@@ -152,7 +152,6 @@ set.seed(123)
 x <- rnorm(250)
 y <- rnbinom(250, mu = exp(1 + x), size = 1)
 fm_pois <- glm(y ~ x + I(x^2), family = poisson)
-adj_fn <- adjust_object(fm_pois)
 
 pois_glm_loglik <- function(pars, y, x) {
   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
@@ -220,9 +219,9 @@ init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 larger <- adjust_loglik(gev_loglik, data = owtemps, init = init,
           par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
-round(attr(ow_res, "MLE"), 4)
-round(attr(ow_res, "SE"), 4)
-round(attr(ow_res, "adjSE"), 4)
+round(attr(larger, "MLE"), 4)
+round(attr(larger, "SE"), 4)
+round(attr(larger, "adjSE"), 4)
 
 smaller <- adjust_loglik(gev_loglik, data = owtemps, p = 6,
            par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"),
