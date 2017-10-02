@@ -59,7 +59,7 @@ plot.chandwich <- function(x, y, ..., lower = NULL, upper = NULL,
       y <- cbind(y, x(x_vals, type = "dilation"))
     }
     if (any(type == 4)) {
-      y <- cbind(y, x(x_vals, adjust = FALSE))
+      y <- cbind(y, x(x_vals, type = "none"))
     }
     graphics::matplot(x_vals, y, type = "l", ...)
   }
