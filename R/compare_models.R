@@ -1,5 +1,8 @@
 # Check length of init and fixed_pars are consistent
 
+# Sort problems re gettting the correct lengths of vectors.
+# Don't use [-..]
+
 # ============================== compare_models  ==============================
 #
 #' Comparison of nested models
@@ -39,36 +42,48 @@
 #' # GEV model, owtemps data ----------
 #' # ... following Section 5.2 of Chandler and Bate (2007)
 #'
-#'   gev_loglik <- function(pars, data) {
-#'     o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
-#'     w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
-#'     if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
-#'     o_loglik <- gev_dens(data[, "Oxford"], o_pars[1], o_pars[2], o_pars[3],
-#'                          log = TRUE)
-#'     w_loglik <- gev_dens(data[, "Worthing"], w_pars[1], w_pars[2], w_pars[3],
-#'                           log = TRUE)
-#'     return(o_loglik + w_loglik)
-#'   }
+#' gev_loglik <- function(pars, data) {
+#'   o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
+#'   w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
+#'   if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
+#'   o_loglik <- gev_dens(data[, "Oxford"], o_pars[1], o_pars[2], o_pars[3],
+#'                        log = TRUE)
+#'   w_loglik <- gev_dens(data[, "Worthing"], w_pars[1], w_pars[2], w_pars[3],
+#'                        log = TRUE)
+#'   return(o_loglik + w_loglik)
+#' }
 #'
 #' # Initial estimates (method of moments for the Gumbel case)
 #' sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 #' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
+#'
 #' # Perform the log-likelihood adjustment
-#' larger <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-#'           par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
+#' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+#'          par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 #' # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
-#' round(attr(larger, "MLE"), 4)
-#' round(attr(larger, "SE"), 4)
-#' round(attr(larger, "adjSE"), 4)
+#' round(attr(large, "MLE"), 4)
+#' round(attr(large, "SE"), 4)
+#' round(attr(large, "adjSE"), 4)
 #'
-#' smaller <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-#'            par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"),
-#'            fixed_pars = 6)
+#' # Fix xi1 = 0
+#' medium <- adjust_loglik(larger = large, fixed_pars = 6)
+#' # Fix sigma1 = xi1 = 0
+#' small <- adjust_loglik(larger = medium, fixed_pars = c(4, 6))
 #'
-#' compare_models(larger, smaller)
-#' compare_models(larger, fixed_pars = 6)
-#' compare_models(larger, smaller, approx = TRUE)
+#' # Test xi1 = 0 (2 equivalent ways)
+#' compare_models(large, fixed_pars = 6)$p_value
+#' compare_models(large, medium)$p_value
+#'
+#' # Test xi1 = 0, using approximation
+#' compare_models(large, medium, approx = TRUE)$p_value
+#'
+#' # Test sigma1 = 0 for xi1 = 0
+#' compare_models(medium, small)$p_value
+#'
+#' # Test sigma1 = xi1 = 0
+#' compare_models(large, small)$p_value
+#'
 #' @export
 compare_models <- function(larger, smaller = NULL, approx = FALSE,
                            fixed_pars = NULL, fixed_at = 0, init = NULL, ...) {
@@ -87,6 +102,9 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     pars[fixed_pars] <- fixed_at
     free_pars <- (1:p)[-fixed_pars]
     pars[free_pars] <- s_mle
+    if (!is.null(attr(larger, "fixed_pars"))) {
+      pars <- pars[-attr(larger, "fixed_pars")]
+    }
     max_loglik_smaller <- sum(do.call(larger, list(pars)))
     if (approx) {
       HA <- attr(larger, "HA")
@@ -142,6 +160,9 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     pars <- numeric(p)
     pars[fixed_pars] <- fixed_at
     pars[free_pars] <- x
+    if (!is.null(attr(larger, "fixed_pars"))) {
+      pars <- pars[-attr(larger, "fixed_pars")]
+    }
     loglik_vals <- do.call(larger, list(pars))
     return(-sum(loglik_vals))
   }
@@ -152,6 +173,9 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
       pars <- numeric(p)
       pars[fixed_pars] <- fixed_at
       pars[free_pars] <- x
+      if (!is.null(attr(larger, "fixed_pars"))) {
+        pars <- pars[-attr(larger, "fixed_pars")]
+      }
       loglik_vals <- do.call(larger, list(pars))
       check <- -sum(loglik_vals)
       if (!is.finite(check)) {

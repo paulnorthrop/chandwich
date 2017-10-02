@@ -213,6 +213,7 @@
 #' sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 #' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
+#'
 #' # Perform the log-likelihood adjustment
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'         par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
@@ -497,7 +498,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
   z <- eigen(-HA, symmetric = TRUE)
   MA <- z$vectors %*% diag(sqrt(z$values), n_pars, n_pars) %*% t(z$vectors)
   C_dilation <- solve(MI) %*% MA
-  # If some parameters are fixed the modify the input loglik so that it
+  # If some parameters are fixed then modify the input loglik so that it
   # accepts an argument of length length(free_pars)
   if (!is.null(fixed_pars)) {
     ret_loglik <- function(x) {

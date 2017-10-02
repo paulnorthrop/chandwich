@@ -227,6 +227,7 @@ pjn <- adjust_loglik(loglik = norm_loglik, data = norm_data, cluster = cluster,
 sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
 mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
+
 # Perform the log-likelihood adjustment
 large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
         par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
