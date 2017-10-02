@@ -1,6 +1,3 @@
-# 2. Check that this works with delta_xi = 0 and delta sigma = 0
-# 3. check compare_models, esp re 2.
-
 # ============================== adjust_loglik  ===============================
 #
 #' Loglikelihood adjustment using the sandwich estimator
