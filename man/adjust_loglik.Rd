@@ -4,7 +4,7 @@
 \alias{adjust_loglik}
 \title{Loglikelihood adjustment using the sandwich estimator}
 \usage{
-adjust_loglik(loglik, ..., cluster = NULL, p = 1, init = rep(0.1, p),
+adjust_loglik(loglik = NULL, ..., cluster = NULL, p = 1, init = NULL,
   par_names = NULL, fixed_pars = NULL, fixed_at = 0, larger = NULL,
   alg_deriv = NULL, alg_hess = NULL)
 }
@@ -19,7 +19,8 @@ parameters are out-of-bounds then \code{loglik} should return either
 (and to \code{alg_deriv} and \code{alg_hess} if these are supplied) or
 to \code{\link[stats]{optim}}.  The latter may include \code{gr},
 \code{method}, \code{lower}, \code{upper} or \code{control}.
-\code{hessian = TRUE} will be used regardless of any value supplied.
+In the call to \code{\link[stats]{optim}}, \code{hessian = TRUE}
+will be used regardless of any value supplied.
 The function \code{loglik} must \emph{not} have arguments with names
 that match any of these arguments to \code{\link[stats]{optim}}.}
 
@@ -35,7 +36,8 @@ vector, i.e. the number of parameters in the full model.}
 to the number of parameters in the full model.  If \code{init} is
 supplied then \code{p} is set to \code{length(init)}.
 If \code{fixed_pars} is not \code{NULL} then \code{init[-fixed_pars]}
-is used in the search for the MLE.}
+is used in the search for the MLE.
+If \code{init} is not supplied then \code{rep(0.1, p)} is used.}
 
 \item{par_names}{A character vector.  Names of the \code{p} parameters
 in the full model.}
@@ -46,16 +48,20 @@ parameter vector that are restricted to be equal to the value(s) in
 
 \item{fixed_at}{A numeric vector of length 1 or \code{length(fixed_pars)}.
 If \code{length(fixed_at) = 1} then the components \code{fixed_pars}
-of the parameter vector are fixed at \code{fixed_at}.
+of the parameter vector are all fixed at \code{fixed_at}.
 If \code{length(fixed_at) = length(fixed_pars)} then the component
-\code{fixed_pars[i]} is fixed at \code{fixed_at[i]}.}
+\code{fixed_pars[i]} is fixed at \code{fixed_at[i]} for each \code{i}.}
 
-\item{larger}{Only relevant if \code{fixed_pars} is not \code{NULL}.
-An object of class \code{"chandwich"} returned by \code{adjust_loglik}
-corresponding to a model in which the model implied by \code{fixed_pars}
-is nested.  If \code{large} is supplied then \code{init} is set to
-\code{attr(larger, "MLE")}, with the elements in \code{fixed_pars} set to
-\code{fixed_at}.}
+\item{larger}{(Only relevant if \code{fixed_pars} is not \code{NULL}.)
+An object of class \code{"chandwich"} returned by \code{adjust_loglik},
+corresponding to a model in which the smaller model implied by
+\code{fixed_pars} is nested.  If \code{larger} is supplied then
+all the arguments to \code{adjust_loglik} apart from
+\code{fixed_pars} and \code{fixed_at} are extracted from \code{larger}.
+If \code{init} is not supplied in the current call to
+\code{adjust_loglik} then \code{init} is set to
+\code{attr(larger, "MLE")}, with the elements in \code{fixed_pars}
+set to \code{fixed_at}.}
 
 \item{alg_deriv}{A function with the vector of model parameter(s) as its
 first argument.  Returns a \code{length(cluster)} by \code{p} numeric
@@ -71,37 +77,43 @@ the function \code{loglik}.}
 A function of class \code{"chandwich"} to evaluate an adjusted
   loglikelihood, or the independence loglikelihood, at one or more sets
   of model parameters, with arguments
-  \item{x}{A numeric vector or matrix giving values of the \code{n_pars}
+  \item{x}{A numeric vector or matrix giving values of the \code{p_current}
     (see below) parameters in the model to which the returned adjusted
     loglikelihood applies.
     If \code{p = 1} this may be a numeric vector or a matrix with 1 column.
     If \code{p > 1} this may be a numeric vector of length \code{p}
     (one set of model parameters) or a numeric matrix with \code{p}
     columns (\code{ncol(x)} sets of model parameters).}
-  \item{adjust}{A logical scalar.  Whether or not to adjust the
-    independence loglikelihood.}
-  \item{type}{A character scalar.  The type of adjustment to use if
-    \code{adjust = TRUE}.  One of \code{"vertical"}, \code{"cholesky"} or
-    \code{"dilation"}.}
+  \item{type}{A character scalar.  The type of adjustment to use.
+    One of \code{"vertical"}, \code{"cholesky"}, \code{"dilation"} or
+    \code{"none"}.}  The latter results in the evaluation of the
+    (unadjusted) independence loglikelihood.
   The function has (additional) attributes
-  \item{p_full}{The number of parameters in the full model}
-  \item{p_current}{The number of parameters in the current model}
+  \item{p_full, p_current}{The number of parameters in the full model and
+    current models, respectively.}
   \item{MLE}{The maximum likelihood estimate.}
-  \item{SE}{The unadjusted standard errors.}
-  \item{adjSE}{The adjusted standard errors.}
-  \item{HI}{The Hessian of the independence loglikelihood.}
-  \item{HA}{The Hessian of the adjusted loglikelihood.}
-  \item{C_cholesky}{The matrix C in equation (14) of Chandler and Bate
-    (2007), calculated using Cholesky decomposition.}
-  \item{C_dilation}{The matrix C in equation (14) of Chandler and Bate
-    (2007), calculated using spectral decomposition.}
-  \item{par_names}{The argument \code{par_names}, if this was supplied.}
+  \item{res_MLE}{The maximum likelihood estimate, including any parameters
+    with fixed values. Equal to MLE if \code{fixed_pars} was \code{NULL}.}
+  \item{SE, adjSE}{The unadjusted and adjusted standard errors, respectively.}
+  \item{HI, HA}{The Hessians of the independence and adjusted loglikelihood,
+    respectively.}
+  \item{C_cholesky, C_dilation}{The matrix C in equation (14) of Chandler and
+    Bate (2007), calculated using Cholesky decomposition and spectral
+    decomposition, respectively.}
+  \item{full_par_names, par_names}{The names of the parameters in the full
+    and current models, respectively, if these were supplied in
+    this call or a previous call.}
   \item{max_loglik}{The common maximised value of the independence and
     adjusted loglikelihoods.}
+  \item{loglik, cluster}{The arguments \code{loglik} and \code{cluster}
+    supplied in this call, or a previous call.}
+  \item{loglik_args}{A list containing the further arguments passed to
+    \code{loglik} via ... in this call, or a previous call.}
   If \code{fixed_pars} is not \code{NULL} then there are further attributes
-  \item{p_res}{The number of parameters in the restricted model.}
   \item{fixed_pars}{The argument \code{fixed_pars}.}
   \item{fixed_at}{The argument \code{fixed_at}.}
+  If \code{alg_deriv} and/or \code{alg_hess} were supplied then these are
+  returned as further attributes.
 }
 \description{
 Performs adjustments of a user-supplied independence loglikelihood for the
@@ -109,13 +121,14 @@ presence of cluster dependence, following
 \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
 The user provides a function that returns observation-specifc
 loglikelihood contributions and a vector that indicates cluster membership.
+The loglikelihood of a sub-model can be adjusted by fixing a set of
+parameters at particular values.
 }
 \details{
-Three adjustments to the independence loglikelihood are available.
-  The `vertical' adjustment is described in Section 6 of
-  Chandler and Bate (2007) and two `horizontal' adjustments are described
-  in Sections 3.2 to 3.4 of Chandler and Bate (2007).
-  See the descriptions of \code{type} and, for the
+Three adjustments to the independence loglikelihood described in
+  Chandler and Bate (2007) are available.  The `vertical' adjustment is
+  described in Section 6 and two `horizontal' adjustments are described
+  in Sections 3.2 to 3.4.  See the descriptions of \code{type} and, for the
   horizontal adjustments, the descriptions of \code{C_cholesky} and
   \code{C_dilation}, in \strong{Value}.
 
@@ -136,7 +149,7 @@ binom_loglik <- function(prob, data) {
 rat_res <- adjust_loglik(loglik = binom_loglik, data = rats)
 
 x <- seq(0.01, 0.99, by = 0.01)
-y1 <- rat_res(x, adjust = FALSE)
+y1 <- rat_res(x, type = "none")
 y2 <- rat_res(x, type = "vertical")
 y3 <- rat_res(x, type = "cholesky")
 y4 <- rat_res(x, type = "dilation")
@@ -215,16 +228,24 @@ sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
 mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 # Perform the log-likelihood adjustment
-larger <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-          par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
+large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+        par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
-round(attr(larger, "MLE"), 4)
-round(attr(larger, "SE"), 4)
-round(attr(larger, "adjSE"), 4)
+round(attr(large, "MLE"), 4)
+round(attr(large, "SE"), 4)
+round(attr(large, "adjSE"), 4)
 
-smaller <- adjust_loglik(gev_loglik, data = owtemps, p = 6,
-           par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"),
-           fixed_pars = 6, larger = larger)
+# Easier way to fix parameters
+medium <- adjust_loglik(larger = large, fixed_pars = 6)
+small1 <- adjust_loglik(larger = large, fixed_pars = c(4, 6))
+# or
+small2 <- adjust_loglik(larger = medium, fixed_pars = c(4, 6))
+
+# (Slightly) harder way
+medium <- adjust_loglik(gev_loglik, data = owtemps, init = init, fixed_pars = 6,
+          par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
+small <- adjust_loglik(gev_loglik, data = owtemps, init = init, fixed_pars = c(4,6),
+         par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 }
 \references{
 Chandler, R. E. and Bate, S. (2007). Inference for clustered
@@ -237,4 +258,7 @@ Chandler, R. E. and Bate, S. (2007). Inference for clustered
 
 \code{\link{plot.chandwich}} for one- and two- dimensional plots
   of of adjusted loglikelihoods.
+
+\code{\link{compare_models}} to compare nested models using an
+  (adjusted) likelihood ratio test.
 }
