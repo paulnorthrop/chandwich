@@ -15,32 +15,67 @@ compare_models(larger, smaller = NULL, approx = FALSE, fixed_pars = NULL,
 \code{adjust_loglik}.  The smaller of the two models.}
 
 \item{approx}{A logical scalar.  If \code{approx = TRUE} then the
-approximation detailed by equations (18)-(20) of Chandler and Bates(2007)
-is used.  This option is only used if \code{smaller} is supplied.
+approximation detailed by equations (18)-(20) of Chandler and Bate (2007)
+is used.  This option is available only if \code{smaller} is supplied.
 If \code{approx = FALSE} then the adjusted likelihood is
-maximised under the restriction imposed by \code{delta}.}
+maximised under the restriction imposed by \code{delta}, that is,
+equation (17) of Chandler and Bate (2007) is used.}
 
-\item{fixed_pars}{A numeric vector.}
+\item{fixed_pars}{A numeric vector.  Indices of the components of the
+\strong{full} parameter vector that are restricted to be equal to the
+value(s) in \code{fixed_at}.}
 
-\item{fixed_at}{A numeric vector.}
+\item{fixed_at}{A numeric vector of length 1 or \code{length(fixed_pars)}.
+If \code{length(fixed_at) = 1} then the components \code{fixed_pars}
+of the parameter vector are all fixed at \code{fixed_at}.
+If \code{length(fixed_at) = length(fixed_pars)} then the component
+\code{fixed_pars[i]} is fixed at \code{fixed_at[i]} for each \code{i}.}
 
-\item{init}{A numeric vector of initial values for use in the search for
-the MLE under the smaller model.}
+\item{init}{(Only relevant is \code{approx = FALSE}).
+A numeric vector of initial values for use in the search for
+the MLE under the smaller model.  Must have length
+\code{attr(smaller, "p_current")}.  If \code{init} is not supplied then
+\code{attr(smaller, "MLE")} is used if \code{smaller} is supplied and
+\code{attr(larger, "MLE")[-fixed_pars]} otherwise.}
 
 \item{...}{Further arguments to be passed to \code{\link[stats]{optim}}.
 These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
 or \code{control}.}
 }
 \value{
-Test statistic, degrees of freedom (q) and p-value.
+A list containing Test statistic, degrees of freedom (q) and p-value.
+ \item{alrts}{the adjusted likelihood ratio test statistic.}
+ \item{df}{under the null hypothesis that the smaller model is a valid
+   simplification of the larger model the adjusted likelihood ratio
+   test statistic has a chi-squared distribution with \code{df}
+   degrees of freedom.}
+ \item{p_value}{the p-value associated with the test of the null
+   hypothesis.}
+ \item{larger_mle}{the MLE of the parameters under the larger model.}
+ \item{smaller_mle}{the MLE of the parameters under the smaller model.}
 }
 \description{
-adjusted likelihood ratio statistics (ALRS),
-following Section 3.5 of
+Compares nested models using the adjusted likelihood ratio statistic (ALRS)
+described in Section 3.5 of
 \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
+The nesting must result from the simple constraint that a subset of the
+parameters of the larger model held fixed.
 }
 \details{
-add details
+For full details see Section 3.5 of
+\href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
+  if \code{approx = FALSE} then the a likelihood ratio test of the null
+  hypothesis that the smaller model is a valid simplication of the larger
+  model is carried out directly using equation (17) of Chandler and Bate
+  (2007) based on the adjusted loglikelihood under the larger model,
+  returned by \code{adjust_loglik}.  This adjusted loglikelihood is
+  maximised subject to the constraint that a subset of the parameters
+  in the larger model are fixed.  If \code{smaller} is supplied
+  then this maximisation can be avoided using an approximation
+  detailed by (18)-(20) of Chandler and Bate (2007), which uses the
+  MLE under the smaller model.  The same null distribution (chi-squared with
+  degrees of freedom equal to the number of parameters that are fixed)
+  is used in both cases.
 }
 \examples{
 # GEV model, owtemps data ----------
@@ -62,7 +97,8 @@ sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
 mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 
-# Perform the log-likelihood adjustment
+# Perform the log-likelihood adjustment of the full model ------
+
 large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
          par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
@@ -70,10 +106,14 @@ round(attr(large, "MLE"), 4)
 round(attr(large, "SE"), 4)
 round(attr(large, "adjSE"), 4)
 
+# Perform the log-likelihood adjustment of some smaller models ------
+
 # Fix xi1 = 0
 medium <- adjust_loglik(larger = large, fixed_pars = 6)
 # Fix sigma1 = xi1 = 0
 small <- adjust_loglik(larger = medium, fixed_pars = c(4, 6))
+
+# Perform tests ------
 
 # Test xi1 = 0 (2 equivalent ways)
 compare_models(large, fixed_pars = 6)$p_value
