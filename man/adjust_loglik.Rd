@@ -29,12 +29,12 @@ respective loglikelihood contributions from \code{loglik} originate.
 Must have the same length as the vector returned by \code{loglik}.
 By default each observation is its own cluster.}
 
-\item{p}{A numeric scalar.  The dimension of the \emph{full} parameter
+\item{p}{A numeric scalar.  The dimension of the \strong{full} parameter
 vector, i.e. the number of parameters in the full model.}
 
 \item{init}{A numeric vector of initial values.  Must have length equal
-to the number of parameters in the full model.  If \code{init} is
-supplied then \code{p} is set to \code{length(init)}.
+to the number of parameters in the \strong{full} model.  If \code{init}
+is supplied then \code{p} is set to \code{length(init)}.
 If \code{fixed_pars} is not \code{NULL} then \code{init[-fixed_pars]}
 is used in the search for the MLE.
 If \code{init} is not supplied then \code{rep(0.1, p)} is used.}
@@ -43,8 +43,8 @@ If \code{init} is not supplied then \code{rep(0.1, p)} is used.}
 in the full model.}
 
 \item{fixed_pars}{A numeric vector.  Indices of the components of the
-parameter vector that are restricted to be equal to the value(s) in
-\code{fixed_at}.}
+\strong{full} parameter vector that are restricted to be equal to the
+value(s) in \code{fixed_at}.}
 
 \item{fixed_at}{A numeric vector of length 1 or \code{length(fixed_pars)}.
 If \code{length(fixed_at) = 1} then the components \code{fixed_pars}
@@ -228,7 +228,8 @@ sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
 mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 
-# Perform the log-likelihood adjustment
+# Perform the log-likelihood adjustment of the full model ------
+
 large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
         par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
@@ -236,7 +237,9 @@ round(attr(large, "MLE"), 4)
 round(attr(large, "SE"), 4)
 round(attr(large, "adjSE"), 4)
 
-# Easier way to fix parameters
+# Perform the log-likelihood adjustment of some smaller models ------
+
+# One way to fix parameters
 medium <- adjust_loglik(larger = large, fixed_pars = 6)
 small1 <- adjust_loglik(larger = large, fixed_pars = c(4, 6))
 # or
