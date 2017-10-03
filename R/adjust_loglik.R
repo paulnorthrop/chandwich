@@ -545,7 +545,11 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
         if (identical(x, mle)) {
           return(max_loglik)
         }
-        C <- ifelse(type == "cholesky", C_cholesky, C_dilation)
+        if (type == "cholesky") {
+          C <- C_cholesky
+        } else {
+          C <- C_dilation
+        }
         x_star <- mle + (C %*% (x - mle))
         loglik_vals <- do.call(ret_loglik, list(x_star))
         return(sum(loglik_vals))
