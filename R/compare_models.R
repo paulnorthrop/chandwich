@@ -1,5 +1,3 @@
-# Check length of init and fixed_pars are consistent
-
 # ============================== compare_models  ==============================
 #
 #' Comparison of nested models
@@ -17,9 +15,16 @@
 #' @param approx A logical scalar.  If \code{approx = TRUE} then the
 #'   approximation detailed by equations (18)-(20) of Chandler and Bate (2007)
 #'   is used.  This option is available only if \code{smaller} is supplied.
+#'   The approximation doesn't make sense if \code{type = "none"}.  If
+#'   \code{type = "none"} and \code{approx = TRUE} then \code{approx} is
+#'   set to \code{FALSE} with no warning.
+#'
 #'   If \code{approx = FALSE} then the adjusted likelihood is
 #'   maximised under the restriction imposed by \code{delta}, that is,
 #'   equation (17) of Chandler and Bate (2007) is used.
+#' @param type A character scalar.  The argument \code{type} to the function
+#'   returned by \code{\link{adjust_loglik}}, that is, the type of adjustment
+#'   made to the independence loglikelihood function.
 #' @param fixed_pars A numeric vector.  Indices of the components of the
 #'   \strong{full} parameter vector that are restricted to be equal to the
 #'   value(s) in \code{fixed_at}.
@@ -30,8 +35,9 @@
 #'   \code{fixed_pars[i]} is fixed at \code{fixed_at[i]} for each \code{i}.
 #' @param init (Only relevant is \code{approx = FALSE}).
 #'   A numeric vector of initial values for use in the search for
-#'   the MLE under the smaller model.  Must have length
-#'   \code{attr(smaller, "p_current")}.  If \code{init} is not supplied then
+#'   the MLE under the smaller model.  Must have length equal to the number
+#'   of parameters in the smaller of the two models being compared.  If
+#'   \code{init} is not supplied, or it is of the wrong length, then
 #'   \code{attr(smaller, "MLE")} is used if \code{smaller} is supplied and
 #'   \code{attr(larger, "MLE")[-fixed_pars]} otherwise.
 #' @param ... Further arguments to be passed to \code{\link[stats]{optim}}.
@@ -111,6 +117,11 @@
 #' # Test xi1 = 0 (2 equivalent ways)
 #' compare_models(large, fixed_pars = 6)$p_value
 #' compare_models(large, medium)$p_value
+#' # Horizontal adjustments
+#' compare_models(large, medium, type = "cholesky")$p_value
+#' compare_models(large, medium, type = "dilation")$p_value
+#' # No adjustment (independence loglikelihood)
+#' compare_models(large, medium, type = "none")$p_value
 #' # Test xi1 = 0, using approximation
 #' compare_models(large, medium, approx = TRUE)$p_value
 #'
@@ -122,17 +133,24 @@
 #'
 #' @export
 compare_models <- function(larger, smaller = NULL, approx = FALSE,
+                           type = c("vertical", "cholesky", "dilation",
+                                    "none"),
                            fixed_pars = NULL, fixed_at = 0, init = NULL, ...) {
+  type <- match.arg(type)
+  if (type == "none" & approx) {
+    approx <- FALSE
+  }
   #
   # Setup and checks -----------------------------------------------------------
   #
+  # The number of parameters in the larger model
+  p <- attr(larger, "p_current")
   # If smaller is supplied then .......
   if (!is.null(smaller)) {
     # Check that smaller is nested within larger
     # (1) larger must have more parameters than smaller
     # (2) all values in attr(larger, "fixed_pars") must also appear in
     #     attr(smaller, "fixed_pars")
-    p <- attr(larger, "p_current")
     p_s <- attr(smaller, "p_current")
     nest_1 <- p > p_s
     fixed_pars <- attr(smaller, "fixed_pars")
@@ -154,7 +172,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     if (!is.null(attr(larger, "fixed_pars"))) {
       pars <- pars[-attr(larger, "fixed_pars")]
     }
-    max_loglik_smaller <- sum(do.call(larger, list(pars)))
+    max_loglik_smaller <- sum(do.call(larger, list(pars, type = type)))
     if (approx) {
       HA <- attr(larger, "HA")
       R <- solve(-HA)
@@ -169,7 +187,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
                   p_value = 1 - stats::pchisq(alrts, qq),
                   larger_mle = l_mle, smaller_mle = s_mle))
     } else {
-      if (is.null(init)) {
+      if (is.null(init) || length(init) != p_s) {
         init <- attr(smaller, "MLE")
       }
     }
@@ -177,8 +195,6 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   if (is.null(fixed_pars)) {
     stop("'fixed_pars' must be supplied")
   }
-  # The number of parameters in the larger model
-  p <- attr(larger, "p_current")
   # The number of parameters that are fixed
   qq <- length(fixed_pars)
   if (qq >= p) {
@@ -212,7 +228,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     if (!is.null(attr(larger, "fixed_pars"))) {
       pars <- pars[-attr(larger, "fixed_pars")]
     }
-    loglik_vals <- do.call(larger, list(pars))
+    loglik_vals <- do.call(larger, list(pars, type = type))
     return(-sum(loglik_vals))
   }
   # L-BFGS-B and Brent don't like Inf or NA or NaN
@@ -225,7 +241,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
       if (!is.null(attr(larger, "fixed_pars"))) {
         pars <- pars[-attr(larger, "fixed_pars")]
       }
-      loglik_vals <- do.call(larger, list(pars))
+      loglik_vals <- do.call(larger, list(pars, type = type))
       check <- -sum(loglik_vals)
       if (!is.finite(check)) {
         check <- big_finite_val
@@ -234,7 +250,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     }
   }
   # Initial estimate: the MLE with fixed_pars set at the values in fixed_at
-  if (is.null(init)) {
+  if (is.null(init) || length(init) != p) {
     init <- attr(larger, "MLE")[-fixed_pars]
   }
   for_optim <- c(list(par = init, fn = neg_adj_loglik), optim_args)

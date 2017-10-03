@@ -4,7 +4,8 @@
 \alias{compare_models}
 \title{Comparison of nested models}
 \usage{
-compare_models(larger, smaller = NULL, approx = FALSE, fixed_pars = NULL,
+compare_models(larger, smaller = NULL, approx = FALSE,
+  type = c("vertical", "cholesky", "dilation", "none"), fixed_pars = NULL,
   fixed_at = 0, init = NULL, ...)
 }
 \arguments{
@@ -15,11 +16,19 @@ compare_models(larger, smaller = NULL, approx = FALSE, fixed_pars = NULL,
 \code{adjust_loglik}.  The smaller of the two models.}
 
 \item{approx}{A logical scalar.  If \code{approx = TRUE} then the
-approximation detailed by equations (18)-(20) of Chandler and Bate (2007)
-is used.  This option is available only if \code{smaller} is supplied.
-If \code{approx = FALSE} then the adjusted likelihood is
-maximised under the restriction imposed by \code{delta}, that is,
-equation (17) of Chandler and Bate (2007) is used.}
+  approximation detailed by equations (18)-(20) of Chandler and Bate (2007)
+  is used.  This option is available only if \code{smaller} is supplied.
+  The approximation doesn't make sense if \code{type = "none"}.  If
+  \code{type = "none"} and \code{approx = TRUE} then \code{approx} is
+  set to \code{FALSE} with no warning.
+
+  If \code{approx = FALSE} then the adjusted likelihood is
+  maximised under the restriction imposed by \code{delta}, that is,
+  equation (17) of Chandler and Bate (2007) is used.}
+
+\item{type}{A character scalar.  The argument \code{type} to the function
+returned by \code{\link{adjust_loglik}}, that is, the type of adjustment
+made to the independence loglikelihood function.}
 
 \item{fixed_pars}{A numeric vector.  Indices of the components of the
 \strong{full} parameter vector that are restricted to be equal to the
@@ -33,8 +42,9 @@ If \code{length(fixed_at) = length(fixed_pars)} then the component
 
 \item{init}{(Only relevant is \code{approx = FALSE}).
 A numeric vector of initial values for use in the search for
-the MLE under the smaller model.  Must have length
-\code{attr(smaller, "p_current")}.  If \code{init} is not supplied then
+the MLE under the smaller model.  Must have length equal to the number
+of parameters in the smaller of the two models being compared.  If
+\code{init} is not supplied, or it is of the wrong length, then
 \code{attr(smaller, "MLE")} is used if \code{smaller} is supplied and
 \code{attr(larger, "MLE")[-fixed_pars]} otherwise.}
 
@@ -118,6 +128,11 @@ small <- adjust_loglik(larger = medium, fixed_pars = c(4, 6))
 # Test xi1 = 0 (2 equivalent ways)
 compare_models(large, fixed_pars = 6)$p_value
 compare_models(large, medium)$p_value
+# Horizontal adjustments
+compare_models(large, medium, type = "cholesky")$p_value
+compare_models(large, medium, type = "dilation")$p_value
+# No adjustment (independence loglikelihood)
+compare_models(large, medium, type = "none")$p_value
 # Test xi1 = 0, using approximation
 compare_models(large, medium, approx = TRUE)$p_value
 
