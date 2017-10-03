@@ -74,7 +74,6 @@
 #' # Test xi1 = 0 (2 equivalent ways)
 #' compare_models(large, fixed_pars = 6)$p_value
 #' compare_models(large, medium)$p_value
-#'
 #' # Test xi1 = 0, using approximation
 #' compare_models(large, medium, approx = TRUE)$p_value
 #'
@@ -92,13 +91,26 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   #
   # If smaller is supplied then .......
   if (!is.null(smaller)) {
+    # Check that smaller is nested within larger
+    # (1) larger must have more parameters than smaller
+    # (2) all values in attr(larger, "fixed_pars") must also appear in
+    #     attr(smaller, "fixed_pars")
+    p <- attr(larger, "p_current")
+    p_s <- attr(smaller, "p_current")
+    nest_1 <- p > p_s
+    fixed_pars <- attr(smaller, "fixed_pars")
+    l_fixed_pars <- attr(larger, "fixed_pars")
+    nest_2 <- all(attr(larger, "fixed_pars") %in% attr(smaller, "fixed_pars"))
+    if (!nest_1 | !nest_2) {
+      stop("smaller is not nested in larger")
+    }
     fixed_pars <- attr(smaller, "fixed_pars")
     fixed_at <- attr(smaller, "fixed_at")
     qq <- length(fixed_pars)
     p <- attr(larger, "p_current")
-    pars <- numeric(p)
     s_mle <- attr(smaller, "MLE")
     l_mle <- attr(larger, "MLE")
+    pars <- numeric(p)
     pars[fixed_pars] <- fixed_at
     free_pars <- (1:p)[-fixed_pars]
     pars[free_pars] <- s_mle
@@ -109,12 +121,13 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     if (approx) {
       HA <- attr(larger, "HA")
       R <- solve(-HA)
-      pjn <- solve(-R[fixed_pars, fixed_pars])
-      num <- t(l_mle[fixed_pars] - fixed_at) %*% pjn %*%
+      R_rest <- solve(-R[fixed_pars, fixed_pars])
+      num <- t(l_mle[fixed_pars] - fixed_at) %*% R_rest %*%
         (l_mle[fixed_pars] - fixed_at)
       den <- t(l_mle - pars) %*% HA %*% (l_mle - pars)
       const <- num / den
       alrts <- 2 * const * (attr(larger, "max_loglik") - max_loglik_smaller)
+      alrts <- as.numeric(alrts)
       return(list(alrts = alrts, df = qq,
                   p_value = 1 - stats::pchisq(alrts, qq),
                   larger_mle = l_mle, smaller_mle = s_mle))
@@ -128,7 +141,6 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     stop("'fixed_pars' must be supplied")
   }
   # The number of parameters in the larger model
-#  p <- length(attr(larger, "MLE"))
   p <- attr(larger, "p_current")
   # The number of parameters that are fixed
   qq <- length(fixed_pars)

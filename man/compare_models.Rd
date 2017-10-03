@@ -78,7 +78,6 @@ small <- adjust_loglik(larger = medium, fixed_pars = c(4, 6))
 # Test xi1 = 0 (2 equivalent ways)
 compare_models(large, fixed_pars = 6)$p_value
 compare_models(large, medium)$p_value
-
 # Test xi1 = 0, using approximation
 compare_models(large, medium, approx = TRUE)$p_value
 
