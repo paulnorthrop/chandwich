@@ -198,16 +198,16 @@
 #' # GEV model, owtemps data ----------
 #' # ... following Section 5.2 of Chandler and Bate (2007)
 #'
-#'   gev_loglik <- function(pars, data) {
-#'     o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
-#'     w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
-#'     if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
-#'     o_loglik <- gev_dens(data[, "Oxford"], o_pars[1], o_pars[2], o_pars[3],
-#'                          log = TRUE)
-#'     w_loglik <- gev_dens(data[, "Worthing"], w_pars[1], w_pars[2], w_pars[3],
-#'                          log = TRUE)
-#'     return(o_loglik + w_loglik)
-#'   }
+#' gev_loglik <- function(pars, data) {
+#'   o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
+#'   w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
+#'   if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
+#'   o_loglik <- gev_dens(data[, "Oxford"], o_pars[1], o_pars[2], o_pars[3],
+#'                        log = TRUE)
+#'   w_loglik <- gev_dens(data[, "Worthing"], w_pars[1], w_pars[2], w_pars[3],
+#'                        log = TRUE)
+#'   return(o_loglik + w_loglik)
+#' }
 #'
 #' # Initial estimates (method of moments for the Gumbel case)
 #' sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
