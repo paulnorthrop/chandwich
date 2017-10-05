@@ -1,5 +1,5 @@
 # ============================== adjust_loglik  ===============================
-#
+
 #' Loglikelihood adjustment using the sandwich estimator
 #'
 #' Performs adjustments of a user-supplied independence loglikelihood for the

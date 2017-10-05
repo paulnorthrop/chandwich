@@ -1,5 +1,5 @@
-# ============================== compare_models  ==============================
-#
+# ============================== compare_models ===============================
+
 #' Comparison of nested models
 #'
 #' Compares nested models using the adjusted likelihood ratio statistic (ALRS)
