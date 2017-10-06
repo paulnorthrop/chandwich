@@ -1,3 +1,6 @@
+# Don't need to return par_names and full_par_names?
+# Add par_names to returned fixed_pars and fixed_at?
+
 # ============================== adjust_loglik  ===============================
 
 #' Loglikelihood adjustment using the sandwich estimator
@@ -36,7 +39,8 @@
 #'   is used in the search for the MLE.
 #'   If \code{init} is not supplied then \code{rep(0.1, p)} is used.
 #' @param par_names A character vector.  Names of the \code{p} parameters
-#'   in the full model.
+#'   in the full model.  If \code{par_names} does not have length \code{p}
+#'   then \code{par_names = NULL} will be used.
 #' @param fixed_pars A numeric vector.  Indices of the components of the
 #'   \strong{full} parameter vector that are restricted to be equal to the
 #'   value(s) in \code{fixed_at}.
@@ -91,9 +95,12 @@
 #'   The function has (additional) attributes
 #'   \item{p_full, p_current}{The number of parameters in the full model and
 #'     current models, respectively.}
-#'   \item{MLE}{The maximum likelihood estimate.}
+#'   \item{MLE}{The maximum likelihood estimate. A numeric vector, with names
+#'     infered from \code{par_names} if this was supplied.}
 #'   \item{res_MLE}{The maximum likelihood estimate, including any parameters
-#'     with fixed values. Equal to MLE if \code{fixed_pars} was \code{NULL}.}
+#'     with fixed values. A numeric vector, with names infered from
+#'     \code{par_names} if this was supplied. Equal to MLE if \code{fixed_pars}
+#'     is \code{NULL}.}
 #'   \item{SE, adjSE}{The unadjusted and adjusted standard errors, respectively.}
 #'   \item{HI, HA}{The Hessians of the independence and adjusted loglikelihood,
 #'     respectively.}
@@ -260,19 +267,21 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
     if (!is.null(fixed_pars)) {
       init <- init[-fixed_pars]
     }
-    # If par_names is supplied then force it to have length p
-    if (!is.null(par_names)) {
-      full_par_names <- par_names <- rep_len(par_names, p)
-      if (!is.null(fixed_pars)) {
-        par_names <- par_names[-fixed_pars]
-      }
+    # Only use par_names if it has length p
+    if (!is.null(par_names) & length(par_names) == p) {
+      full_par_names <- par_names
     } else {
+#      full_par_names <- par_names <- paste("p", 1:p, sep = "")
       full_par_names <- NULL
+    }
+    if (!is.null(fixed_pars)) {
+      par_names <- par_names[-fixed_pars]
     }
   } else {
     if (is.null(fixed_pars)) {
       warning("larger is only relevant if fixed_pars is supplied")
       got_loglik_args <- FALSE
+#      full_par_names <- paste("p", 1:p, sep = "")
       full_par_names <- NULL
     } else {
       if (!inherits(larger, "chandwich")) {
@@ -413,6 +422,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
   # Note the negation to change from Hessian of negated loglikelihood
   # to Hessian HI of loglikelihood
   mle <- temp$par
+  print(mle)
   if (!is.null(fixed_pars)) {
     res_mle <- numeric(p)
     res_mle[fixed_pars] <- fixed_at
@@ -566,9 +576,11 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
       return(apply(x, 1, fn))
     }
   }
+  names(mle) <- par_names
   attr(adjust_loglik_fn, "p_full") <- p
   attr(adjust_loglik_fn, "p_current") <- n_pars
   if (!is.null(fixed_pars)) {
+    names(res_mle) <- full_par_names
     attr(adjust_loglik_fn, "fixed_pars") <- fixed_pars
     attr(adjust_loglik_fn, "fixed_at") <- fixed_at
     attr(adjust_loglik_fn, "res_MLE") <- res_mle

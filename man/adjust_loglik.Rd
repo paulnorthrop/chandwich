@@ -40,7 +40,8 @@ is used in the search for the MLE.
 If \code{init} is not supplied then \code{rep(0.1, p)} is used.}
 
 \item{par_names}{A character vector.  Names of the \code{p} parameters
-in the full model.}
+in the full model.  If \code{par_names} does not have length \code{p}
+then \code{par_names = NULL} will be used.}
 
 \item{fixed_pars}{A numeric vector.  Indices of the components of the
 \strong{full} parameter vector that are restricted to be equal to the
@@ -91,9 +92,12 @@ A function of class \code{"chandwich"} to evaluate an adjusted
   The function has (additional) attributes
   \item{p_full, p_current}{The number of parameters in the full model and
     current models, respectively.}
-  \item{MLE}{The maximum likelihood estimate.}
+  \item{MLE}{The maximum likelihood estimate. A numeric vector, with names
+    infered from \code{par_names} if this was supplied.}
   \item{res_MLE}{The maximum likelihood estimate, including any parameters
-    with fixed values. Equal to MLE if \code{fixed_pars} was \code{NULL}.}
+    with fixed values. A numeric vector, with names infered from
+    \code{par_names} if this was supplied. Equal to MLE if \code{fixed_pars}
+    is \code{NULL}.}
   \item{SE, adjSE}{The unadjusted and adjusted standard errors, respectively.}
   \item{HI, HA}{The Hessians of the independence and adjusted loglikelihood,
     respectively.}
@@ -212,16 +216,16 @@ pjn <- adjust_loglik(loglik = norm_loglik, data = norm_data, cluster = cluster,
 # GEV model, owtemps data ----------
 # ... following Section 5.2 of Chandler and Bate (2007)
 
-  gev_loglik <- function(pars, data) {
-    o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
-    w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
-    if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
-    o_loglik <- gev_dens(data[, "Oxford"], o_pars[1], o_pars[2], o_pars[3],
-                         log = TRUE)
-    w_loglik <- gev_dens(data[, "Worthing"], w_pars[1], w_pars[2], w_pars[3],
-                         log = TRUE)
-    return(o_loglik + w_loglik)
-  }
+gev_loglik <- function(pars, data) {
+  o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
+  w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
+  if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
+  o_loglik <- gev_dens(data[, "Oxford"], o_pars[1], o_pars[2], o_pars[3],
+                       log = TRUE)
+  w_loglik <- gev_dens(data[, "Worthing"], w_pars[1], w_pars[2], w_pars[3],
+                       log = TRUE)
+  return(o_loglik + w_loglik)
+}
 
 # Initial estimates (method of moments for the Gumbel case)
 sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
