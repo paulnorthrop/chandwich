@@ -1,5 +1,4 @@
-# Don't need to return par_names and full_par_names?
-# Add par_names to returned fixed_pars and fixed_at?
+# Check that larger is larger than the new model?
 
 # ============================== adjust_loglik  ===============================
 
@@ -39,11 +38,14 @@
 #'   is used in the search for the MLE.
 #'   If \code{init} is not supplied then \code{rep(0.1, p)} is used.
 #' @param par_names A character vector.  Names of the \code{p} parameters
-#'   in the full model.  If \code{par_names} does not have length \code{p}
+#'   in the \strong{full} model.  If \code{par_names} does not have length \code{p}
 #'   then \code{par_names = NULL} will be used.
-#' @param fixed_pars A numeric vector.  Indices of the components of the
-#'   \strong{full} parameter vector that are restricted to be equal to the
-#'   value(s) in \code{fixed_at}.
+#' @param fixed_pars A vector specifying which parameters are to be restricted
+#'   to be equal to the value(s) in \code{fixed_at}.  Can be either a numeric
+#'   vector, specifying indices of the components of the \strong{full} parameter
+#'   vector, or a character vector of parameter names, which must be a subset
+#'   of those supplied in \code{par_names} or stored in the object
+#'   \code{larger}.
 #' @param fixed_at A numeric vector of length 1 or \code{length(fixed_pars)}.
 #'   If \code{length(fixed_at) = 1} then the components \code{fixed_pars}
 #'   of the parameter vector are all fixed at \code{fixed_at}.
@@ -107,9 +109,6 @@
 #'   \item{C_cholesky, C_dilation}{The matrix C in equation (14) of Chandler and
 #'     Bate (2007), calculated using Cholesky decomposition and spectral
 #'     decomposition, respectively.}
-#'   \item{full_par_names, par_names}{The names of the parameters in the full
-#'     and current models, respectively, if these were supplied in
-#'     this call or a previous call.}
 #'   \item{max_loglik}{The common maximised value of the independence and
 #'     adjusted loglikelihoods.}
 #'   \item{loglik, cluster}{The arguments \code{loglik} and \code{cluster}
@@ -117,8 +116,10 @@
 #'   \item{loglik_args}{A list containing the further arguments passed to
 #'     \code{loglik} via ... in this call, or a previous call.}
 #'   If \code{fixed_pars} is not \code{NULL} then there are further attributes
-#'   \item{fixed_pars}{The argument \code{fixed_pars}.}
-#'   \item{fixed_at}{The argument \code{fixed_at}.}
+#'   \item{fixed_pars}{The argument \code{fixed_pars}, with names infered from
+#'     \code{par_names} if this was supplied.}
+#'   \item{fixed_at}{The argument \code{fixed_at}, with names infered from
+#'     \code{par_names} if this was supplied.}
 #'   If \code{alg_deriv} and/or \code{alg_hess} were supplied then these are
 #'   returned as further attributes.
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
@@ -264,28 +265,55 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
     } else {
       init <- rep(0.1, p)
     }
-    if (!is.null(fixed_pars)) {
-      init <- init[-fixed_pars]
-    }
     # Only use par_names if it has length p
     if (!is.null(par_names) & length(par_names) == p) {
       full_par_names <- par_names
     } else {
-#      full_par_names <- par_names <- paste("p", 1:p, sep = "")
       full_par_names <- NULL
     }
     if (!is.null(fixed_pars)) {
+      # If fixed_pars is a character vector then
+      # (a) check that full_par_names is not NULL
+      # (b) check that fixed_pars is a subset of full_par_names
+      # (c) determine the numeric parameter indices of the components of fixed_pars
+      if (is.character(fixed_pars)) {
+        if (is.null(full_par_names)) {
+          stop("fixed_pars can be character only if par_names is supplied")
+        }
+        if (!all(fixed_pars %in% full_par_names)) {
+          stop("fixed_pars is not a subset of the names in par_names")
+        }
+        temp <- fixed_pars
+        fixed_pars <- which(full_par_names %in% fixed_pars)
+        names(fixed_pars) <- temp
+      }
+      init <- init[-fixed_pars]
       par_names <- par_names[-fixed_pars]
     }
   } else {
     if (is.null(fixed_pars)) {
       warning("larger is only relevant if fixed_pars is supplied")
       got_loglik_args <- FALSE
-#      full_par_names <- paste("p", 1:p, sep = "")
       full_par_names <- NULL
     } else {
       if (!inherits(larger, "chandwich")) {
         stop("larger must be a \"chandwich\" object")
+      }
+      full_par_names <- attr(larger, "full_par_names")
+      # If fixed_pars is a character vector then
+      # (a) check that full_par_names is not NULL
+      # (b) check that fixed_pars is a subset of full_par_names
+      # (c) determine the numeric parameter indices of the components of fixed_pars
+      if (is.character(fixed_pars)) {
+        if (is.null(full_par_names)) {
+          stop("fixed_pars can be character only if larger has full_par_names")
+        }
+        if (!all(fixed_pars %in% full_par_names)) {
+          stop("fixed_pars is not a subset of the names in par_names")
+        }
+        temp <- fixed_pars
+        fixed_pars <- which(full_par_names %in% fixed_pars)
+        names(fixed_pars) <- temp
       }
       loglik <- attr(larger, "loglik")
       loglik_args <- attr(larger, "loglik_args")
@@ -297,7 +325,6 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
       } else {
         init <- init[-fixed_pars]
       }
-      full_par_names <- attr(larger, "full_par_names")
       par_names <- attr(larger, "full_par_names")[-fixed_pars]
       alg_deriv <- attr(larger, "alg_deriv")
       alg_hess <- attr(larger, "alg_hess")
@@ -422,7 +449,6 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
   # Note the negation to change from Hessian of negated loglikelihood
   # to Hessian HI of loglikelihood
   mle <- temp$par
-  print(mle)
   if (!is.null(fixed_pars)) {
     res_mle <- numeric(p)
     res_mle[fixed_pars] <- fixed_at
@@ -582,6 +608,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
   if (!is.null(fixed_pars)) {
     names(res_mle) <- full_par_names
     attr(adjust_loglik_fn, "fixed_pars") <- fixed_pars
+    names(fixed_at) <- names(fixed_pars)
     attr(adjust_loglik_fn, "fixed_at") <- fixed_at
     attr(adjust_loglik_fn, "res_MLE") <- res_mle
   } else {
@@ -596,8 +623,6 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
   attr(adjust_loglik_fn, "HA") <- HA
   attr(adjust_loglik_fn, "C_cholesky") <- C_cholesky
   attr(adjust_loglik_fn, "C_dilation") <- C_dilation
-  attr(adjust_loglik_fn, "par_names") <- par_names
-  attr(adjust_loglik_fn, "full_par_names") <- full_par_names
   attr(adjust_loglik_fn, "loglik") <- loglik
   attr(adjust_loglik_fn, "cluster") <- cluster
   attr(adjust_loglik_fn, "max_loglik") <- max_loglik

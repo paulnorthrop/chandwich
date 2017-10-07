@@ -40,12 +40,15 @@ is used in the search for the MLE.
 If \code{init} is not supplied then \code{rep(0.1, p)} is used.}
 
 \item{par_names}{A character vector.  Names of the \code{p} parameters
-in the full model.  If \code{par_names} does not have length \code{p}
+in the \strong{full} model.  If \code{par_names} does not have length \code{p}
 then \code{par_names = NULL} will be used.}
 
-\item{fixed_pars}{A numeric vector.  Indices of the components of the
-\strong{full} parameter vector that are restricted to be equal to the
-value(s) in \code{fixed_at}.}
+\item{fixed_pars}{A vector specifying which parameters are to be restricted
+to be equal to the value(s) in \code{fixed_at}.  Can be either a numeric
+vector, specifying indices of the components of the \strong{full} parameter
+vector, or a character vector of parameter names, which must be a subset
+of those supplied in \code{par_names} or stored in the object
+\code{larger}.}
 
 \item{fixed_at}{A numeric vector of length 1 or \code{length(fixed_pars)}.
 If \code{length(fixed_at) = 1} then the components \code{fixed_pars}
@@ -104,9 +107,6 @@ A function of class \code{"chandwich"} to evaluate an adjusted
   \item{C_cholesky, C_dilation}{The matrix C in equation (14) of Chandler and
     Bate (2007), calculated using Cholesky decomposition and spectral
     decomposition, respectively.}
-  \item{full_par_names, par_names}{The names of the parameters in the full
-    and current models, respectively, if these were supplied in
-    this call or a previous call.}
   \item{max_loglik}{The common maximised value of the independence and
     adjusted loglikelihoods.}
   \item{loglik, cluster}{The arguments \code{loglik} and \code{cluster}
@@ -114,8 +114,10 @@ A function of class \code{"chandwich"} to evaluate an adjusted
   \item{loglik_args}{A list containing the further arguments passed to
     \code{loglik} via ... in this call, or a previous call.}
   If \code{fixed_pars} is not \code{NULL} then there are further attributes
-  \item{fixed_pars}{The argument \code{fixed_pars}.}
-  \item{fixed_at}{The argument \code{fixed_at}.}
+  \item{fixed_pars}{The argument \code{fixed_pars}, with names infered from
+    \code{par_names} if this was supplied.}
+  \item{fixed_at}{The argument \code{fixed_at}, with names infered from
+    \code{par_names} if this was supplied.}
   If \code{alg_deriv} and/or \code{alg_hess} were supplied then these are
   returned as further attributes.
 }
