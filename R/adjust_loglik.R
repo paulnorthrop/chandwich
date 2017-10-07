@@ -301,6 +301,9 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
         stop("larger must be a \"chandwich\" object")
       }
       full_par_names <- attr(larger, "full_par_names")
+      if (!is.null(full_par_names)) {
+        names(fixed_pars) <- full_par_names[fixed_pars]
+      }
       # If fixed_pars is a character vector then
       # (a) check that full_par_names is not NULL
       # (b) check that fixed_pars is a subset of full_par_names
