@@ -176,7 +176,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     if (!is.null(attr(larger, "fixed_pars"))) {
       pars <- pars[-attr(larger, "fixed_pars")]
     }
-    max_loglik_smaller <- sum(do.call(larger, list(pars, type = type)))
+    max_loglik_smaller <- do.call(larger, list(pars, type = type))
     if (approx) {
       HA <- attr(larger, "HA")
       R <- solve(-HA)
@@ -226,14 +226,15 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   }
   fixed_at <- rep_len(fixed_at, qq)
   free_pars <- (1:p)[-fixed_pars]
+  p_s <- length(free_pars)
   #
   # Extract arguments to be passed to optim()
   optim_args <- list(...)
-  # Use "BFGS", unless the user has chosen the method or if p = 1 and they
-  # have (inappropriately) chosen "Nelder-Mead" when p = 1
+  # Use "BFGS", unless the user has chosen the method or if p_s = 1 and they
+  # have (inappropriately) chosen "Nelder-Mead" when p_s = 1
   if (is.null(optim_args$method)) {
     optim_args$method <- "BFGS"
-  } else if (p == 1 & optim_args$method == "Nelder-Mead") {
+  } else if (p_s == 1 & optim_args$method == "Nelder-Mead") {
     optim_args$method <- "BFGS"
   }
   # If approx = TRUE then we maximise the independence loglikelihood
@@ -250,7 +251,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
       pars <- pars[-attr(larger, "fixed_pars")]
     }
     loglik_vals <- do.call(larger, list(pars, type = type))
-    return(-sum(loglik_vals))
+    return(-loglik_vals)
   }
   # L-BFGS-B and Brent don't like Inf or NA or NaN
   if (optim_args$method == "L-BFGS-B" || optim_args$method == "Brent") {
@@ -263,7 +264,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
         pars <- pars[-attr(larger, "fixed_pars")]
       }
       loglik_vals <- do.call(larger, list(pars, type = type))
-      check <- -sum(loglik_vals)
+      check <- -loglik_vals
       if (!is.finite(check)) {
         check <- big_finite_val
       }
@@ -271,7 +272,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     }
   }
   # Initial estimate: the MLE with fixed_pars set at the values in fixed_at
-  if (is.null(init) || length(init) != p) {
+  if (is.null(init) || length(init) != p_s) {
     init <- attr(larger, "MLE")[-fixed_pars]
   }
   for_optim <- c(list(par = init, fn = neg_adj_loglik), optim_args)
