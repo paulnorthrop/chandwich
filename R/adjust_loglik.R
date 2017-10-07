@@ -111,6 +111,9 @@
 #'   \item{C_cholesky, C_dilation}{The matrix C in equation (14) of Chandler and
 #'     Bate (2007), calculated using Cholesky decomposition and spectral
 #'     decomposition, respectively.}
+#'   \item{full_par_names, par_names}{The names of the parameters in the full
+#'     and current models, respectively, if these were supplied in
+#'     this call or a previous call.}
 #'   \item{max_loglik}{The common maximised value of the independence and
 #'     adjusted loglikelihoods.}
 #'   \item{loglik, cluster}{The arguments \code{loglik} and \code{cluster}
@@ -628,6 +631,8 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
   attr(adjust_loglik_fn, "HA") <- HA
   attr(adjust_loglik_fn, "C_cholesky") <- C_cholesky
   attr(adjust_loglik_fn, "C_dilation") <- C_dilation
+  attr(adjust_loglik_fn, "par_names") <- par_names
+  attr(adjust_loglik_fn, "full_par_names") <- full_par_names
   attr(adjust_loglik_fn, "loglik") <- loglik
   attr(adjust_loglik_fn, "cluster") <- cluster
   attr(adjust_loglik_fn, "max_loglik") <- max_loglik
