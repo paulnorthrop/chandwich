@@ -209,7 +209,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
       }
       full_par_names <- attr(larger, "full_par_names")
       if (!all(fixed_pars %in% full_par_names)) {
-        stop("fixed_pars is not a subset of the names in par_names")
+        stop("fixed_pars is not a subset of ", deparse(full_par_names))
       }
       temp <- fixed_pars
       fixed_pars <- which(full_par_names %in% fixed_pars)

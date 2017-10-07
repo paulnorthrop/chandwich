@@ -284,7 +284,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
           stop("fixed_pars can be character only if par_names is supplied")
         }
         if (!all(fixed_pars %in% full_par_names)) {
-          stop("fixed_pars is not a subset of the names in par_names")
+          stop("fixed_pars is not a subset of ", deparse(full_par_names))
         }
         temp <- fixed_pars
         fixed_pars <- which(full_par_names %in% fixed_pars)
@@ -313,7 +313,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
           stop("fixed_pars can be character only if larger has full_par_names")
         }
         if (!all(fixed_pars %in% full_par_names)) {
-          stop("fixed_pars is not a subset of the names in par_names")
+          stop("fixed_pars is not a subset of ", deparse(full_par_names))
         }
         temp <- fixed_pars
         fixed_pars <- which(full_par_names %in% fixed_pars)
