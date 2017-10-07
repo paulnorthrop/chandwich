@@ -1,5 +1,3 @@
-# Check that larger is larger than the new model?  -> warning or error?
-
 # ============================== adjust_loglik  ===============================
 
 #' Loglikelihood adjustment using the sandwich estimator
@@ -317,6 +315,10 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
         temp <- fixed_pars
         fixed_pars <- which(full_par_names %in% fixed_pars)
         names(fixed_pars) <- temp
+      }
+      if (!all(attr(larger, "fixed_pars") %in% fixed_pars)) {
+        warning("Model not nested in larger but the results may still be OK",
+                immediate. = TRUE)
       }
       loglik <- attr(larger, "loglik")
       loglik_args <- attr(larger, "loglik_args")
