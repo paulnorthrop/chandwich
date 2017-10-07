@@ -572,7 +572,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
     }
     if (type == "vertical") {
       fn <- function(x) {
-        if (identical(x, mle)) {
+        if (isTRUE(all.equal(x, mle, check.attributes = FALSE))) {
           return(max_loglik)
         }
         loglik_vals <- do.call(ret_loglik, list(x))
@@ -585,7 +585,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
       return(apply(x, 1, fn))
     } else if (type %in% c("cholesky", "dilation")) {
       fn <- function(x) {
-        if (identical(x, mle)) {
+        if (isTRUE(all.equal(x, mle, check.attributes = FALSE))) {
           return(max_loglik)
         }
         if (type == "cholesky") {
@@ -600,7 +600,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
       return(apply(x, 1, fn))
     } else {
       fn <- function(x) {
-        if (identical(x, mle)) {
+        if (isTRUE(all.equal(x, mle, check.attributes = FALSE))) {
           return(max_loglik)
         }
         loglik_vals <- do.call(ret_loglik, list(x))
