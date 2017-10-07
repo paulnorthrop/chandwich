@@ -98,12 +98,11 @@ A function of class \code{"chandwich"} to evaluate an adjusted
   The function has (additional) attributes
   \item{p_full, p_current}{The number of parameters in the full model and
     current models, respectively.}
-  \item{MLE}{The maximum likelihood estimate. A numeric vector, with names
-    infered from \code{par_names} if this was supplied.}
-  \item{res_MLE}{The maximum likelihood estimate, including any parameters
-    with fixed values. A numeric vector, with names infered from
-    \code{par_names} if this was supplied. Equal to MLE if \code{fixed_pars}
-    is \code{NULL}.}
+  \item{MLE, res_MLE}{Numeric vectors, with names infered from
+    \code{par_names} if this was supplied.  Maximum likelihood estimates
+    of free parameters under the current model (\code{mle}) and all
+    parameters in the full model, including any parameters with fixed
+    values (\code{res_MLE}).}
   \item{SE, adjSE}{The unadjusted and adjusted standard errors, respectively.}
   \item{HI, HA}{The Hessians of the independence and adjusted loglikelihood,
     respectively.}
