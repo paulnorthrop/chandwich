@@ -1,4 +1,4 @@
-# Check that larger is larger than the new model?
+# Check that larger is larger than the new model?  -> warning or error?
 
 # ============================== adjust_loglik  ===============================
 
@@ -51,7 +51,10 @@
 #'   of the parameter vector are all fixed at \code{fixed_at}.
 #'   If \code{length(fixed_at) = length(fixed_pars)} then the component
 #'   \code{fixed_pars[i]} is fixed at \code{fixed_at[i]} for each \code{i}.
-#' @param larger (Only relevant if \code{fixed_pars} is not \code{NULL}.)
+#' @param larger Only relevant if \code{fixed_pars} is not \code{NULL}.
+#'   If \code{larger} is supplied but \code{fixed_pars} is not then an error
+#'   will result.
+#'
 #'   An object of class \code{"chandwich"} returned by \code{adjust_loglik},
 #'   corresponding to a model in which the smaller model implied by
 #'   \code{fixed_pars} is nested.  If \code{larger} is supplied then
@@ -292,9 +295,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
     }
   } else {
     if (is.null(fixed_pars)) {
-      warning("larger is only relevant if fixed_pars is supplied")
-      got_loglik_args <- FALSE
-      full_par_names <- NULL
+      stop("If larger is supplied then fixed_pars must also be supplied")
     } else {
       if (!inherits(larger, "chandwich")) {
         stop("larger must be a \"chandwich\" object")
@@ -357,7 +358,6 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
     }
     fixed_at <- rep_len(fixed_at, qq)
     free_pars <- (1:p)[-fixed_pars]
-#    par_names <- par_names[free_pars]
     # Check that all the contributions to the loglikelihood are finite at init
     pars <- numeric(p)
     pars[fixed_pars] <- fixed_at

@@ -56,16 +56,19 @@ of the parameter vector are all fixed at \code{fixed_at}.
 If \code{length(fixed_at) = length(fixed_pars)} then the component
 \code{fixed_pars[i]} is fixed at \code{fixed_at[i]} for each \code{i}.}
 
-\item{larger}{(Only relevant if \code{fixed_pars} is not \code{NULL}.)
-An object of class \code{"chandwich"} returned by \code{adjust_loglik},
-corresponding to a model in which the smaller model implied by
-\code{fixed_pars} is nested.  If \code{larger} is supplied then
-all the arguments to \code{adjust_loglik} apart from
-\code{fixed_pars} and \code{fixed_at} are extracted from \code{larger}.
-If \code{init} is not supplied in the current call to
-\code{adjust_loglik} then \code{init} is set to
-\code{attr(larger, "MLE")}, with the elements in \code{fixed_pars}
-set to \code{fixed_at}.}
+\item{larger}{Only relevant if \code{fixed_pars} is not \code{NULL}.
+  If \code{larger} is supplied but \code{fixed_pars} is not then an error
+  will result.
+
+  An object of class \code{"chandwich"} returned by \code{adjust_loglik},
+  corresponding to a model in which the smaller model implied by
+  \code{fixed_pars} is nested.  If \code{larger} is supplied then
+  all the arguments to \code{adjust_loglik} apart from
+  \code{fixed_pars} and \code{fixed_at} are extracted from \code{larger}.
+  If \code{init} is not supplied in the current call to
+  \code{adjust_loglik} then \code{init} is set to
+  \code{attr(larger, "MLE")}, with the elements in \code{fixed_pars}
+  set to \code{fixed_at}.}
 
 \item{alg_deriv}{A function with the vector of model parameter(s) as its
 first argument.  Returns a \code{length(cluster)} by \code{p} numeric
