@@ -69,11 +69,15 @@ Compares nested models using the adjusted likelihood ratio statistic (ALRS)
 described in Section 3.5 of
 \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
 The nesting must result from the simple constraint that a subset of the
-parameters of the larger model held fixed.
+parameters of the larger model is held fixed.
 }
 \details{
-For full details see Section 3.5 of
-\href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
+The smaller of the two models is specified either by supplying
+  \code{smaller} or \code{fixed_pars}.  If both are supplied then
+  \code{smaller} takes precedence.
+
+  For full details see Section 3.5 of
+  \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
   if \code{approx = FALSE} then the a likelihood ratio test of the null
   hypothesis that the smaller model is a valid simplication of the larger
   model is carried out directly using equation (17) of Chandler and Bate
@@ -119,14 +123,14 @@ round(attr(large, "adjSE"), 4)
 # Perform the log-likelihood adjustment of some smaller models ------
 
 # Fix xi1 = 0
-medium <- adjust_loglik(larger = large, fixed_pars = 6)
+medium <- adjust_loglik(larger = large, fixed_pars = "xi1")
 # Fix sigma1 = xi1 = 0
-small <- adjust_loglik(larger = medium, fixed_pars = c(4, 6))
+small <- adjust_loglik(larger = medium, fixed_pars = c("sigma1", "xi1"))
 
 # Perform tests ------
 
 # Test xi1 = 0 (2 equivalent ways)
-compare_models(large, fixed_pars = 6)$p_value
+compare_models(large, fixed_pars = "xi1")$p_value
 compare_models(large, medium)$p_value
 # Horizontal adjustments
 compare_models(large, medium, type = "cholesky")$p_value

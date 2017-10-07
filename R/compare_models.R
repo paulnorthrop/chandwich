@@ -6,7 +6,7 @@
 #' described in Section 3.5 of
 #' \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
 #' The nesting must result from the simple constraint that a subset of the
-#' parameters of the larger model held fixed.
+#' parameters of the larger model is held fixed.
 #'
 #' @param larger An object of class \code{"chandwich"} returned by
 #'   \code{adjust_loglik}.  The larger of the two models.
@@ -43,8 +43,12 @@
 #' @param ... Further arguments to be passed to \code{\link[stats]{optim}}.
 #'   These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
 #'   or \code{control}.
-#' @details For full details see Section 3.5 of
-#' \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
+#' @details The smaller of the two models is specified either by supplying
+#'   \code{smaller} or \code{fixed_pars}.  If both are supplied then
+#'   \code{smaller} takes precedence.
+#'
+#'   For full details see Section 3.5 of
+#'   \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
 #'   if \code{approx = FALSE} then the a likelihood ratio test of the null
 #'   hypothesis that the smaller model is a valid simplication of the larger
 #'   model is carried out directly using equation (17) of Chandler and Bate
@@ -108,14 +112,14 @@
 #' # Perform the log-likelihood adjustment of some smaller models ------
 #'
 #' # Fix xi1 = 0
-#' medium <- adjust_loglik(larger = large, fixed_pars = 6)
+#' medium <- adjust_loglik(larger = large, fixed_pars = "xi1")
 #' # Fix sigma1 = xi1 = 0
-#' small <- adjust_loglik(larger = medium, fixed_pars = c(4, 6))
+#' small <- adjust_loglik(larger = medium, fixed_pars = c("sigma1", "xi1"))
 #'
 #' # Perform tests ------
 #'
 #' # Test xi1 = 0 (2 equivalent ways)
-#' compare_models(large, fixed_pars = 6)$p_value
+#' compare_models(large, fixed_pars = "xi1")$p_value
 #' compare_models(large, medium)$p_value
 #' # Horizontal adjustments
 #' compare_models(large, medium, type = "cholesky")$p_value
@@ -194,6 +198,23 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   }
   if (is.null(fixed_pars)) {
     stop("'fixed_pars' must be supplied")
+  } else {
+    # If fixed_pars is a character vector then
+    # (a) check that full_par_names is not NULL
+    # (b) check that fixed_pars is a subset of full_par_names
+    # (c) determine the parameter indices of the components of fixed_pars
+    if (is.character(fixed_pars)) {
+      if (is.null(attr(larger, "full_par_names"))) {
+        stop("fixed_pars can be character only if par_names is supplied")
+      }
+      full_par_names <- attr(larger, "full_par_names")
+      if (!all(fixed_pars %in% full_par_names)) {
+        stop("fixed_pars is not a subset of the names in par_names")
+      }
+      temp <- fixed_pars
+      fixed_pars <- which(full_par_names %in% fixed_pars)
+      names(fixed_pars) <- temp
+    }
   }
   # The number of parameters that are fixed
   qq <- length(fixed_pars)
