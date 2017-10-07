@@ -250,16 +250,16 @@ round(attr(large, "adjSE"), 4)
 
 # Perform the log-likelihood adjustment of some smaller models ------
 
-# One way to fix parameters
+# Starting from larger model
 medium <- adjust_loglik(larger = large, fixed_pars = 6)
-small1 <- adjust_loglik(larger = large, fixed_pars = c(4, 6))
-# or
-small2 <- adjust_loglik(larger = medium, fixed_pars = c(4, 6))
+medium <- adjust_loglik(larger = large, fixed_pars = "xi1")
+small1 <- adjust_loglik(larger = large, fixed_pars = c("sigma1", "xi1"))
+small2 <- adjust_loglik(larger = medium, fixed_pars = c("sigma1", "xi1"))
 
-# (Slightly) harder way
-medium <- adjust_loglik(gev_loglik, data = owtemps, init = init, fixed_pars = 6,
-          par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
-small <- adjust_loglik(gev_loglik, data = owtemps, init = init, fixed_pars = c(4,6),
+# Starting from scratch
+medium <- adjust_loglik(gev_loglik, data = owtemps, init = init, fixed_pars = 6)
+small <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+         fixed_pars = c("sigma1", "xi1"),
          par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 }
 \references{
