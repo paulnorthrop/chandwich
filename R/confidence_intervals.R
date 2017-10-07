@@ -34,7 +34,7 @@
 #' @return A numeric vector of length 1.  The value of the profile
 #'   loglikelihood.
 #' @examples
-#' profile_loglik(large, prof_pars = "xi1")
+#' profile_loglik(large, prof_pars = "xi1", prof_vals = -0.1)
 profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
                            init = NULL, type = c("vertical", "cholesky",
                                                  "dilation", "none"), ...) {
