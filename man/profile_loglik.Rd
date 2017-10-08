@@ -21,7 +21,7 @@ profile_loglik(object, prof_pars = NULL, prof_vals = NULL, init = NULL,
   \code{prof_pars} must not have any parameters in common with
   \code{attr(object, "fixed_pars")}.  \code{prof_pars} must not contain
   all of the unfixed parameters, i.e. there is no point in profiling over
-  all the unfixed parameters.}
+  all of the unfixed parameters.}
 
 \item{prof_vals}{A numeric vector.  Values of the parameters in
 \code{prof_pars}.  If \code{prof_vals = NULL} then the MLEs stored
@@ -43,7 +43,10 @@ or \code{control}.}
 }
 \value{
 A numeric vector of length 1.  The value of the profile
-  loglikelihood.
+  loglikelihood.  The returned object has the attribute \code{"free_pars"}
+  giving the optimal values of the parameters that remain after the
+  parameters \code{prof_pars} and \code{attr(object, "fixed_pars")} have
+  been removed from the full parameter vector.
 }
 \description{
 Calculates the profile loglikelihood for a subset of the model parameters.
@@ -72,6 +75,8 @@ init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 
 large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
         par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
-
 profile_loglik(large, prof_pars = "xi1", prof_vals = -0.1)
+
+medium <- adjust_loglik(larger = large, fixed_pars = "xi1")
+profile_loglik(medium, prof_pars = "xi0", prof_vals = -0.1)
 }
