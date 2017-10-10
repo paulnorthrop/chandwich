@@ -38,10 +38,11 @@ rat_res <- adjust_loglik(loglik = binom_loglik, data = rats)
 
 ### Installation
 
-To get the current released version from CRAN:
+To install this development version from Github use:
 
 ```{r installation, eval = FALSE}
-install.packages("chandwich")
+install.packages("devtools")
+devtools::install_github("paulnorthrop/chandwich")
 ```
 
 ### Vignette
