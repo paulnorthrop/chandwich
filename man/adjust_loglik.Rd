@@ -90,7 +90,8 @@ A function of class \code{"chandwich"} to evaluate an adjusted
     If \code{p = 1} this may be a numeric vector or a matrix with 1 column.
     If \code{p > 1} this may be a numeric vector of length \code{p}
     (one set of model parameters) or a numeric matrix with \code{p}
-    columns (\code{ncol(x)} sets of model parameters).}
+    columns (\code{nrow(x)} sets of model parameters), one set in each row
+    of \code{x}.}
   \item{type}{A character scalar.  The type of adjustment to use.
     One of \code{"vertical"}, \code{"cholesky"}, \code{"dilation"} or
     \code{"none"}.}  The latter results in the evaluation of the
