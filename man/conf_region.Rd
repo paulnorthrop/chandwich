@@ -2,7 +2,7 @@
 % Please edit documentation in R/confidence_intervals.R
 \name{conf_region}
 \alias{conf_region}
-\title{Confidence regions}
+\title{Two-dimensional confidence regions}
 \usage{
 conf_region(object, which_pars = NULL, lower = NULL, upper = NULL,
   init = NULL, conf = 95, mult = 2, num = c(10, 10),

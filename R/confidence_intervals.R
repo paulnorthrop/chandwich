@@ -1,6 +1,6 @@
 # ============================== conf_region ===============================
 
-#' Confidence regions
+#' Two-dimensional confidence regions
 #'
 #' Calculates the (profile, if necessary) loglikelihood for a pair of
 #' parameters from which confidence regions can be plotted using
