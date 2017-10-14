@@ -4,9 +4,9 @@
 \alias{conf_region}
 \title{Two-dimensional confidence regions}
 \usage{
-conf_region(object, which_pars = NULL, lower = NULL, upper = NULL,
-  init = NULL, conf = 95, mult = 2, num = c(10, 10),
-  type = c("vertical", "cholesky", "dilation", "none"), ...)
+conf_region(object, which_pars = NULL, range1 = c(NA, NA), range2 = c(NA,
+  NA), conf = 95, mult = 2, num = c(10, 10), type = c("vertical",
+  "cholesky", "dilation", "none"), ...)
 }
 \arguments{
 \item{object}{An object of class \code{"chandwich"} returned by
@@ -25,9 +25,11 @@ conf_region(object, which_pars = NULL, lower = NULL, upper = NULL,
   all of the unfixed parameters, i.e. there is no point in profiling over
   all the unfixed parameters.}
 
-\item{lower, upper}{Numeric vectors of length 2.  For i = 1, 2:
-(\code{lower[i], \code{upper[i]}}) specifies the range of values of
-parameter i over which the (profile) loglikelihood is evaluated.}
+\item{range1, range2}{Numeric vectors of length 2.  Respective ranges (of
+the form \code{lower, upper}) of values of \code{which_pars[1]} and
+\code{which_pars[2]} over which to profile.
+Missing values in \code{range1} and/or \code{range2} are
+filled in using \code{conf} and \code{mult}.  See below for details.}
 
 \item{conf}{A numeric scalar. The highest confidence level of interest.
 This is only relevant if \code{lower} and \code{upper} are not supplied.
@@ -52,7 +54,14 @@ made to the independence loglikelihood function.}
 
 \item{...}{Further arguments to be passed to \code{\link[stats]{optim}}.
 These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
-or \code{control}.}
+or \code{control}.  Any arguments that are not appropriate for
+\code{\link[stats]{optim}}, i.e. not in
+\code{methods::formalArgs(stats::optim)},
+will be removed without warning.}
+
+\item{lower, upper}{Numeric vectors of length 2.  For i = 1, 2:
+(\code{lower[i], \code{upper[i]}}) specifies the range of values of
+parameter i over which the (profile) loglikelihood is evaluated.}
 }
 \value{
 A list with components
@@ -107,19 +116,19 @@ large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
         par_names = par_names)
 
 \dontrun{
-# Plots akin to those in Figure 4 of CHandler and Bate (2007)
+# Plots akin to those in Figure 4 of Chandler and Bate (2007)
 
 which_pars <- c("mu[0]", "mu[1]")
 reg_1 <- conf_region(large, which_pars = which_pars)
 reg_none_1 <- conf_region(large, which_pars = which_pars, type = "none")
 plot(reg_1, reg_none_1)
 
-which_pars <- c("sigma0", "sigma1")
+which_pars <- c("sigma[0]", "sigma[1]")
 reg_2 <- conf_region(large, which_pars = which_pars)
 reg_none_2 <- conf_region(large, which_pars = which_pars, type = "none")
 plot(reg_2, reg_none_2)
 
-which_pars <- c("sigma0", "xi0")
+which_pars <- c("sigma[0]", "xi[0]")
 reg_3 <- conf_region(large, which_pars = which_pars)
 reg_none_3 <- conf_region(large, which_pars = which_pars, type = "none")
 plot(reg_3, reg_none_3)

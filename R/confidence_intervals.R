@@ -20,6 +20,11 @@
 #'   \code{attr(object, "fixed_pars")}.  \code{which_pars} must not contain
 #'   all of the unfixed parameters, i.e. there is no point in profiling over
 #'   all the unfixed parameters.
+#' @param range1,range2 Numeric vectors of length 2.  Respective ranges (of
+#'   the form \code{lower, upper}) of values of \code{which_pars[1]} and
+#'   \code{which_pars[2]} over which to profile.
+#'   Missing values in \code{range1} and/or \code{range2} are
+#'   filled in using \code{conf} and \code{mult}.  See below for details.
 #' @param lower,upper Numeric vectors of length 2.  For i = 1, 2:
 #'   (\code{lower[i], \code{upper[i]}}) specifies the range of values of
 #'   parameter i over which the (profile) loglikelihood is evaluated.
@@ -42,7 +47,10 @@
 #'   made to the independence loglikelihood function.
 #' @param ... Further arguments to be passed to \code{\link[stats]{optim}}.
 #'   These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
-#'   or \code{control}.
+#'   or \code{control}.  Any arguments that are not appropriate for
+#'   \code{\link[stats]{optim}}, i.e. not in
+#'   \code{methods::formalArgs(stats::optim)},
+#'   will be removed without warning.
 #' @return A list with components
 #'   \itemize{
 #'     \item{\strong{grid1, grid2}: }{Numeric vector.   Respective values of
@@ -89,28 +97,33 @@
 #'         par_names = par_names)
 #'
 #' \dontrun{
-#' # Plots akin to those in Figure 4 of CHandler and Bate (2007)
+#' # Plots akin to those in Figure 4 of Chandler and Bate (2007)
 #'
 #' which_pars <- c("mu[0]", "mu[1]")
 #' reg_1 <- conf_region(large, which_pars = which_pars)
 #' reg_none_1 <- conf_region(large, which_pars = which_pars, type = "none")
 #' plot(reg_1, reg_none_1)
 #'
-#' which_pars <- c("sigma0", "sigma1")
+#' which_pars <- c("sigma[0]", "sigma[1]")
 #' reg_2 <- conf_region(large, which_pars = which_pars)
 #' reg_none_2 <- conf_region(large, which_pars = which_pars, type = "none")
 #' plot(reg_2, reg_none_2)
 #'
-#' which_pars <- c("sigma0", "xi0")
+#' which_pars <- c("sigma[0]", "xi[0]")
 #' reg_3 <- conf_region(large, which_pars = which_pars)
 #' reg_none_3 <- conf_region(large, which_pars = which_pars, type = "none")
 #' plot(reg_3, reg_none_3)
 #' }
-conf_region <- function(object, which_pars = NULL, lower = NULL, upper = NULL,
-                        init = NULL, conf = 95, mult = 2, num = c(10, 10),
+conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
+                        range2 = c(NA, NA), conf = 95, mult = 2, num = c(10, 10),
                         type = c("vertical", "cholesky", "dilation", "none"),
                         ...) {
   type <- match.arg(type)
+  # Check that arguments supplied in ... can be passed to stats::optim()
+  optim_args <- list(...)
+  optim_names <- names(optim_args)
+  OK <- optim_names %in% methods::formalArgs(stats::optim)
+  optim_args <- optim_args[OK]
   # Adjust conf to make it more applicable to the marginal intervals used to
   # set the default grid on which the profile loglikelihood is calculated
   conf_for_search <- sqrt(conf) * 10
@@ -118,6 +131,18 @@ conf_region <- function(object, which_pars = NULL, lower = NULL, upper = NULL,
   n_which_pars <- length(which_pars)
   if (n_which_pars != 2) {
     stop("which_pars must be a vector of length 2")
+  }
+  if (length(range1) != 2) {
+    stop("range1 must be a vector of length 2")
+  }
+  if (length(range2) != 2) {
+    stop("range2 must be a vector of length 2")
+  }
+  if (all(!is.na(range1))) {
+    range1 <- sort(range1)
+  }
+  if (all(!is.na(range2))) {
+    range2 <- sort(range2)
   }
   n_mult <- length(mult)
   if (n_mult != 1 & n_mult != n_which_pars) {
@@ -165,24 +190,27 @@ conf_region <- function(object, which_pars = NULL, lower = NULL, upper = NULL,
   res_adjSE[free_pars] <- attr(object, "adjSE")
   z_val <- qnorm(1 - (1 - conf_for_search / 100) / 2)
   which_mle <- res_mle[which_pars]
+  #
+  lower <- c(range1[1], range2[1])
+  upper <- c(range1[2], range2[2])
   if (type == "none") {
-    sym_lower <- which_mle - z_val * res_SE[which_pars]
-    sym_upper <- which_mle + z_val * res_SE[which_pars]
-    if (is.null(lower)) {
-      lower <- which_mle - mult * z_val * res_SE[which_pars]
-    }
-    if (is.null(upper)) {
-      upper <- which_mle + mult * z_val * res_SE[which_pars]
-    }
+    the_SEs <- res_SE[which_pars]
   } else {
-    sym_lower <- which_mle - z_val * res_adjSE[which_pars]
-    sym_upper <- which_mle + z_val * res_adjSE[which_pars]
-    if (is.null(lower)) {
-      lower <- which_mle - mult * z_val * res_adjSE[which_pars]
-    }
-    if (is.null(upper)) {
-      upper <- which_mle + mult * z_val * res_adjSE[which_pars]
-    }
+    the_SEs <- res_adjSE[which_pars]
+  }
+  sym_lower <- which_mle - z_val * the_SEs
+  sym_upper <- which_mle + z_val * the_SEs
+  if (!is.finite(lower[1])) {
+    lower[1] <- which_mle[1] - mult[1] * z_val * the_SEs[1]
+  }
+  if (!is.finite(upper[1])) {
+    upper[1] <- which_mle[1] + mult[1] * z_val * the_SEs[1]
+  }
+  if (!is.finite(lower[2])) {
+    lower[2] <- which_mle[2] - mult[2] * z_val * the_SEs[2]
+  }
+  if (!is.finite(upper[2])) {
+    upper[2] <- which_mle[2] + mult[2] * z_val * the_SEs[2]
   }
   sym_CI <- cbind(sym_lower, sym_upper)
   colnames(sym_CI) <- c("lower", "upper")
@@ -227,9 +255,13 @@ conf_region <- function(object, which_pars = NULL, lower = NULL, upper = NULL,
         theta <- theta_start
       }
       prof_vals <- c(grid1[i], grid2[j])
-      zz <- try(profile_loglik(object, prof_pars = which_pars,
-                               prof_vals = prof_vals, init = theta,
-                               type = type, ...), silent = TRUE)
+      prof_args <- c(list(object = object, prof_pars = which_pars,
+                          prof_vals = prof_vals, init = theta, type = type),
+                     optim_args)
+      zz <- try(do.call(profile_loglik, prof_args), silent = TRUE)
+#      zz <- try(profile_loglik(object, prof_pars = which_pars,
+#                               prof_vals = prof_vals, init = theta,
+#                               type = type, ...), silent = TRUE)
       if (class(zz) == "try-error") {
         z[i, j] <- NA
       } else {
