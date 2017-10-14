@@ -184,7 +184,9 @@ plot.confint <- function(x, y, ..., add_lines = TRUE) {
 #' @return Nothing is returned.
 #' @export
 plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
-                         legend = FALSE, legend_pos = "topleft", ...) {
+                         legend = any(c(!is.null(y), !is.null(y2),
+                                        !is.null(y3))),
+                         legend_pos = "topleft", ...) {
   if (!inherits(x, "confreg")) {
     stop("use only with \"confreg\" objects")
   }
