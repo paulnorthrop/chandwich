@@ -11,8 +11,9 @@
 
 #' Confidence regions
 #'
-#' Plots a confidence region for pairs of parameters, by profiling
-#' the loglikelihood if necessary
+#' Calculates the (profile, if necessary) loglikelihood for a pair of
+#' parameters from which confidence regions can be plotted using
+#' \code{\link{plot.confreg}}.
 #'
 #' @param object An object of class \code{"chandwich"} returned by
 #'   \code{adjust_loglik}.

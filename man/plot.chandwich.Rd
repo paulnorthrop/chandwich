@@ -26,8 +26,7 @@ adjustment; \code{2} for \code{"cholesky"} (horizontal adjustment);
 for no adjustment, i.e. based on the independence loglikelihood.}
 }
 \value{
-A list containing the graphical parameters using in producing the
-  plot including any arguments supplied via ... is returned (invisibly).
+Nothing is returned.
 }
 \description{
 \code{plot} method for class "chandwich".

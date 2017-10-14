@@ -14,6 +14,9 @@
 
 \item{...}{Additional arguments passed on to ...}
 }
+\value{
+Nothing is returned.
+}
 \description{
 \code{plot} method for class "confint".
 }
