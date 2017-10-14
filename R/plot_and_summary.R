@@ -232,7 +232,7 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   }
   legend_args$lty <- my_lty
   if (is.null(user_args$lwd)) {
-    my_lwd <- 1:4
+    my_lwd <- rep(1, 4)
   } else {
     my_lwd <- rep(user_args$lwd, 4)
   }
