@@ -82,7 +82,6 @@
 #' \dontrun{
 #' # Plots akin to those in Figure 4 of CHandler and Bate (2007)
 #'
-#' par(mfrow = c(1, 3))
 #' which_pars <- c("mu0", "mu1")
 #' reg_1 <- conf_region(large, which_pars = which_pars)
 #' reg_none_1 <- conf_region(large, which_pars = which_pars, type = "none")

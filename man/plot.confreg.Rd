@@ -5,16 +5,39 @@
 \title{Plot diagnostics a confreg object}
 \usage{
 \method{plot}{confreg}(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
-  ...)
+  legend = FALSE, legend_pos = "topleft", ...)
 }
 \arguments{
-\item{x}{an object of class "confreg", a result of a call to
+\item{x, y, y2, y3}{objects of class "confreg", a result of a call to
 \code{\link{conf_region}}.}
 
-\item{y}{Not used.}
+\item{conf}{A numeric vector of confidence levels, i.e. numbers in
+(0, 100).  A confidence region contour is plotted for each value in
+\code{conf}.}
 
-\item{...}{Additional arguments passed to \code{\link[graphics]{contour}}.}
+\item{legend}{A logical scalar or a character vector.  If this is
+supplied then a legend is added to the plot.  If \code{legend} is a
+character vector then it is used as the argument \code{legend}
+to \code{\link[graphics]{legend}}.  Otherwise, i.e. if
+\code{legend = TRUE} then the component \code{type} of the input
+object(s) \code{x, y, y2, y3} are used.}
+
+\item{legend_pos}{The position of the legend (if required) specified using
+the argument \code{x} in \code{\link[graphics]{legend}}.}
+
+\item{...}{Additional arguments passed to \code{\link[graphics]{contour}}
+or \code{\link[graphics]{legend}}.  The arguments \code{col}, \code{lty}
+and \code{lwd} will (in a consistent way) by both
+\code{\link[graphics]{contour}} and \code{\link[graphics]{legend}}.}
+}
+\value{
+Nothing is returned.
 }
 \description{
 \code{plot} method for class "confreg".
+Plots confidence regions for pairs of parameters using the profile
+loglikelihood values calculated by \code{\link{conf_region}}.
+Up to 4 different types of loglikelihood (see the argument \code{type}
+to the function returned by \code{\link{adjust_loglik}})
+may be superimposed on the same plot.
 }

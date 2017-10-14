@@ -17,8 +17,7 @@
 #'   \code{3} for \code{"dilation"} (horizontal adjustment); \code{4}
 #'   for no adjustment, i.e. based on the independence loglikelihood.
 #' @param ... Additional arguments passed on to ...
-#' @return A list containing the graphical parameters using in producing the
-#'   plot including any arguments supplied via ... is returned (invisibly).
+#' @return Nothing is returned.
 #' @examples
 #' binom_loglik <- function(prob, data) {
 #'   if (prob < 0 || prob > 1) {
@@ -136,6 +135,7 @@ summary.chandwich <- function(object, digits = max(3, getOption("digits")-3),
 #'   \code{\link{conf_intervals}}.
 #' @param y Not used.
 #' @param ... Additional arguments passed on to ...
+#' @return Nothing is returned.
 #' @export
 plot.confint <- function(x, y, ..., add_lines = TRUE) {
   if (!inherits(x, "confint")) {
@@ -153,20 +153,38 @@ plot.confint <- function(x, y, ..., add_lines = TRUE) {
   return(invisible())
 }
 
-# check for equality of max_logliks?
-
 # ============================== plot.confreg =================================
 
 #' Plot diagnostics a confreg object
 #'
 #' \code{plot} method for class "confreg".
+#' Plots confidence regions for pairs of parameters using the profile
+#' loglikelihood values calculated by \code{\link{conf_region}}.
+#' Up to 4 different types of loglikelihood (see the argument \code{type}
+#' to the function returned by \code{\link{adjust_loglik}})
+#' may be superimposed on the same plot.
 #'
-#' @param x an object of class "confreg", a result of a call to
+#' @param x,y,y2,y3 objects of class "confreg", a result of a call to
 #'   \code{\link{conf_region}}.
-#' @param y Not used.
-#' @param ... Additional arguments passed to \code{\link[graphics]{contour}}.
+#' @param conf A numeric vector of confidence levels, i.e. numbers in
+#'   (0, 100).  A confidence region contour is plotted for each value in
+#'   \code{conf}.
+#' @param legend A logical scalar or a character vector.  If this is
+#'   supplied then a legend is added to the plot.  If \code{legend} is a
+#'   character vector then it is used as the argument \code{legend}
+#'   to \code{\link[graphics]{legend}}.  Otherwise, i.e. if
+#'   \code{legend = TRUE} then the component \code{type} of the input
+#'   object(s) \code{x, y, y2, y3} are used.
+#' @param legend_pos The position of the legend (if required) specified using
+#'   the argument \code{x} in \code{\link[graphics]{legend}}.
+#' @param ... Additional arguments passed to \code{\link[graphics]{contour}}
+#'  or \code{\link[graphics]{legend}}.  The arguments \code{col}, \code{lty}
+#'  and \code{lwd} will (in a consistent way) by both
+#'  \code{\link[graphics]{contour}} and \code{\link[graphics]{legend}}.
+#' @return Nothing is returned.
 #' @export
-plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95, ...) {
+plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
+                         legend = FALSE, legend_pos = "topleft", ...) {
   if (!inherits(x, "confreg")) {
     stop("use only with \"confreg\" objects")
   }
@@ -174,6 +192,10 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95, ...) {
   y_range <- range(x$grid2, y$grid2, y2$grid2, y3$grid2, finite = TRUE)
   # User-supplied arguments for contour.
   user_args <- list(...)
+  l_cond <- names(user_args) %in% methods::formalArgs(graphics::legend)
+  lines_cond <- names(user_args) %in% c("col", "lty", "lwd")
+  legend_args <- user_args[l_cond]
+  user_args <- user_args[!l_cond | lines_cond]
   # If labels is not supplied then set it to confidence level
   if (is.null(user_args$labels)) {
     user_args$labels <- conf
@@ -189,43 +211,81 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95, ...) {
     user_args$ylim <- y_range
   }
   if (is.null(user_args$col)) {
-    my_col <- 1:4
+    my_col <- rep(1, 4)
   } else {
     my_col <- rep(user_args$col, 4)
   }
+  legend_args$col <- my_col
+  if (is.null(user_args$lty)) {
+    my_lty <- 1:4
+  } else {
+    my_lty <- rep(user_args$lty, 4)
+  }
+  legend_args$lty <- my_lty
+  if (is.null(user_args$lwd)) {
+    my_lwd <- 1:4
+  } else {
+    my_lwd <- rep(user_args$lwd, 4)
+  }
+  legend_args$lwd <- my_lwd
   # Create plot using x
   max_loglik <- attr(x$object, "max_loglik")
   cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
   user_args$col <- my_col[1]
+  user_args$lty <- my_lty[1]
+  user_args$lwd <- my_lwd[1]
   for_contour <- c(list(x = x$grid1, y = x$grid2, z = x$prof_loglik,
                         levels = cutoff), user_args)
   do.call(graphics::contour, for_contour)
+  types <- x$type
   # Add to plot using y
   if (!is.null(y)) {
     max_loglik <- attr(y$object, "max_loglik")
     cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
     user_args$col <- my_col[2]
+    user_args$lty <- my_lty[2]
+    user_args$lwd <- my_lwd[2]
     for_contour <- c(list(x = y$grid1, y = y$grid2, z = y$prof_loglik,
                           levels = cutoff, add = TRUE), user_args)
     do.call(graphics::contour, for_contour)
+    types <- c(types, y$type)
   }
   # Add to plot using y2
   if (!is.null(y2)) {
     max_loglik <- attr(y2$object, "max_loglik")
     cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
     user_args$col <- my_col[3]
+    user_args$lty <- my_lty[3]
+    user_args$lwd <- my_lwd[3]
     for_contour <- c(list(x = y2$grid1, y = y2$grid2, z = y2$prof_loglik,
                           levels = cutoff, add = TRUE), user_args)
     do.call(graphics::contour, for_contour)
+    types <- c(types, y2$type)
   }
   # Add to plot using y3
-  if (!is.null(y2)) {
+  if (!is.null(y3)) {
     max_loglik <- attr(y3$object, "max_loglik")
     cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
     user_args$col <- my_col[4]
+    user_args$lty <- my_lty[4]
+    user_args$lwd <- my_lwd[4]
     for_contour <- c(list(x = y3$grid1, y = y3$grid2, z = y3$prof_loglik,
                           levels = cutoff, add = TRUE), user_args)
     do.call(graphics::contour, for_contour)
+    types <- c(types, y3$type)
+  }
+  # Add a legend?
+  if (legend | is.character(legend)) {
+    legend_args$x <- legend_pos
+    if (legend) {
+      legend_args$legend <- types
+    } else {
+      legend_args$legend <- legend
+    }
+    if (is.null(legend_args$title)) {
+      legend_args$title <- "adjustment"
+    }
+    do.call(graphics::legend, legend_args)
   }
   return(invisible())
 }
