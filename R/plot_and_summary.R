@@ -125,3 +125,107 @@ summary.chandwich <- function(object, digits = max(3, getOption("digits")-3),
 #  rownames(res) <- 1:length(object$v_vec)
   return(res)
 }
+
+# ============================== plot.confint =================================
+
+#' Plot diagnostics a confint object
+#'
+#' \code{plot} method for class "confint".
+#'
+#' @param x an object of class "confint", a result of a call to
+#'   \code{\link{conf_intervals}}.
+#' @param y Not used.
+#' @param ... Additional arguments passed on to ...
+#' @export
+plot.confint <- function(x, y, ..., add_lines = TRUE) {
+  if (!inherits(x, "confint")) {
+    stop("use only with \"confint\" objects")
+  }
+  my_matplot <- function(x, y, ..., type) {
+    matplot(x, y, type = "l", ...)
+  }
+  my_matplot(x$parameter_vals, x$prof_loglik_vals, ...)
+  if (add_lines) {
+    abline(h = x$cutoff)
+    abline(v = x$prof_CI[, 1])
+    abline(v = x$prof_CI[, 2])
+  }
+  return(invisible())
+}
+
+# check for equality of max_logliks?
+
+# ============================== plot.confreg =================================
+
+#' Plot diagnostics a confreg object
+#'
+#' \code{plot} method for class "confreg".
+#'
+#' @param x an object of class "confreg", a result of a call to
+#'   \code{\link{conf_region}}.
+#' @param y Not used.
+#' @param ... Additional arguments passed to \code{\link[graphics]{contour}}.
+#' @export
+plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95, ...) {
+  if (!inherits(x, "confreg")) {
+    stop("use only with \"confreg\" objects")
+  }
+  x_range <- range(x$grid1, y$grid1, y2$grid1, y3$grid1, finite = TRUE)
+  y_range <- range(x$grid2, y$grid2, y2$grid2, y3$grid2, finite = TRUE)
+  # User-supplied arguments for contour.
+  user_args <- list(...)
+  # If labels is not supplied then set it to confidence level
+  if (is.null(user_args$labels)) {
+    user_args$labels <- conf
+  }
+  # If drawlabels is not supplied then make it FALSE unless conf has length > 1
+  if (is.null(user_args$drawlabels)) {
+    user_args$drawlabels <- length(conf) > 1
+  }
+  if (is.null(user_args$xlim)) {
+    user_args$xlim <- x_range
+  }
+  if (is.null(user_args$ylim)) {
+    user_args$ylim <- y_range
+  }
+  if (is.null(user_args$col)) {
+    my_col <- 1:4
+  } else {
+    my_col <- rep(user_args$col, 4)
+  }
+  # Create plot using x
+  max_loglik <- attr(x$object, "max_loglik")
+  cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
+  user_args$col <- my_col[1]
+  for_contour <- c(list(x = x$grid1, y = x$grid2, z = x$prof_loglik,
+                        levels = cutoff), user_args)
+  do.call(graphics::contour, for_contour)
+  # Add to plot using y
+  if (!is.null(y)) {
+    max_loglik <- attr(y$object, "max_loglik")
+    cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
+    user_args$col <- my_col[2]
+    for_contour <- c(list(x = y$grid1, y = y$grid2, z = y$prof_loglik,
+                          levels = cutoff, add = TRUE), user_args)
+    do.call(graphics::contour, for_contour)
+  }
+  # Add to plot using y2
+  if (!is.null(y2)) {
+    max_loglik <- attr(y2$object, "max_loglik")
+    cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
+    user_args$col <- my_col[3]
+    for_contour <- c(list(x = y2$grid1, y = y2$grid2, z = y2$prof_loglik,
+                          levels = cutoff, add = TRUE), user_args)
+    do.call(graphics::contour, for_contour)
+  }
+  # Add to plot using y3
+  if (!is.null(y2)) {
+    max_loglik <- attr(y3$object, "max_loglik")
+    cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
+    user_args$col <- my_col[4]
+    for_contour <- c(list(x = y3$grid1, y = y3$grid2, z = y3$prof_loglik,
+                          levels = cutoff, add = TRUE), user_args)
+    do.call(graphics::contour, for_contour)
+  }
+  return(invisible())
+}
