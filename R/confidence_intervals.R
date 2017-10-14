@@ -1,11 +1,11 @@
 # Speed up conf_region (& conf_intervals) by bypassing setup of model
 # Add option to give lower and upper (vectors)
+#   ... or ranges for each parameter ?
+# location of MLE in middle of function
 # Use try() in conf_intervals
 # conf_region: if model has 2 parameters then there is no need to profile.
 # Use plot method then?
 # ... or set up profile_loglik so that it detects this and call loglik?
-# mu[0] and mu[1] in variable names? -> expression in plots
-# legend in conf_region
 
 # ============================== conf_region ===============================
 
@@ -29,12 +29,14 @@
 #'   \code{attr(object, "fixed_pars")}.  \code{which_pars} must not contain
 #'   all of the unfixed parameters, i.e. there is no point in profiling over
 #'   all the unfixed parameters.
-#' @param init A numeric vector of initial estimates of the values of the
-#'   parameters that are not fixed and are not in \code{which_pars}.
-#'   Should have length \code{attr(object, "p_current") - length(which_pars)}.
-#'   If \code{init} is \code{NULL} or is of the wrong length then the
-#'   relevant components from the MLE stored in \code{object} are used.
-#' @param conf A numeric scalar. Confidence level for the region.
+#' @param lower,upper Numeric vectors of length 2.  For i = 1, 2:
+#'   (\code{lower[i], \code{upper[i]}}) specifies the range of values of
+#'   parameter i over which the (profile) loglikelihood is evaluated.
+#' @param conf A numeric scalar. The highest confidence level of interest.
+#'   This is only relevant if \code{lower} and \code{upper} are not supplied.
+#'   In that even \code{conf} is used, in combination with \code{mult}, to
+#'   try to set up the grid of parameter values to include the largest
+#'   confidence region of interest.
 #' @param mult A numeric vector of length 1 or the same length as
 #'   \code{which_pars}.
 #'   The search for the profile loglikelihood-based confidence limits is
@@ -50,7 +52,21 @@
 #' @param ... Further arguments to be passed to \code{\link[stats]{optim}}.
 #'   These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
 #'   or \code{control}.
-#' @return The plot and a list containing ...
+#' @return A list with components
+#'   \itemize{
+#'     \item{\strong{grid1, grid2}: }{Numeric vector.   Respective values of
+#'       \code{which_pars[1]} and \code{which_pars[2]} in the grid over which
+#'       the (profile) loglikelihood is evaluated. }
+#'     \item{\strong{object}: }{An object of class \code{"chandwich"}.
+#'       The input \code{object}. }
+#'     \item{\strong{prof_loglik}: }{An 2 \code{num} + 1 by 2 \code{num} + 1
+#'       numeric matrix containing the values of the (profile) loglikelihood.}
+#'     \item{\strong{type}: }{A character scalar. The input \code{type}.}
+#'     \item{\strong{which_pars}: }{A numeric or character vector.  The input
+#'       \code{which_pars}.  If the \code{which_pars} was numeric then
+#'       it is supplemented by the parameter names, if these are available
+#'       in \code{object}.}
+#'   }
 #' @examples
 #' # GEV model, owtemps data ----------
 #' # ... following Section 5.2 of Chandler and Bate (2007)
@@ -77,13 +93,14 @@
 #'
 #' # Perform the log-likelihood adjustment of the full model ------
 #'
+#' par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-#'         par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
+#'         par_names = par_names)
 #'
 #' \dontrun{
 #' # Plots akin to those in Figure 4 of CHandler and Bate (2007)
 #'
-#' which_pars <- c("mu0", "mu1")
+#' which_pars <- c("mu[0]", "mu[1]")
 #' reg_1 <- conf_region(large, which_pars = which_pars)
 #' reg_none_1 <- conf_region(large, which_pars = which_pars, type = "none")
 #' plot(reg_1, reg_none_1)
@@ -98,10 +115,10 @@
 #' reg_none_3 <- conf_region(large, which_pars = which_pars, type = "none")
 #' plot(reg_3, reg_none_3)
 #' }
-conf_region <- function(object, which_pars = NULL, init = NULL, conf = 95,
-                     mult = 2, num = c(10, 10),
-                     type = c("vertical", "cholesky", "dilation", "none"),
-                     ...) {
+conf_region <- function(object, which_pars = NULL, lower = NULL, upper = NULL,
+                        init = NULL, conf = 95, mult = 2, num = c(10, 10),
+                        type = c("vertical", "cholesky", "dilation", "none"),
+                        ...) {
   type <- match.arg(type)
   # Adjust conf to make it more applicable to the marginal intervals used to
   # set the default grid on which the profile loglikelihood is calculated
@@ -160,13 +177,21 @@ conf_region <- function(object, which_pars = NULL, init = NULL, conf = 95,
   if (type == "none") {
     sym_lower <- which_mle - z_val * res_SE[which_pars]
     sym_upper <- which_mle + z_val * res_SE[which_pars]
-    search_lower <- which_mle - mult * z_val * res_SE[which_pars]
-    search_upper <- which_mle + mult * z_val * res_SE[which_pars]
+    if (is.null(lower)) {
+      lower <- which_mle - mult * z_val * res_SE[which_pars]
+    }
+    if (is.null(upper)) {
+      upper <- which_mle + mult * z_val * res_SE[which_pars]
+    }
   } else {
     sym_lower <- which_mle - z_val * res_adjSE[which_pars]
     sym_upper <- which_mle + z_val * res_adjSE[which_pars]
-    search_lower <- which_mle - mult * z_val * res_adjSE[which_pars]
-    search_upper <- which_mle + mult * z_val * res_adjSE[which_pars]
+    if (is.null(lower)) {
+      lower <- which_mle - mult * z_val * res_adjSE[which_pars]
+    }
+    if (is.null(upper)) {
+      upper <- which_mle + mult * z_val * res_adjSE[which_pars]
+    }
   }
   sym_CI <- cbind(sym_lower, sym_upper)
   colnames(sym_CI) <- c("lower", "upper")
@@ -174,11 +199,11 @@ conf_region <- function(object, which_pars = NULL, init = NULL, conf = 95,
   # 2D profile loglikelihood
   #
   # Set up a grid of values of the parameters in which_pars
-  temp1 <- seq(search_lower[1], which_mle[1], length.out = num[1] + 1)
-  temp2 <- seq(which_mle[1], search_upper[1], length.out = num[1] + 1)[-1]
+  temp1 <- seq(lower[1], which_mle[1], length.out = num[1] + 1)
+  temp2 <- seq(which_mle[1], upper[1], length.out = num[1] + 1)[-1]
   grid1 <- c(temp1, temp2)
-  temp1 <- seq(search_lower[2], which_mle[2], length.out = num[2] + 1)
-  temp2 <- seq(which_mle[2], search_upper[2], length.out = num[2] + 1)[-1]
+  temp1 <- seq(lower[2], which_mle[2], length.out = num[2] + 1)
+  temp2 <- seq(which_mle[2], upper[2], length.out = num[2] + 1)[-1]
   grid2 <- c(temp1, temp2)
   leng1 <- length(grid1)
   leng2 <- length(grid2)
@@ -229,14 +254,9 @@ conf_region <- function(object, which_pars = NULL, init = NULL, conf = 95,
     }
   }
   conf_region_list <- list(grid1 = grid1, grid2 = grid2, prof_loglik = z,
-                           object = object, type = type)
+                           object = object, type = type,
+                           which_pars = which_pars)
   class(conf_region_list) <- "confreg"
-  #
-  # Produce the plot
-#  max_loglik <- attr(object, "max_loglik")
-#  cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
-#  graphics::contour(grid1, grid2, z, levels = cutoff, drawlabels = FALSE)
-  #
   return(conf_region_list)
 }
 
@@ -378,13 +398,13 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
   if (type == "none") {
     sym_lower <- which_mle - z_val * res_SE[which_pars]
     sym_upper <- which_mle + z_val * res_SE[which_pars]
-    search_lower <- which_mle - mult * z_val * res_SE[which_pars]
-    search_upper <- which_mle + mult * z_val * res_SE[which_pars]
+    lower <- which_mle - mult * z_val * res_SE[which_pars]
+    upper <- which_mle + mult * z_val * res_SE[which_pars]
   } else {
     sym_lower <- which_mle - z_val * res_adjSE[which_pars]
     sym_upper <- which_mle + z_val * res_adjSE[which_pars]
-    search_lower <- which_mle - mult * z_val * res_adjSE[which_pars]
-    search_upper <- which_mle + mult * z_val * res_adjSE[which_pars]
+    lower <- which_mle - mult * z_val * res_adjSE[which_pars]
+    upper <- which_mle + mult * z_val * res_adjSE[which_pars]
   }
   sym_CI <- cbind(sym_lower, sym_upper)
   colnames(sym_CI) <- c("lower", "upper")
@@ -408,7 +428,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
     # MLE not including parameter being profiled and fixed parameters
     sol <- res_mle[-c(which_pars[i], fixed_pars)]
     # Lower tail ...
-    par_low <- search_lower[i]
+    par_low <- lower[i]
     par_vals <- seq(from = which_mle[i], to = par_low, length.out = num + 1)[-1]
     for (j in 1:num) {
       opt <- profile_loglik(object, prof_pars = which_pars[i],
@@ -419,7 +439,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
       prof_loglik_vals[num - j + 1, i] <- -opt
     }
     # Upper tail ...
-    par_up <- search_upper[i]
+    par_up <- upper[i]
     par_vals <- seq(from = which_mle[i], to = par_up, length.out = num + 1)[-1]
     for (j in 1:num) {
       opt <- profile_loglik(object, prof_pars = which_pars[i],

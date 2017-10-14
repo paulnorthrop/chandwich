@@ -196,6 +196,13 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   lines_cond <- names(user_args) %in% c("col", "lty", "lwd")
   legend_args <- user_args[l_cond]
   user_args <- user_args[!l_cond | lines_cond]
+  # If xlab or ylab are not supplied then use names(x$which_pars), if present
+  if (is.null(user_args$xlab)) {
+    user_args$xlab <- parse(text = names(x$which_pars)[1])
+  }
+  if (is.null(user_args$ylab)) {
+    user_args$ylab <- parse(text = names(x$which_pars)[2])
+  }
   # If labels is not supplied then set it to confidence level
   if (is.null(user_args$labels)) {
     user_args$labels <- conf

@@ -4,9 +4,9 @@
 \alias{conf_region}
 \title{Confidence regions}
 \usage{
-conf_region(object, which_pars = NULL, init = NULL, conf = 95, mult = 2,
-  num = c(10, 10), type = c("vertical", "cholesky", "dilation", "none"),
-  ...)
+conf_region(object, which_pars = NULL, lower = NULL, upper = NULL,
+  init = NULL, conf = 95, mult = 2, num = c(10, 10),
+  type = c("vertical", "cholesky", "dilation", "none"), ...)
 }
 \arguments{
 \item{object}{An object of class \code{"chandwich"} returned by
@@ -25,13 +25,15 @@ conf_region(object, which_pars = NULL, init = NULL, conf = 95, mult = 2,
   all of the unfixed parameters, i.e. there is no point in profiling over
   all the unfixed parameters.}
 
-\item{init}{A numeric vector of initial estimates of the values of the
-parameters that are not fixed and are not in \code{which_pars}.
-Should have length \code{attr(object, "p_current") - length(which_pars)}.
-If \code{init} is \code{NULL} or is of the wrong length then the
-relevant components from the MLE stored in \code{object} are used.}
+\item{lower, upper}{Numeric vectors of length 2.  For i = 1, 2:
+(\code{lower[i], \code{upper[i]}}) specifies the range of values of
+parameter i over which the (profile) loglikelihood is evaluated.}
 
-\item{conf}{A numeric scalar. Confidence level for the region.}
+\item{conf}{A numeric scalar. The highest confidence level of interest.
+This is only relevant if \code{lower} and \code{upper} are not supplied.
+In that even \code{conf} is used, in combination with \code{mult}, to
+try to set up the grid of parameter values to include the largest
+confidence region of interest.}
 
 \item{mult}{A numeric vector of length 1 or the same length as
 \code{which_pars}.
@@ -53,7 +55,21 @@ These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
 or \code{control}.}
 }
 \value{
-The plot and a list containing ...
+A list with components
+  \itemize{
+    \item{\strong{grid1, grid2}: }{Numeric vector.   Respective values of
+      \code{which_pars[1]} and \code{which_pars[2]} in the grid over which
+      the (profile) loglikelihood is evaluated. }
+    \item{\strong{object}: }{An object of class \code{"chandwich"}.
+      The input \code{object}. }
+    \item{\strong{prof_loglik}: }{An 2 \code{num} + 1 by 2 \code{num} + 1
+      numeric matrix containing the values of the (profile) loglikelihood.}
+    \item{\strong{type}: }{A character scalar. The input \code{type}.}
+    \item{\strong{which_pars}: }{A numeric or character vector.  The input
+      \code{which_pars}.  If the \code{which_pars} was numeric then
+      it is supplemented by the parameter names, if these are available
+      in \code{object}.}
+  }
 }
 \description{
 Calculates the (profile, if necessary) loglikelihood for a pair of
@@ -86,13 +102,14 @@ init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 
 # Perform the log-likelihood adjustment of the full model ------
 
+par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-        par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
+        par_names = par_names)
 
 \dontrun{
 # Plots akin to those in Figure 4 of CHandler and Bate (2007)
 
-which_pars <- c("mu0", "mu1")
+which_pars <- c("mu[0]", "mu[1]")
 reg_1 <- conf_region(large, which_pars = which_pars)
 reg_none_1 <- conf_region(large, which_pars = which_pars, type = "none")
 plot(reg_1, reg_none_1)
