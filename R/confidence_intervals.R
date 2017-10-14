@@ -1,12 +1,3 @@
-# Speed up conf_region (& conf_intervals) by bypassing setup of model
-# Add option to give lower and upper (vectors)
-#   ... or ranges for each parameter ?
-# location of MLE in middle of function
-# Use try() in conf_intervals
-# conf_region: if model has 2 parameters then there is no need to profile.
-# Use plot method then?
-# ... or set up profile_loglik so that it detects this and call loglik?
-
 # ============================== conf_region ===============================
 
 #' Confidence regions
@@ -219,11 +210,8 @@ conf_region <- function(object, which_pars = NULL, lower = NULL, upper = NULL,
   # starting values.
   #
   # In which positions are the MLEs in the grid?
-
-  # I know this now!
-
-  mle_idx1 <- match(which_mle[1], grid1)
-  mle_idx2 <- match(which_mle[2], grid2)
+  mle_idx1 <- num[1] + 1
+  mle_idx2 <- num[2] + 1
   eval_order1 <- c(rev(1:(mle_idx1 - 1)), mle_idx1:(2 * num[1] + 1))
   eval_order2 <- c(rev(1:(mle_idx2 - 1)), mle_idx2:(2 * num[2] + 1))
   start_array <- array(dim = c(length(theta_start), leng1, leng2))
