@@ -56,8 +56,9 @@ or \code{control}.}
 The plot and a list containing ...
 }
 \description{
-Plots a confidence region for pairs of parameters, by profiling
-the loglikelihood if necessary
+Calculates the (profile, if necessary) loglikelihood for a pair of
+parameters from which confidence regions can be plotted using
+\code{\link{plot.confreg}}.
 }
 \examples{
 # GEV model, owtemps data ----------
@@ -91,7 +92,6 @@ large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 \dontrun{
 # Plots akin to those in Figure 4 of CHandler and Bate (2007)
 
-par(mfrow = c(1, 3))
 which_pars <- c("mu0", "mu1")
 reg_1 <- conf_region(large, which_pars = which_pars)
 reg_none_1 <- conf_region(large, which_pars = which_pars, type = "none")
