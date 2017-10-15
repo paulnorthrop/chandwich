@@ -10,10 +10,20 @@
 #' are functions for calculating and plotting confidence intervals, for single
 #' model parameters, and confidence regions, for pairs of model parameters.
 #'
-#' @details Add details
+#' @details
+#' The main function in the threshr package is \code{adjust_loglik}.  It finds the
+#' maximum likelihood estimate (MLE) of model parameters based on an
+#' independence loglikelihood in which cluster dependence in the data is
+#' ignored.  The independence loglikelihood is adjusted in a way that ensures
+#' that the Hessian of the adjusted loglikelihood conicides with a robust
+#' sandwich estimate of the parameter covariance at the MLE.  Three
+#' adjustments are available: one in which the independence loglikelihood
+#' itself is scaled (vertical scaling) and two others where the scaling
+#' is in the parameter vector (horizontal scaling).
 #'
-#'   See \code{vignette("chandwich-vignette", package = "chandwich")} for an
-#'   overview of the package.
+#' See Chandler and Bate (2007) for full details and
+#' \code{vignette("chandwich-vignette", package = "chandwich")} for an
+#' overview of the package.
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
 #'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
