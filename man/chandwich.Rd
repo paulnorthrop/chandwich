@@ -12,6 +12,9 @@ the methodology in
 \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Beta (2007)}.
 This can be used for cluster correlated data when interest lies in the
 parameters of the marginal distributions.
+Functions for profiling the adjusted loglikelihoods are also provided, as
+are functions for calculating and plotting confidence intervals, for single
+model parameters, and confidence regions, for pairs of model parameters.
 }
 \details{
 Add details
@@ -23,4 +26,17 @@ Add details
 Chandler, R. E. and Bate, S. (2007). Inference for clustered
   data using the independence loglikelihood. \emph{Biometrika},
   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
+}
+\seealso{
+\code{\link{adjust_loglik}} to adjust the independence
+  loglikelihood.
+
+\code{\link{compare_models}} to compare nested models using an
+  adjusted loglikelihood ratio test.
+
+\code{\link{conf_intervals}} to calculate confidence intervals
+  for individual model parameters.
+
+\code{\link{conf_region}} to calculate a confidence region
+  for a pair of model parameters.
 }
