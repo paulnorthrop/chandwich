@@ -113,8 +113,14 @@ init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 
 par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-        par_names = par_names)
+                       par_names = par_names)
 
+# Create a model with only 2 free parameters
+fixed_pars <- c("mu[0]", "mu[1]", "sigma[1]", "xi[1]")
+fixed_at <- c(attr(large, "MLE")[1], 0, 0, 0)
+model2 <- adjust_loglik(larger = large, fixed_pars = fixed_pars, fixed_at = fixed_at)
+pjn <- conf_region(model2, which_pars = c("sigma[0]", "xi[0]"))
+plot(pjn)
 \dontrun{
 # Plots akin to those in Figure 4 of Chandler and Bate (2007)
 

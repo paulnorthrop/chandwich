@@ -46,7 +46,10 @@ A numeric vector of length 1.  The value of the profile
   loglikelihood.  The returned object has the attribute \code{"free_pars"}
   giving the optimal values of the parameters that remain after the
   parameters \code{prof_pars} and \code{attr(object, "fixed_pars")} have
-  been removed from the full parameter vector.
+  been removed from the full parameter vector.  If there are no such
+  parameters, which happens if an attempt is made to profile over
+  \emph{all} non-fixed parameters, then thiis attribute is not present and
+  the value returned is calculated using the function \code{object}.
 }
 \description{
 Calculates the profile loglikelihood for a subset of the model parameters.
@@ -77,10 +80,11 @@ init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 
 # Perform the log-likelihood adjustment of the full model ------
 
+par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-        par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
-profile_loglik(large, prof_pars = "xi1", prof_vals = -0.1)
+                       par_names = par_names)
+profile_loglik(large, prof_pars = "xi[1]", prof_vals = -0.1)
 
 medium <- adjust_loglik(larger = large, fixed_pars = "xi1")
-profile_loglik(medium, prof_pars = "xi0", prof_vals = -0.1)
+profile_loglik(medium, prof_pars = "xi[0]", prof_vals = -0.1)
 }

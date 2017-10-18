@@ -94,8 +94,14 @@
 #'
 #' par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-#'         par_names = par_names)
+#'                        par_names = par_names)
 #'
+#' # Create a model with only 2 free parameters
+#' fixed_pars <- c("mu[0]", "mu[1]", "sigma[1]", "xi[1]")
+#' fixed_at <- c(attr(large, "MLE")[1], 0, 0, 0)
+#' model2 <- adjust_loglik(larger = large, fixed_pars = fixed_pars, fixed_at = fixed_at)
+#' pjn <- conf_region(model2, which_pars = c("sigma[0]", "xi[0]"))
+#' plot(pjn)
 #' \dontrun{
 #' # Plots akin to those in Figure 4 of Chandler and Bate (2007)
 #'
@@ -114,6 +120,7 @@
 #' reg_none_3 <- conf_region(large, which_pars = which_pars, type = "none")
 #' plot(reg_3, reg_none_3)
 #' }
+#' @export
 conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
                         range2 = c(NA, NA), conf = 95, mult = 2, num = c(10, 10),
                         type = c("vertical", "cholesky", "dilation", "none"),
@@ -122,8 +129,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
   # Check that arguments supplied in ... can be passed to stats::optim()
   optim_args <- list(...)
   optim_names <- names(optim_args)
-  OK <- optim_names %in% methods::formalArgs(stats::optim)
-  optim_args <- optim_args[OK]
+  ok <- optim_names %in% methods::formalArgs(stats::optim)
+  optim_args <- optim_args[ok]
   # Adjust conf to make it more applicable to the marginal intervals used to
   # set the default grid on which the profile loglikelihood is calculated
   conf_for_search <- sqrt(conf) * 10
@@ -228,10 +235,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
   leng2 <- length(grid2)
   # Matrix to store the profile loglikelihood values
   z <- matrix(nrow = leng1, ncol = leng2)
-  # MLE of all parameters (fixed and free)
-  theta_full <- res_mle
-  # MLE of all parameters (fixed and free) excluding which_pars
-  theta_start <- res_mle[-which_pars]
+  # MLE of all free parameters, i.e. excluding fixed parameters and which_pars
+  theta_start <- res_mle[-c(fixed_pars, which_pars)]
   #
   # To avoid illegal starting values, move from the MLE downwards and
   # then back up, at each stage using neighbouring estimates as
@@ -259,9 +264,6 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
                           prof_vals = prof_vals, init = theta, type = type),
                      optim_args)
       zz <- try(do.call(profile_loglik, prof_args), silent = TRUE)
-#      zz <- try(profile_loglik(object, prof_pars = which_pars,
-#                               prof_vals = prof_vals, init = theta,
-#                               type = type, ...), silent = TRUE)
       if (class(zz) == "try-error") {
         z[i, j] <- NA
       } else {
@@ -526,7 +528,10 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
 #'   loglikelihood.  The returned object has the attribute \code{"free_pars"}
 #'   giving the optimal values of the parameters that remain after the
 #'   parameters \code{prof_pars} and \code{attr(object, "fixed_pars")} have
-#'   been removed from the full parameter vector.
+#'   been removed from the full parameter vector.  If there are no such
+#'   parameters, which happens if an attempt is made to profile over
+#'   \emph{all} non-fixed parameters, then thiis attribute is not present and
+#'   the value returned is calculated using the function \code{object}.
 #' @examples
 #' # GEV model, owtemps data ----------
 #' # ... following Section 5.2 of Chandler and Bate (2007)
@@ -553,12 +558,13 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
 #'
 #' # Perform the log-likelihood adjustment of the full model ------
 #'
+#' par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-#'         par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
-#' profile_loglik(large, prof_pars = "xi1", prof_vals = -0.1)
+#'                        par_names = par_names)
+#' profile_loglik(large, prof_pars = "xi[1]", prof_vals = -0.1)
 #'
 #' medium <- adjust_loglik(larger = large, fixed_pars = "xi1")
-#' profile_loglik(medium, prof_pars = "xi0", prof_vals = -0.1)
+#' profile_loglik(medium, prof_pars = "xi[0]", prof_vals = -0.1)
 profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
                            init = NULL, type = c("vertical", "cholesky",
                                                  "dilation", "none"), ...) {
@@ -591,15 +597,19 @@ profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
   if (any(prof_pars %in% fixed_pars)) {
     stop("prof_pars & attr(object,''fixed_pars'') have parameters in common")
   }
-  if (length(free_pars) == 0) {
-    stop("There is no point in profiling over all the unfixed parameters.")
-  }
   # The MLE (including any fixed parameters) of the full parameter vector
   full_mle <- attr(object, "res_MLE")
   if (is.null(prof_vals)) {
     prof_vals <- full_mle[prof_pars]
   }
   p_r <- length(free_pars)
+  # If, after removing the parameters over which we wish to profile, there are
+  # no free parameters, i.e. we are profiling over *all* unfixed parameters
+  # then just use the adjusted loglikelihood given by type
+  if (p_r == 0) {
+    to_return <- do.call(object, list(prof_vals, type = type))
+    return(to_return)
+  }
   # Initial estimate: the MLE with fixed_pars set at the values in fixed_at
   if (is.null(init) || length(init) != p_r) {
     init <- full_mle[free_pars]
