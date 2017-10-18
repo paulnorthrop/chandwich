@@ -233,8 +233,9 @@
 #'
 #' # Perform the log-likelihood adjustment of the full model ------
 #'
+#' par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-#'         par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
+#'                        par_names = par_names)
 #' # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
 #' round(attr(large, "MLE"), 4)
 #' round(attr(large, "SE"), 4)
@@ -243,16 +244,16 @@
 #' # Perform the log-likelihood adjustment of some smaller models ------
 #'
 #' # Starting from larger model
-#' medium <- adjust_loglik(larger = large, fixed_pars = "xi1")
+#' medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
 #' medium <- adjust_loglik(larger = large, fixed_pars = 6)
-#' small <- adjust_loglik(larger = large, fixed_pars = c("sigma1", "xi1"))
-#' small <- adjust_loglik(larger = medium, fixed_pars = c("sigma1", "xi1"))
+#' small <- adjust_loglik(larger = large, fixed_pars = c("sigma1", "xi[1]"))
+#' small <- adjust_loglik(larger = medium, fixed_pars = c("sigma1", "xi[1]"))
 #'
 #' # Starting from scratch
 #' medium <- adjust_loglik(gev_loglik, data = owtemps, init = init, fixed_pars = 6)
 #' small <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-#'          fixed_pars = c("sigma1", "xi1"),
-#'          par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
+#'          fixed_pars = c("sigma[1]", "xi[1]"),
+#'          par_names = c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]"))
 #' @export
 adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
                           init = NULL, par_names = NULL,
