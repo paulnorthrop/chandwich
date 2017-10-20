@@ -161,11 +161,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
   fixed_pars <- attr(object, "fixed_pars")
   fixed_at <- attr(object, "fixed_at")
   full_par_names <- attr(object, "full_par_names")
-  # If which_pars is not supplied then set it to all (unfixed) parameters
   p <- attr(object, "p_full")
-  if (is.null(which_pars)) {
-    which_pars <- (1:p)[-fixed_pars]
-  }
   # If which_par is a character
   if (is.character(which_pars)) {
     if (is.null(full_par_names)) {
