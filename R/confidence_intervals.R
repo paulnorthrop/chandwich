@@ -366,13 +366,6 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
                      type = c("vertical", "cholesky", "dilation", "none"),
                      ...) {
   type <- match.arg(type)
-  n_which_pars <- length(which_pars)
-  n_mult <- length(mult)
-  if (n_mult != 1 & n_mult != n_which_pars) {
-    stop("mult must have length 1 or the same length as which_pars")
-  } else if (n_mult == 1) {
-    mult <- rep(mult, n_which_pars)
-  }
   # Fixed parameters, values at which they are fixed and parameter names
   fixed_pars <- attr(object, "fixed_pars")
   fixed_at <- attr(object, "fixed_at")
@@ -380,9 +373,20 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
   # If which_pars is not supplied then set it to all (unfixed) parameters
   p <- attr(object, "p_full")
   if (is.null(which_pars)) {
-    which_pars <- (1:p)[-fixed_pars]
+    if (is.null(fixed_pars)) {
+      which_pars <- 1:p
+    } else {
+      which_pars <- (1:p)[-fixed_pars]
+    }
   }
-  # If which_par is a character
+  n_which_pars <- length(which_pars)
+  n_mult <- length(mult)
+  if (n_mult != 1 & n_mult != n_which_pars) {
+    stop("mult must have length 1 or the same length as which_pars")
+  } else if (n_mult == 1) {
+    mult <- rep(mult, n_which_pars)
+  }
+  # If which_pars is a character vector
   if (is.character(which_pars)) {
     if (is.null(full_par_names)) {
       stop("which_pars can be character only if par_names is supplied")
