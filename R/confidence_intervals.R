@@ -458,7 +458,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
                             init = sol, type = type, ...)
       sol <- attr(opt, "free_pars")
       parameter_vals[num - j + 1, i] <- par_vals[j]
-      prof_loglik_vals[num - j + 1, i] <- -opt
+      prof_loglik_vals[num - j + 1, i] <- opt
     }
     # Upper tail ...
     par_up <- upper[i]
