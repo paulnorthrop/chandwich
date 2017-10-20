@@ -486,7 +486,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
   }
   conf_list <- list(cutoff = cutoff, parameter_vals = parameter_vals,
                     prof_loglik_vals = prof_loglik_vals, sym_CI = sym_CI,
-                    prof_CI = prof_CI)
+                    prof_CI = prof_CI, object = object, type = type)
   class(conf_list) <- "confint"
   return(conf_list)
 }
