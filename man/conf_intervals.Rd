@@ -30,7 +30,8 @@ Should have length \code{attr(object, "p_current") - length(which_pars)}.
 If \code{init} is \code{NULL} or is of the wrong length then the
 relevant components from the MLE stored in \code{object} are used.}
 
-\item{conf}{A numeric scalar. Confidence level for the intervals.}
+\item{conf}{A numeric scalar in (0, 100). Confidence level for the
+intervals.}
 
 \item{mult}{A numeric vector of length 1 or the same length as
 \code{which_pars}.

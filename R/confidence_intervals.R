@@ -28,11 +28,11 @@
 #' @param lower,upper Numeric vectors of length 2.  For i = 1, 2:
 #'   (\code{lower[i], \code{upper[i]}}) specifies the range of values of
 #'   parameter i over which the (profile) loglikelihood is evaluated.
-#' @param conf A numeric scalar. The highest confidence level of interest.
-#'   This is only relevant if \code{lower} and \code{upper} are not supplied.
-#'   In that even \code{conf} is used, in combination with \code{mult}, to
-#'   try to set up the grid of parameter values to include the largest
-#'   confidence region of interest.
+#' @param conf A numeric scalar in (0, 100).  The highest confidence level
+#'   of interest. This is only relevant if \code{lower} and \code{upper} are
+#'   not supplied.  In that event \code{conf} is used, in combination with
+#'   \code{mult}, to try to set up the grid of parameter values to include
+#'   the largest confidence region of interest.
 #' @param mult A numeric vector of length 1 or the same length as
 #'   \code{which_pars}.
 #'   The search for the profile loglikelihood-based confidence limits is
@@ -302,7 +302,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'   Should have length \code{attr(object, "p_current") - length(which_pars)}.
 #'   If \code{init} is \code{NULL} or is of the wrong length then the
 #'   relevant components from the MLE stored in \code{object} are used.
-#' @param conf A numeric scalar. Confidence level for the intervals.
+#' @param conf A numeric scalar in (0, 100). Confidence level for the
+#'   intervals.
 #' @param mult A numeric vector of length 1 or the same length as
 #'   \code{which_pars}.
 #'   The search for the profile loglikelihood-based confidence limits is
@@ -447,7 +448,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
   max_loglik <- attr(object, "max_loglik")
   prof_loglik_vals[num + 1, ] <- rep(max_loglik, n_which_pars)
   # 100% confidence interval: where the profile loglikelihood lies above cutoff
-  cutoff <- max_loglik - qchisq(conf  / 100, 1) / 2
+  cutoff <- max_loglik - stats::qchisq(conf  / 100, 1) / 2
   for (i in 1:length(which_pars)) {
     # MLE not including parameter being profiled and fixed parameters
     sol <- res_mle[-c(which_pars[i], fixed_pars)]
@@ -486,7 +487,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
     up <- x[z] + (cutoff - y[z]) * (x[z + 1] - x[z]) / (y[z + 1] - y[z])
     prof_CI[i, ] <- c(low, up)
   }
-  conf_list <- list(cutoff = cutoff, parameter_vals = parameter_vals,
+  conf_list <- list(conf = conf, cutoff = cutoff, parameter_vals = parameter_vals,
                     prof_loglik_vals = prof_loglik_vals, sym_CI = sym_CI,
                     prof_CI = prof_CI, max_loglik = attr(object, "max_loglik"),
                     type = type, which_pars = which_pars)
