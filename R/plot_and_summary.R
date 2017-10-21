@@ -135,8 +135,9 @@ summary.chandwich <- function(object, digits = max(3, getOption("digits")-3),
 #' to the function returned by \code{\link{adjust_loglik}})
 #' may be superimposed on the same plot.
 #'
-#' @param x,y,y2,y3 objects of class "confreg", a result of a call to
-#'   \code{\link{conf_region}}.  Contours are plotted for each object.
+#' @param x,y,y2,y3 objects of class "confreg", results of calls to
+#'   \code{\link{conf_region}}, with a common value of \code{which_pars}.
+#'   Contours are plotted for each object.
 #' @param conf A numeric vector of confidence levels, i.e. numbers in
 #'   (0, 100).  A confidence region contour is plotted for each value in
 #'   \code{conf}.
@@ -160,6 +161,22 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
                          legend_pos = "topleft", ...) {
   if (!inherits(x, "confreg")) {
     stop("x must be a \"confreg\" object")
+  }
+  # Check that all supplied objects have profiled the same parameters
+  if (!is.null(y)) {
+    if (!identical(x$which_pars, y$which_pars)) {
+      stop("y$which_pars is not identical to x$which_pars")
+    }
+  }
+  if (!is.null(y2)) {
+    if (!identical(x$which_pars, y2$which_pars)) {
+      stop("y2$which_pars is not identical to x$which_pars")
+    }
+  }
+  if (!is.null(y3)) {
+    if (!identical(x$which_pars, y3$which_pars)) {
+      stop("y3$which_pars is not identical to x$which_pars")
+    }
   }
   x_range <- range(x$grid1, y$grid1, y2$grid1, y3$grid1, finite = TRUE)
   y_range <- range(x$grid2, y$grid2, y2$grid2, y3$grid2, finite = TRUE)
@@ -283,7 +300,6 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
 
 # Check that y$which_pars[which_index] = which_par
 # Check that the models x, y, y2, y3 are consistent
-# - similarly in conf_reg_plot? At the moment I calculate separate cutoffs
 
 #' Plot diagnostics a confint object
 #'
