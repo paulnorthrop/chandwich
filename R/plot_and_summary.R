@@ -238,7 +238,7 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   }
   legend_args$lwd <- my_lwd
   # Create plot using x
-  max_loglik <- attr(x$object, "max_loglik")
+  max_loglik <- x$max_loglik
   cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
   user_args$col <- my_col[1]
   user_args$lty <- my_lty[1]
@@ -249,7 +249,7 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   types <- x$type
   # Add to plot using y
   if (!is.null(y)) {
-    max_loglik <- attr(y$object, "max_loglik")
+    max_loglik <- y$max_loglik
     cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
     user_args$col <- my_col[2]
     user_args$lty <- my_lty[2]
@@ -261,7 +261,7 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   }
   # Add to plot using y2
   if (!is.null(y2)) {
-    max_loglik <- attr(y2$object, "max_loglik")
+    max_loglik <- y2$max_loglik
     cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
     user_args$col <- my_col[3]
     user_args$lty <- my_lty[3]
@@ -273,7 +273,7 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   }
   # Add to plot using y3
   if (!is.null(y3)) {
-    max_loglik <- attr(y3$object, "max_loglik")
+    max_loglik <- y3$max_loglik
     cutoff <- max_loglik - qchisq(conf  / 100, 2) / 2
     user_args$col <- my_col[4]
     user_args$lty <- my_lty[4]

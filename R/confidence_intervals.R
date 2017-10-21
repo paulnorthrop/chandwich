@@ -272,8 +272,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
     }
   }
   conf_region_list <- list(grid1 = grid1, grid2 = grid2, prof_loglik = z,
-                           object = object, type = type,
-                           which_pars = which_pars)
+                           max_loglik = attr(object, "max_loglik"),
+                           type = type, which_pars = which_pars)
   class(conf_region_list) <- "confreg"
   return(conf_region_list)
 }
