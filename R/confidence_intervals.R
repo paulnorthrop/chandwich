@@ -361,6 +361,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'         par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
 #'
 #' conf_intervals(large, which_pars = c("xi0", "xi1"))
+#' @export
 conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
                      mult = 1.5, num = 10,
                      type = c("vertical", "cholesky", "dilation", "none"),
@@ -566,6 +567,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
 #'
 #' medium <- adjust_loglik(larger = large, fixed_pars = "xi1")
 #' profile_loglik(medium, prof_pars = "xi[0]", prof_vals = -0.1)
+#' @export
 profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
                            init = NULL, type = c("vertical", "cholesky",
                                                  "dilation", "none"), ...) {
