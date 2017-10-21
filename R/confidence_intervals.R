@@ -357,10 +357,11 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'
 #' # Perform the log-likelihood adjustment of the full model ------
 #'
+#' par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-#'         par_names = c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1"))
+#'         par_names = par_names)
 #'
-#' conf_intervals(large, which_pars = c("xi0", "xi1"))
+#' conf_intervals(large, which_pars = c("xi[0]", "xi[1]"))
 #' @export
 conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
                      mult = 1.5, num = 10,
