@@ -121,7 +121,6 @@ summary.chandwich <- function(object, digits = max(3, getOption("digits")-3),
     column_names <- c("parameter", column_names)
   }
   colnames(res) <- column_names
-#  rownames(res) <- 1:length(object$v_vec)
   return(res)
 }
 
