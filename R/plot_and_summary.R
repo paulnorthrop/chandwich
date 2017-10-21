@@ -298,9 +298,6 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
 
 # ============================== plot.confint =================================
 
-# Check that y$which_pars[which_index] = which_par
-# Check that the models x, y, y2, y3 are consistent
-
 #' Plot diagnostics a confint object
 #'
 #' \code{plot} method for class "confint".
@@ -355,14 +352,23 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
   # Where is which_par positioned in x$which_pars
   if (is.numeric(which_par)) {
     which_index <- match(which_par, x$which_pars)
+    if (!is.null(names(x$which_pars))) {
+      par_names <- names(x$which_pars)
+      xlabel <- par_names[which_index]
+    } else {
+      xlabel <- ""
+    }
   } else if (is.character(which_par)) {
+    if (is.null(names(x$which_pars))) {
+      stop("which_par can be character only if names(x$which_pars) isn't NULL")
+    }
     par_names <- names(x$which_pars)
+    xlabel <- par_names[which_index]
     which_index <- match(which_par, par_names)
     which_par <- x$which_pars[which_index]
   } else {
     stop("which_par must be numeric or character")
   }
-  par_name <- names(x$which_pars)[which_index]
   # Function to extract the desired values from the input objects
   extract_values <- function(object) {
     if (which_par %in% object$which_pars) {
@@ -418,10 +424,14 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
   user_args <- user_args[!l_cond | lines_cond]
   # If xlab or ylab are not supplied then use names(x$which_pars), if present
   if (is.null(user_args$xlab)) {
-    user_args$xlab <- parse(text = par_name)
+    user_args$xlab <- parse(text = xlabel)
   }
   if (is.null(user_args$ylab)) {
-    user_args$ylab <- "profile loglikelihood"
+    if (x$p_current == 1) {
+      user_args$ylab <- "loglikelihood"
+    } else {
+      user_args$ylab <- "profile loglikelihood"
+    }
   }
   if (is.null(user_args$xlim)) {
     user_args$xlim <- x_range
