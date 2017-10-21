@@ -4,19 +4,55 @@
 \alias{plot.confint}
 \title{Plot diagnostics a confint object}
 \usage{
-\method{plot}{confint}(x, y, ..., add_lines = TRUE)
+\method{plot}{confint}(x, y = NULL, y2 = NULL, y3 = NULL,
+  which_par = x$which_pars[1], conf = x$conf, add_lines = TRUE,
+  legend = any(c(!is.null(y), !is.null(y2), !is.null(y3))),
+  legend_pos = "topleft", ...)
 }
 \arguments{
-\item{x}{an object of class "confint", a result of a call to
-\code{\link{conf_intervals}}.}
+\item{x, y, y2, y3}{objects of class "confint", a result of a call to
+\code{\link{conf_intervals}}.  A (profile) loglikelihood will be
+plotted for each object.}
 
-\item{y}{Not used.}
+\item{which_par}{A scalar specifying the parameter for which the plot
+is produced.  Can be either a numeric vector, specifying index of the
+component of the \strong{full} parameter vector, or a character scalar
+parameter name.  The former must be in \code{x$which_pars}, the latter
+must be in \code{names(\code{x$which_pars})}.}
 
-\item{...}{Additional arguments passed on to ...}
+\item{conf}{A numeric vector of values in (0, 100).  If
+\code{add_lines = TRUE} then a horizontal line is added for each
+value in \code{conf}.  If \code{conf} is not supplied then the
+value stored in \code{x$conf} is used.}
+
+\item{add_lines}{A logical scalar.  Whether or not to add horizontal lines
+to the plot to identify the confidence limits.}
+
+\item{legend}{A logical scalar or a character vector.  If this is
+supplied then a legend is added to the plot.  If \code{legend} is a
+character vector then it is used as the argument \code{legend}
+to \code{\link[graphics]{legend}}.  Otherwise, i.e. if
+\code{legend = TRUE} then the component \code{type} of the input
+object(s) \code{x, y, y2, y3} are used.}
+
+\item{legend_pos}{The position of the legend (if required) specified using
+the argument \code{x} in \code{\link[graphics]{legend}}.}
+
+\item{...}{Additional arguments passed to \code{\link[graphics]{matplot}}
+or \code{\link[graphics]{legend}}.  The arguments \code{col}, \code{lty}
+and \code{lwd} will (in a consistent way) by both
+\code{\link[graphics]{matplot}} and \code{\link[graphics]{legend}}.}
 }
 \value{
 Nothing is returned.
 }
 \description{
 \code{plot} method for class "confint".
+Plots the (profile) loglikelihood for a parameter using the values
+calculated by \code{\link{conf_intervals}}.
+Up to 4 different types of loglikelihood (see the argument \code{type}
+to the function returned by \code{\link{adjust_loglik}})
+may be superimposed on the same plot.
+By default (\code{add_lines = TRUE}) the confidence limits calculated
+in \code{\link{conf_intervals}} are indicated on the plot .
 }

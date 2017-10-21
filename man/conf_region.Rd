@@ -31,11 +31,11 @@ the form \code{lower, upper}) of values of \code{which_pars[1]} and
 Missing values in \code{range1} and/or \code{range2} are
 filled in using \code{conf} and \code{mult}.  See below for details.}
 
-\item{conf}{A numeric scalar. The highest confidence level of interest.
-This is only relevant if \code{lower} and \code{upper} are not supplied.
-In that even \code{conf} is used, in combination with \code{mult}, to
-try to set up the grid of parameter values to include the largest
-confidence region of interest.}
+\item{conf}{A numeric scalar in (0, 100).  The highest confidence level
+of interest. This is only relevant if \code{lower} and \code{upper} are
+not supplied.  In that event \code{conf} is used, in combination with
+\code{mult}, to try to set up the grid of parameter values to include
+the largest confidence region of interest.}
 
 \item{mult}{A numeric vector of length 1 or the same length as
 \code{which_pars}.

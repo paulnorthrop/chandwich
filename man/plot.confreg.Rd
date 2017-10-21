@@ -10,7 +10,7 @@
 }
 \arguments{
 \item{x, y, y2, y3}{objects of class "confreg", a result of a call to
-\code{\link{conf_region}}.}
+\code{\link{conf_region}}.  Contours are plotted for each object.}
 
 \item{conf}{A numeric vector of confidence levels, i.e. numbers in
 (0, 100).  A confidence region contour is plotted for each value in
