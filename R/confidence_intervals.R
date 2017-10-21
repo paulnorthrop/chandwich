@@ -319,6 +319,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'   or \code{control}.
 #' @return A list with components
 #'   \itemize{
+#'     \item{\strong{conf}: }{The argument \code{conf}.}
 #'     \item{\strong{cutoff}: }{A numeric scalar.  For values inside the
 #'       confidence interval the profile loglikelihood lies above
 #'       \code{cutoff}.}
@@ -331,6 +332,13 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'       by 2 numeric matrices.  Row i of \code{sym_CI} (\code{prof_CI})
 #'       contains the symmetric (profile loglikelihood-based) confidence
 #'       intervals for parameter \code{which_pars[i]}.}
+#'     \item{\strong{max_loglik}: }{The value of the adjusted loglikelihood
+#'       at its maximum, stored in \code{object$max_loglik}.}
+#'     \item{\strong{type}: }{The argument \code{type} supplied in the call
+#'       to \code{adjust_loglik}, i.e. the type of loglikelihood adjustment.}
+#'     \item{\strong{p_current}: }{The number of free parameters in the
+#'       current model.}
+#'     \item{\strong{which_pars}: }{The argument \code{which_pars}.}
 #'   }
 #' @examples
 #' # GEV model, owtemps data ----------
@@ -490,7 +498,8 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
   conf_list <- list(conf = conf, cutoff = cutoff, parameter_vals = parameter_vals,
                     prof_loglik_vals = prof_loglik_vals, sym_CI = sym_CI,
                     prof_CI = prof_CI, max_loglik = attr(object, "max_loglik"),
-                    type = type, which_pars = which_pars)
+                    type = type, which_pars = which_pars,
+                    p_current = attr(object, "p_current"))
   class(conf_list) <- "confint"
   return(conf_list)
 }

@@ -53,6 +53,7 @@ or \code{control}.}
 \value{
 A list with components
   \itemize{
+    \item{\strong{conf}: }{The argument \code{conf}.}
     \item{\strong{cutoff}: }{A numeric scalar.  For values inside the
       confidence interval the profile loglikelihood lies above
       \code{cutoff}.}
@@ -65,6 +66,13 @@ A list with components
       by 2 numeric matrices.  Row i of \code{sym_CI} (\code{prof_CI})
       contains the symmetric (profile loglikelihood-based) confidence
       intervals for parameter \code{which_pars[i]}.}
+    \item{\strong{max_loglik}: }{The value of the adjusted loglikelihood
+      at its maximum, stored in \code{object$max_loglik}.}
+    \item{\strong{type}: }{The argument \code{type} supplied in the call
+      to \code{adjust_loglik}, i.e. the type of loglikelihood adjustment.}
+    \item{\strong{p_current}: }{The number of free parameters in the
+      current model.}
+    \item{\strong{which_pars}: }{The argument \code{which_pars}.}
   }
 }
 \description{
