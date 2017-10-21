@@ -66,11 +66,11 @@ parameter i over which the (profile) loglikelihood is evaluated.}
 \value{
 A list with components
   \itemize{
-    \item{\strong{grid1, grid2}: }{Numeric vector.   Respective values of
+    \item{\strong{grid1, grid2}: }{Numeric vectors.   Respective values of
       \code{which_pars[1]} and \code{which_pars[2]} in the grid over which
       the (profile) loglikelihood is evaluated. }
-    \item{\strong{object}: }{An object of class \code{"chandwich"}.
-      The input \code{object}. }
+    \item{\strong{max_loglik}: }{A numeric scalar.  The value value of
+      the loglikelihood at its maxium.}
     \item{\strong{prof_loglik}: }{An 2 \code{num} + 1 by 2 \code{num} + 1
       numeric matrix containing the values of the (profile) loglikelihood.}
     \item{\strong{type}: }{A character scalar. The input \code{type}.}

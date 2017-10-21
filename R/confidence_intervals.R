@@ -53,11 +53,11 @@
 #'   will be removed without warning.
 #' @return A list with components
 #'   \itemize{
-#'     \item{\strong{grid1, grid2}: }{Numeric vector.   Respective values of
+#'     \item{\strong{grid1, grid2}: }{Numeric vectors.   Respective values of
 #'       \code{which_pars[1]} and \code{which_pars[2]} in the grid over which
 #'       the (profile) loglikelihood is evaluated. }
-#'     \item{\strong{object}: }{An object of class \code{"chandwich"}.
-#'       The input \code{object}. }
+#'     \item{\strong{max_loglik}: }{A numeric scalar.  The value value of
+#'       the loglikelihood at its maxium.}
 #'     \item{\strong{prof_loglik}: }{An 2 \code{num} + 1 by 2 \code{num} + 1
 #'       numeric matrix containing the values of the (profile) loglikelihood.}
 #'     \item{\strong{type}: }{A character scalar. The input \code{type}.}
@@ -486,7 +486,8 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
   }
   conf_list <- list(cutoff = cutoff, parameter_vals = parameter_vals,
                     prof_loglik_vals = prof_loglik_vals, sym_CI = sym_CI,
-                    prof_CI = prof_CI, object = object, type = type)
+                    prof_CI = prof_CI, max_loglik = attr(object, "max_loglik"),
+                    type = type, which_pars = which_pars)
   class(conf_list) <- "confint"
   return(conf_list)
 }
