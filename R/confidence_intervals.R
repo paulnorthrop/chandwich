@@ -519,7 +519,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
 #'
 #' Calculates the profile loglikelihood for a subset of the model parameters.
 #' This function is provide primarily so that it can be called by
-#' \code{\link{conf_intervals}} and \conf{\link{conf_region}}.
+#' \code{\link{conf_intervals}} and \code{\link{conf_region}}.
 #'
 #' @param object An object of class \code{"chandwich"} returned by
 #'   \code{adjust_loglik}.
