@@ -53,6 +53,8 @@ A numeric vector of length 1.  The value of the profile
 }
 \description{
 Calculates the profile loglikelihood for a subset of the model parameters.
+This function is provide primarily so that it can be called by
+\code{\link{conf_intervals}} and \conf{\link{conf_region}}.
 }
 \examples{
 # GEV model, owtemps data ----------
