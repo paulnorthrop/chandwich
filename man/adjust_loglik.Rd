@@ -266,8 +266,8 @@ round(attr(large, "adjSE"), 4)
 # Starting from larger model
 medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
 medium <- adjust_loglik(larger = large, fixed_pars = 6)
-small <- adjust_loglik(larger = large, fixed_pars = c("sigma1", "xi[1]"))
-small <- adjust_loglik(larger = medium, fixed_pars = c("sigma1", "xi[1]"))
+small <- adjust_loglik(larger = large, fixed_pars = c("sigma[1]", "xi[1]"))
+small <- adjust_loglik(larger = medium, fixed_pars = c("sigma[1]", "xi[1]"))
 
 # Starting from scratch
 medium <- adjust_loglik(gev_loglik, data = owtemps, init = init, fixed_pars = 6)
