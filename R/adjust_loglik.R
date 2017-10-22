@@ -49,6 +49,10 @@
 #'   of the parameter vector are all fixed at \code{fixed_at}.
 #'   If \code{length(fixed_at) = length(fixed_pars)} then the component
 #'   \code{fixed_pars[i]} is fixed at \code{fixed_at[i]} for each \code{i}.
+#' @param name A character scalar.  A name for the model that gives rise
+#'   to \code{loglik}.  If this is not supplied then use the name in
+#'   \code{larger}, if this has been supplied, and the name of the function
+#'   \code{loglik} otherwise.
 #' @param larger Only relevant if \code{fixed_pars} is not \code{NULL}.
 #'   If \code{larger} is supplied but \code{fixed_pars} is not then an error
 #'   will result.
@@ -120,6 +124,7 @@
 #'     supplied in this call, or a previous call.}
 #'   \item{loglik_args}{A list containing the further arguments passed to
 #'     \code{loglik} via ... in this call, or a previous call.}
+#'   \item{name}{The argument \code{name}.}
 #'   If \code{fixed_pars} is not \code{NULL} then there are further attributes
 #'   \item{fixed_pars}{The argument \code{fixed_pars}, with names infered from
 #'     \code{par_names} if this was supplied.}
@@ -257,13 +262,22 @@
 #' @export
 adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
                           init = NULL, par_names = NULL,
-                          fixed_pars = NULL, fixed_at = 0, larger = NULL,
-                          alg_deriv = NULL, alg_hess = NULL) {
+                          fixed_pars = NULL, fixed_at = 0, name = NULL,
+                          larger = NULL, alg_deriv = NULL, alg_hess = NULL) {
   #
   # Setup and checks -----------------------------------------------------------
   #
   if (is.null(loglik) & is.null(larger)) {
     stop("If loglik is NULL then larger (and fixed_pars) must be supplied")
+  }
+  # If a model name hasn't been supplied then use the name in larger, if this
+  # has been supplied, and the name of the function loglik otherwise
+  if (is.null(name)) {
+    if (is.null(larger)) {
+      name <- as.character(substitute(loglik))
+    } else {
+      name <- attr(larger, "name")
+    }
   }
   # If larger is NULL then extract all information from the supplied arguments.
   # Otherwise, use the information contained in larger and only allow the user
@@ -649,6 +663,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
   attr(adjust_loglik_fn, "cluster") <- cluster
   attr(adjust_loglik_fn, "max_loglik") <- max_loglik
   attr(adjust_loglik_fn, "loglik_args") <- loglik_args
+  attr(adjust_loglik_fn, "name") <- name
   class(adjust_loglik_fn) <- "chandwich"
   return(adjust_loglik_fn)
 }

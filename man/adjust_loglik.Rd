@@ -5,8 +5,8 @@
 \title{Loglikelihood adjustment using the sandwich estimator}
 \usage{
 adjust_loglik(loglik = NULL, ..., cluster = NULL, p = 1, init = NULL,
-  par_names = NULL, fixed_pars = NULL, fixed_at = 0, larger = NULL,
-  alg_deriv = NULL, alg_hess = NULL)
+  par_names = NULL, fixed_pars = NULL, fixed_at = 0, name = NULL,
+  larger = NULL, alg_deriv = NULL, alg_hess = NULL)
 }
 \arguments{
 \item{loglik}{A function.  Returns a vector of the
@@ -55,6 +55,11 @@ If \code{length(fixed_at) = 1} then the components \code{fixed_pars}
 of the parameter vector are all fixed at \code{fixed_at}.
 If \code{length(fixed_at) = length(fixed_pars)} then the component
 \code{fixed_pars[i]} is fixed at \code{fixed_at[i]} for each \code{i}.}
+
+\item{name}{A character scalar.  A name for the model that gives rise
+to \code{loglik}.  If this is not supplied then use the name in
+\code{larger}, if this has been supplied, and the name of the function
+\code{loglik} otherwise.}
 
 \item{larger}{Only relevant if \code{fixed_pars} is not \code{NULL}.
   If \code{larger} is supplied but \code{fixed_pars} is not then an error
@@ -120,6 +125,7 @@ A function of class \code{"chandwich"} to evaluate an adjusted
     supplied in this call, or a previous call.}
   \item{loglik_args}{A list containing the further arguments passed to
     \code{loglik} via ... in this call, or a previous call.}
+  \item{name}{The argument \code{name}.}
   If \code{fixed_pars} is not \code{NULL} then there are further attributes
   \item{fixed_pars}{The argument \code{fixed_pars}, with names infered from
     \code{par_names} if this was supplied.}
