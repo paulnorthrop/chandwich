@@ -10,8 +10,8 @@
 }
 \arguments{
 \item{x, y, y2, y3}{objects of class "confreg", results of calls to
-\code{\link{conf_region}}, with a common value of \code{which_pars}.
-Contours are plotted for each object.}
+\code{\link{conf_region}} for a common model and a common value of
+\code{which_pars}.  Contours are plotted for each object.}
 
 \item{conf}{A numeric vector of confidence levels, i.e. numbers in
 (0, 100).  A confidence region contour is plotted for each value in
@@ -43,3 +43,8 @@ Up to 4 different types of loglikelihood (see the argument \code{type}
 to the function returned by \code{\link{adjust_loglik}})
 may be superimposed on the same plot.
 }
+\section{Examples}{
+
+See the examples in \code{\link{conf_region}}.
+}
+

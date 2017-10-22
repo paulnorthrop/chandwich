@@ -78,6 +78,8 @@ A list with components
       \code{which_pars}.  If the \code{which_pars} was numeric then
       it is supplemented by the parameter names, if these are available
       in \code{object}.}
+    \item{\strong{name}: }{A character scalar. The name of the model,
+      stored in \code{attr(object, "name")}.}
   }
 }
 \description{

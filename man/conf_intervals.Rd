@@ -70,9 +70,11 @@ A list with components
       at its maximum, stored in \code{object$max_loglik}.}
     \item{\strong{type}: }{The argument \code{type} supplied in the call
       to \code{adjust_loglik}, i.e. the type of loglikelihood adjustment.}
+    \item{\strong{which_pars}: }{The argument \code{which_pars}.}
+    \item{\strong{name}: }{A character scalar. The name of the model,
+      stored in \code{attr(object, "name")}.}
     \item{\strong{p_current}: }{The number of free parameters in the
       current model.}
-    \item{\strong{which_pars}: }{The argument \code{which_pars}.}
   }
 }
 \description{
@@ -108,5 +110,8 @@ par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
                        par_names = par_names)
 
-conf_intervals(large, which_pars = c("xi[0]", "xi[1]"))
+large_v <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"))
+large_none <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"),
+                             type = "none")
+plot(large_v, large_none)
 }

@@ -10,9 +10,9 @@
   legend_pos = "topleft", ...)
 }
 \arguments{
-\item{x, y, y2, y3}{objects of class "confint", a result of a call to
-\code{\link{conf_intervals}}.  A (profile) loglikelihood will be
-plotted for each object.}
+\item{x, y, y2, y3}{objects of class "confint", results of calls to
+\code{\link{conf_intervals}} for a common model.  A (profile)
+loglikelihood will be plotted for each object.}
 
 \item{which_par}{A scalar specifying the parameter for which the plot
 is produced.  Can be either a numeric vector, specifying index of the
@@ -56,3 +56,8 @@ may be superimposed on the same plot.
 By default (\code{add_lines = TRUE}) the confidence limits calculated
 in \code{\link{conf_intervals}} are indicated on the plot .
 }
+\section{Examples}{
+
+See the examples in \code{\link{conf_intervals}}.
+}
+

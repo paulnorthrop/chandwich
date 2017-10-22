@@ -136,8 +136,8 @@ summary.chandwich <- function(object, digits = max(3, getOption("digits")-3),
 #' may be superimposed on the same plot.
 #'
 #' @param x,y,y2,y3 objects of class "confreg", results of calls to
-#'   \code{\link{conf_region}}, with a common value of \code{which_pars}.
-#'   Contours are plotted for each object.
+#'   \code{\link{conf_region}} for a common model and a common value of
+#'   \code{which_pars}.  Contours are plotted for each object.
 #' @param conf A numeric vector of confidence levels, i.e. numbers in
 #'   (0, 100).  A confidence region contour is plotted for each value in
 #'   \code{conf}.
@@ -154,6 +154,8 @@ summary.chandwich <- function(object, digits = max(3, getOption("digits")-3),
 #'  and \code{lwd} will (in a consistent way) by both
 #'  \code{\link[graphics]{contour}} and \code{\link[graphics]{legend}}.
 #' @return Nothing is returned.
+#' @section Examples:
+#' See the examples in \code{\link{conf_region}}.
 #' @export
 plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
                          legend = any(c(!is.null(y), !is.null(y2),
@@ -162,20 +164,30 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   if (!inherits(x, "confreg")) {
     stop("x must be a \"confreg\" object")
   }
+  check_name <- attr(x, "name")
   # Check that all supplied objects have profiled the same parameters
   if (!is.null(y)) {
     if (!identical(x$which_pars, y$which_pars)) {
       stop("y$which_pars is not identical to x$which_pars")
+    }
+    if (!identical(check_name, attr(y, "name"))) {
+      stop("y is not derived from the same model as x")
     }
   }
   if (!is.null(y2)) {
     if (!identical(x$which_pars, y2$which_pars)) {
       stop("y2$which_pars is not identical to x$which_pars")
     }
+    if (!identical(check_name, attr(y2, "name"))) {
+      stop("y2 is not derived from the same model as x")
+    }
   }
   if (!is.null(y3)) {
     if (!identical(x$which_pars, y3$which_pars)) {
       stop("y3$which_pars is not identical to x$which_pars")
+    }
+    if (!identical(check_name, attr(y2, "name"))) {
+      stop("y2 is not derived from the same model as x")
     }
   }
   x_range <- range(x$grid1, y$grid1, y2$grid1, y3$grid1, finite = TRUE)
@@ -240,6 +252,9 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
     if (!inherits(y, "confreg")) {
       stop("y must be a \"confreg\" object")
     }
+    if (!identical(check_name, attr(y, "name"))) {
+      stop("y is not derived from the same model as x")
+    }
     max_loglik <- y$max_loglik
     cutoff <- max_loglik - stats::qchisq(conf  / 100, 2) / 2
     user_args$col <- my_col[2]
@@ -255,6 +270,9 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
     if (!inherits(y2, "confreg")) {
       stop("y2 must be a \"confreg\" object")
     }
+    if (!identical(check_name, attr(y2, "name"))) {
+      stop("y2 is not derived from the same model as x")
+    }
     max_loglik <- y2$max_loglik
     cutoff <- max_loglik - stats::qchisq(conf  / 100, 2) / 2
     user_args$col <- my_col[3]
@@ -269,6 +287,9 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   if (!is.null(y3)) {
     if (!inherits(y3, "confreg")) {
       stop("y3 must be a \"confreg\" object")
+    }
+    if (!identical(check_name, attr(y3, "name"))) {
+      stop("y3 is not derived from the same model as x")
     }
     max_loglik <- y3$max_loglik
     cutoff <- max_loglik - stats::qchisq(conf  / 100, 2) / 2
@@ -309,9 +330,9 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
 #' By default (\code{add_lines = TRUE}) the confidence limits calculated
 #' in \code{\link{conf_intervals}} are indicated on the plot .
 #'
-#' @param x,y,y2,y3 objects of class "confint", a result of a call to
-#'   \code{\link{conf_intervals}}.  A (profile) loglikelihood will be
-#'   plotted for each object.
+#' @param x,y,y2,y3 objects of class "confint", results of calls to
+#'   \code{\link{conf_intervals}} for a common model.  A (profile)
+#'   loglikelihood will be plotted for each object.
 #' @param which_par A scalar specifying the parameter for which the plot
 #'   is produced.  Can be either a numeric vector, specifying index of the
 #'   component of the \strong{full} parameter vector, or a character scalar
@@ -336,6 +357,8 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
 #'   and \code{lwd} will (in a consistent way) by both
 #'   \code{\link[graphics]{matplot}} and \code{\link[graphics]{legend}}.
 #' @return Nothing is returned.
+#' @section Examples:
+#' See the examples in \code{\link{conf_intervals}}.
 #' @export
 plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
                          which_par = x$which_pars[1], conf = x$conf,
@@ -385,6 +408,7 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
   x_vals <- temp$x_vals
   y_vals <- temp$y_vals
   types <- x$type
+  check_name <- attr(x, "name")
   if (!is.null(y)) {
     if (!inherits(y, "confint")) {
       stop("y must be a \"confint\" object")

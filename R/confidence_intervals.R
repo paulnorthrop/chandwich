@@ -65,6 +65,8 @@
 #'       \code{which_pars}.  If the \code{which_pars} was numeric then
 #'       it is supplemented by the parameter names, if these are available
 #'       in \code{object}.}
+#'     \item{\strong{name}: }{A character scalar. The name of the model,
+#'       stored in \code{attr(object, "name")}.}
 #'   }
 #' @examples
 #' # GEV model, owtemps data ----------
@@ -273,7 +275,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
   }
   conf_region_list <- list(grid1 = grid1, grid2 = grid2, prof_loglik = z,
                            max_loglik = attr(object, "max_loglik"),
-                           type = type, which_pars = which_pars)
+                           type = type, which_pars = which_pars,
+                           name = attr(object, "name"))
   class(conf_region_list) <- "confreg"
   return(conf_region_list)
 }
@@ -336,9 +339,11 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'       at its maximum, stored in \code{object$max_loglik}.}
 #'     \item{\strong{type}: }{The argument \code{type} supplied in the call
 #'       to \code{adjust_loglik}, i.e. the type of loglikelihood adjustment.}
+#'     \item{\strong{which_pars}: }{The argument \code{which_pars}.}
+#'     \item{\strong{name}: }{A character scalar. The name of the model,
+#'       stored in \code{attr(object, "name")}.}
 #'     \item{\strong{p_current}: }{The number of free parameters in the
 #'       current model.}
-#'     \item{\strong{which_pars}: }{The argument \code{which_pars}.}
 #'   }
 #' @examples
 #' # GEV model, owtemps data ----------
@@ -370,7 +375,10 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'                        par_names = par_names)
 #'
-#' conf_intervals(large, which_pars = c("xi[0]", "xi[1]"))
+#' large_v <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"))
+#' large_none <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"),
+#'                              type = "none")
+#' plot(large_v, large_none)
 #' @export
 conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
                      mult = 1.5, num = 10,
@@ -499,6 +507,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
                     prof_loglik_vals = prof_loglik_vals, sym_CI = sym_CI,
                     prof_CI = prof_CI, max_loglik = attr(object, "max_loglik"),
                     type = type, which_pars = which_pars,
+                    name = attr(object, "name"),
                     p_current = attr(object, "p_current"))
   class(conf_list) <- "confint"
   return(conf_list)
