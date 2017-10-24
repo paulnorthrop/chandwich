@@ -4,7 +4,7 @@
 \alias{adjust_loglik}
 \title{Loglikelihood adjustment using the sandwich estimator}
 \usage{
-adjust_loglik(loglik = NULL, ..., cluster = NULL, p = 1, init = NULL,
+adjust_loglik(loglik = NULL, ..., cluster = NULL, p = NULL, init = NULL,
   par_names = NULL, fixed_pars = NULL, fixed_at = 0, name = NULL,
   larger = NULL, alg_deriv = NULL, alg_hess = NULL)
 }
@@ -13,7 +13,10 @@ adjust_loglik(loglik = NULL, ..., cluster = NULL, p = 1, init = NULL,
 loglikelihood contributions of individual observations.  The first
 argument must be the vector of model parameter(s). If any of the model
 parameters are out-of-bounds then \code{loglik} should return either
-\code{-Inf} or a vector with at least one element equal to \code{-Inf}.}
+\code{-Inf} or a vector with at least one element equal to \code{-Inf}.
+The number of parameters in the \strong{full} model must be specified
+using (at least) one of the arguments \code{p}, \code{init} or
+\code{par_names}.}
 
 \item{...}{Further arguments to be passed either to \code{loglik}
 (and to \code{alg_deriv} and \code{alg_hess} if these are supplied) or
@@ -30,18 +33,22 @@ Must have the same length as the vector returned by \code{loglik}.
 By default each observation is its own cluster.}
 
 \item{p}{A numeric scalar.  The dimension of the \strong{full} parameter
-vector, i.e. the number of parameters in the full model.}
+vector, i.e. the number of parameters in the full model.  Must be
+consistent with the lengths of \code{init} and \code{par_names},
+if these are also supplied.}
 
 \item{init}{A numeric vector of initial values.  Must have length equal
 to the number of parameters in the \strong{full} model.  If \code{init}
-is supplied then \code{p} is set to \code{length(init)}.
+is supplied then \code{p} is set to \code{length(init)}, provided that
+this is consistent with the the value given by \code{p} or implied
+by \code{length(par_names)}.
 If \code{fixed_pars} is not \code{NULL} then \code{init[-fixed_pars]}
 is used in the search for the MLE.
 If \code{init} is not supplied then \code{rep(0.1, p)} is used.}
 
 \item{par_names}{A character vector.  Names of the \code{p} parameters
-in the \strong{full} model.  If \code{par_names} does not have length \code{p}
-then \code{par_names = NULL} will be used.}
+in the \strong{full} model.  Must be consistent with the lengths of
+\code{init} and \code{p}, if these are also supplied.}
 
 \item{fixed_pars}{A vector specifying which parameters are to be restricted
 to be equal to the value(s) in \code{fixed_at}.  Can be either a numeric
@@ -57,13 +64,16 @@ If \code{length(fixed_at) = length(fixed_pars)} then the component
 \code{fixed_pars[i]} is fixed at \code{fixed_at[i]} for each \code{i}.}
 
 \item{name}{A character scalar.  A name for the model that gives rise
-to \code{loglik}.  If this is not supplied then use the name in
-\code{larger}, if this has been supplied, and the name of the function
-\code{loglik} otherwise.}
+to \code{loglik}.  If this is not supplied then the name in
+\code{larger} is used, if this has been supplied, and the name of
+the function \code{loglik} otherwise.}
 
 \item{larger}{Only relevant if \code{fixed_pars} is not \code{NULL}.
   If \code{larger} is supplied but \code{fixed_pars} is not then an error
-  will result.
+  will result.  if \code{larger} is supplied then information about the
+  model in \code{larger}, e.g. about \code{p} and \code{par_names} will
+  override any attempt to set these arguments in the call to
+  \code{adjust_loglik}.
 
   An object of class \code{"chandwich"} returned by \code{adjust_loglik},
   corresponding to a model in which the smaller model implied by
@@ -193,6 +203,9 @@ pois_glm_loglik <- function(pars, y, x) {
   return(dpois(y, lambda = exp(log_mu), log = TRUE))
 }
 pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3)
+par_names <- c("alpha", "beta", "gamma")
+pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x,
+             par_names = par_names)
 
 pois_alg_deriv <- function(pars, y, x) {
   mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)

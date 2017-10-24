@@ -15,6 +15,9 @@
 #'   argument must be the vector of model parameter(s). If any of the model
 #'   parameters are out-of-bounds then \code{loglik} should return either
 #'   \code{-Inf} or a vector with at least one element equal to \code{-Inf}.
+#'   The number of parameters in the \strong{full} model must be specified
+#'   using (at least) one of the arguments \code{p}, \code{init} or
+#'   \code{par_names}.
 #' @param ... Further arguments to be passed either to \code{loglik}
 #'   (and to \code{alg_deriv} and \code{alg_hess} if these are supplied) or
 #'   to \code{\link[stats]{optim}}.  The latter may include \code{gr},
@@ -28,16 +31,20 @@
 #'   Must have the same length as the vector returned by \code{loglik}.
 #'   By default each observation is its own cluster.
 #' @param p A numeric scalar.  The dimension of the \strong{full} parameter
-#'   vector, i.e. the number of parameters in the full model.
+#'   vector, i.e. the number of parameters in the full model.  Must be
+#'   consistent with the lengths of \code{init} and \code{par_names},
+#'   if these are also supplied.
 #' @param init A numeric vector of initial values.  Must have length equal
 #'   to the number of parameters in the \strong{full} model.  If \code{init}
-#'   is supplied then \code{p} is set to \code{length(init)}.
+#'   is supplied then \code{p} is set to \code{length(init)}, provided that
+#'   this is consistent with the the value given by \code{p} or implied
+#'   by \code{length(par_names)}.
 #'   If \code{fixed_pars} is not \code{NULL} then \code{init[-fixed_pars]}
 #'   is used in the search for the MLE.
 #'   If \code{init} is not supplied then \code{rep(0.1, p)} is used.
 #' @param par_names A character vector.  Names of the \code{p} parameters
-#'   in the \strong{full} model.  If \code{par_names} does not have length \code{p}
-#'   then \code{par_names = NULL} will be used.
+#'   in the \strong{full} model.  Must be consistent with the lengths of
+#'   \code{init} and \code{p}, if these are also supplied.
 #' @param fixed_pars A vector specifying which parameters are to be restricted
 #'   to be equal to the value(s) in \code{fixed_at}.  Can be either a numeric
 #'   vector, specifying indices of the components of the \strong{full} parameter
@@ -50,12 +57,15 @@
 #'   If \code{length(fixed_at) = length(fixed_pars)} then the component
 #'   \code{fixed_pars[i]} is fixed at \code{fixed_at[i]} for each \code{i}.
 #' @param name A character scalar.  A name for the model that gives rise
-#'   to \code{loglik}.  If this is not supplied then use the name in
-#'   \code{larger}, if this has been supplied, and the name of the function
-#'   \code{loglik} otherwise.
+#'   to \code{loglik}.  If this is not supplied then the name in
+#'   \code{larger} is used, if this has been supplied, and the name of
+#'   the function \code{loglik} otherwise.
 #' @param larger Only relevant if \code{fixed_pars} is not \code{NULL}.
 #'   If \code{larger} is supplied but \code{fixed_pars} is not then an error
-#'   will result.
+#'   will result.  if \code{larger} is supplied then information about the
+#'   model in \code{larger}, e.g. about \code{p} and \code{par_names} will
+#'   override any attempt to set these arguments in the call to
+#'   \code{adjust_loglik}.
 #'
 #'   An object of class \code{"chandwich"} returned by \code{adjust_loglik},
 #'   corresponding to a model in which the smaller model implied by
@@ -178,6 +188,9 @@
 #'   return(dpois(y, lambda = exp(log_mu), log = TRUE))
 #' }
 #' pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3)
+#' par_names <- c("alpha", "beta", "gamma")
+#' pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x,
+#'              par_names = par_names)
 #'
 #' pois_alg_deriv <- function(pars, y, x) {
 #'   mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)
@@ -263,7 +276,7 @@
 #'          fixed_pars = c("sigma[1]", "xi[1]"),
 #'          par_names = c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]"))
 #' @export
-adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
+adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
                           init = NULL, par_names = NULL,
                           fixed_pars = NULL, fixed_at = 0, name = NULL,
                           larger = NULL, alg_deriv = NULL, alg_hess = NULL) {
@@ -286,10 +299,49 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
   # Otherwise, use the information contained in larger and only allow the user
   # to override the initial estimates init.
   if (is.null(larger)) {
-    got_loglik_args <- FALSE
-    if (!is.null(init)) {
-      p <- length(init)
+    # Check that the length of the parameter vector has been set somehow
+    # Which of p, init and par_names have not been supplied?
+    p_not <- c(is.null(p), is.null(init), is.null(par_names))
+    if (all(p_not)) {
+      stop("The dimension of the full parameter vector has not been set")
+    }
+    p_names <- c("p", "init", "par_names")
+    # Check that p, length(init) and length(par_names) are consistent
+    if (is.null(init)) {
+      p_init <- NULL
     } else {
+      p_init <- length(init)
+    }
+    if (is.null(par_names)) {
+      p_par_names <- NULL
+    } else {
+      p_par_names <- length(par_names)
+    }
+    p_vec <- c(p, p_init, p_par_names)
+    p_given <- which(!p_not)
+    n_p <- length(p_given)
+    # Only non-NULL elements remain in p_vec
+    if (n_p == 2) {
+      if (!identical(p_vec[1], p_vec[2])) {
+        err_text <- paste(p_names[p_given[1]], p_names[p_given[2]],
+                          sep = " and ")
+        stop(err_text, " are not consistent")
+      }
+    } else if (n_p == 3) {
+      cond1 <- !identical(p_vec[1], p_vec[2])
+      cond2 <- !identical(p_vec[2], p_vec[3])
+      if (cond1 || cond2) {
+        err_text <- paste(p_names[p_given[1]], p_names[p_given[2]],
+                          p_names[p_given[3]], sep = " and ")
+        stop(err_text, " are not consistent")
+      }
+    }
+    # If we get to here then all values of p are the same so we can use
+    # the first one
+    p <- p_vec[1]
+    #
+    got_loglik_args <- FALSE
+    if (is.null(init)) {
       init <- rep(0.1, p)
     }
     # Only use par_names if it has length p
