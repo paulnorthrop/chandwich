@@ -105,6 +105,9 @@ A function of class \code{"chandwich"} to evaluate an adjusted
   The function has (additional) attributes
   \item{p_full, p_current}{The number of parameters in the full model and
     current models, respectively.}
+  \item{free_pars}{A numeric vector giving the indices of the free
+    parameters in the current model, with names infered from
+    \code{par_names} if this was supplied.}
   \item{MLE, res_MLE}{Numeric vectors, with names infered from
     \code{par_names} if this was supplied.  Maximum likelihood estimates
     of free parameters under the current model (\code{mle}) and all

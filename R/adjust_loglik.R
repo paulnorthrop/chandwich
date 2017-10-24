@@ -104,6 +104,9 @@
 #'   The function has (additional) attributes
 #'   \item{p_full, p_current}{The number of parameters in the full model and
 #'     current models, respectively.}
+#'   \item{free_pars}{A numeric vector giving the indices of the free
+#'     parameters in the current model, with names infered from
+#'     \code{par_names} if this was supplied.}
 #'   \item{MLE, res_MLE}{Numeric vectors, with names infered from
 #'     \code{par_names} if this was supplied.  Maximum likelihood estimates
 #'     of free parameters under the current model (\code{mle}) and all
@@ -375,6 +378,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
     n_pars <- p
     # Check that all the contributions to loglikelihood are finite at init
     check_vals <- do.call(loglik, c(list(init), loglik_args))
+    free_pars <- (1:p)
   } else {
     qq <- length(fixed_pars)
     n_pars <- p - qq
@@ -633,6 +637,8 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = 1,
   names(mle) <- par_names
   attr(adjust_loglik_fn, "p_full") <- p
   attr(adjust_loglik_fn, "p_current") <- n_pars
+  names(free_pars) <- par_names
+  attr(adjust_loglik_fn, "free_pars") <- free_pars
   if (!is.null(fixed_pars)) {
     names(res_mle) <- full_par_names
     attr(adjust_loglik_fn, "fixed_pars") <- fixed_pars
