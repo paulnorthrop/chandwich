@@ -4,7 +4,8 @@
 \alias{plot.chandwich}
 \title{Plot diagnostics a chandwich object}
 \usage{
-\method{plot}{chandwich}(x, y, ..., lower = NULL, upper = NULL, type = 1)
+\method{plot}{chandwich}(x, y, type = 1, legend = length(type) > 1,
+  legend_pos = "topleft", ...)
 }
 \arguments{
 \item{x}{an object of class "chandwich", a result of a call to
@@ -12,24 +13,39 @@
 
 \item{y}{Not used.}
 
-\item{...}{Additional arguments passed on to ...}
-
-\item{lower, upper}{Numeric vectors specifying the lower and upper limits
-on the parameter values to appear in the plot.  If either \code{lower}
-or \code{upper} are not provided then the MLE minus (for \code{lower})
-or plus (for \code{upper}) three (adjusted) standard errors is used.}
-
 \item{type}{An integer vector, a subset of the numbers \code{1:4}.
 Indicates which loglikelihoods to plot: \code{1} for \code{"vertical"}
 adjustment; \code{2} for \code{"cholesky"} (horizontal adjustment);
 \code{3} for \code{"dilation"} (horizontal adjustment); \code{4}
 for no adjustment, i.e. based on the independence loglikelihood.}
+
+\item{legend}{A logical scalar or a character vector.  If this is
+supplied then a legend is added to the plot.  If \code{legend} is a
+character vector then it is used as the argument \code{legend}
+to \code{\link[graphics]{legend}}.  Otherwise, i.e. if
+\code{legend = TRUE} then the argument \code{type} is used.}
+
+\item{legend_pos}{The position of the legend (if required) specified using
+the argument \code{x} in \code{\link[graphics]{legend}}.}
+
+\item{...}{Additional arguments passed to \code{\link[graphics]{matplot}}
+  or \code{\link[graphics]{legend}}.  The arguments \code{col}, \code{lty}
+  and \code{lwd} will (in a consistent way) by both
+  \code{\link[graphics]{matplot}} and \code{\link[graphics]{legend}}.
+
+  If the argument \code{xlim} to \code{\link[graphics]{matplot}} is not
+  supplied then the MLE minus (for \code{lower}) or plus (for \code{upper})
+  standard errors is used.  If \code{type} does not include 4 then adjusted
+  standard errors are used.  Otherwise, the larger of the adjust and
+  unadjusted standard errors are used.}
 }
 \value{
 Nothing is returned.
 }
 \description{
-\code{plot} method for class "chandwich".
+\code{plot} method for class "chandwich".  Only applicable to an object
+\code{x} for which \code{attr(x, "p_current") = 1}, i.e. a model with
+one free parameter.
 }
 \examples{
 binom_loglik <- function(prob, data) {
@@ -42,7 +58,7 @@ cluster <- 1:nrow(rats)
 rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, cluster = cluster)
 plot(rat_res)
 plot(rat_res, type = 1:4)
-plot(rat_res, type = 1:4, lower = 0, upper = 1)
+plot(rat_res, type = 1:4, xlim = c(0, 1), legend_pos = "bottom")
 }
 \seealso{
 \code{\link{adjust_loglik}}.

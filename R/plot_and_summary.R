@@ -2,21 +2,35 @@
 
 #' Plot diagnostics a chandwich object
 #'
-#' \code{plot} method for class "chandwich".
+#' \code{plot} method for class "chandwich".  Only applicable to an object
+#' \code{x} for which \code{attr(x, "p_current") = 1}, i.e. a model with
+#' one free parameter.
 #'
 #' @param x an object of class "chandwich", a result of a call to
 #'   \code{\link{adjust_loglik}}.
 #' @param y Not used.
-#' @param lower,upper Numeric vectors specifying the lower and upper limits
-#'   on the parameter values to appear in the plot.  If either \code{lower}
-#'   or \code{upper} are not provided then the MLE minus (for \code{lower})
-#'   or plus (for \code{upper}) three (adjusted) standard errors is used.
 #' @param type An integer vector, a subset of the numbers \code{1:4}.
 #'   Indicates which loglikelihoods to plot: \code{1} for \code{"vertical"}
 #'   adjustment; \code{2} for \code{"cholesky"} (horizontal adjustment);
 #'   \code{3} for \code{"dilation"} (horizontal adjustment); \code{4}
 #'   for no adjustment, i.e. based on the independence loglikelihood.
-#' @param ... Additional arguments passed on to ...
+#' @param legend A logical scalar or a character vector.  If this is
+#'   supplied then a legend is added to the plot.  If \code{legend} is a
+#'   character vector then it is used as the argument \code{legend}
+#'   to \code{\link[graphics]{legend}}.  Otherwise, i.e. if
+#'   \code{legend = TRUE} then the argument \code{type} is used.
+#' @param legend_pos The position of the legend (if required) specified using
+#'   the argument \code{x} in \code{\link[graphics]{legend}}.
+#' @param ... Additional arguments passed to \code{\link[graphics]{matplot}}
+#'   or \code{\link[graphics]{legend}}.  The arguments \code{col}, \code{lty}
+#'   and \code{lwd} will (in a consistent way) by both
+#'   \code{\link[graphics]{matplot}} and \code{\link[graphics]{legend}}.
+#'
+#'   If the argument \code{xlim} to \code{\link[graphics]{matplot}} is not
+#'   supplied then the MLE minus (for \code{lower}) or plus (for \code{upper})
+#'   standard errors is used.  If \code{type} does not include 4 then adjusted
+#'   standard errors are used.  Otherwise, the larger of the adjust and
+#'   unadjusted standard errors are used.
 #' @return Nothing is returned.
 #' @examples
 #' binom_loglik <- function(prob, data) {
@@ -29,38 +43,96 @@
 #' rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, cluster = cluster)
 #' plot(rat_res)
 #' plot(rat_res, type = 1:4)
-#' plot(rat_res, type = 1:4, lower = 0, upper = 1)
+#' plot(rat_res, type = 1:4, xlim = c(0, 1), legend_pos = "bottom")
 #' @seealso \code{\link{adjust_loglik}}.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
 #'   and unadjusted and adjusted standard errors.
 #' @export
-plot.chandwich <- function(x, y, ..., lower = NULL, upper = NULL,
-                           type = 1) {
+plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
+                           legend_pos = "topleft", ...) {
   if (!inherits(x, "chandwich")) {
     stop("use only with \"chandwich\" objects")
   }
   n_pars <- attr(x, "p_current")
-  # Single parameter model
-  if (n_pars == 1) {
-    if (is.null(lower)) {
+  if (n_pars != 1) {
+    stop("x must have one free parameter, i'e. attr(x, ''p_current'') = 1")
+  }
+  # User-supplied arguments
+  user_args <- list(...)
+  # Always plot lines only
+  user_args$type = "l"
+  l_cond <- names(user_args) %in% methods::formalArgs(graphics::legend)
+  lines_cond <- names(user_args) %in% c("col", "lty", "lwd")
+  legend_args <- user_args[l_cond]
+  user_args <- user_args[!l_cond | lines_cond]
+  # If xlab or ylab are not supplied then use names(x$which_pars), if present
+  if (is.null(user_args$xlab)) {
+    if (!is.null(names(attr(x, "free_pars")))) {
+      xlabel <- names(attr(x, "free_pars"))
+    } else {
+      xlabel <- ""
+    }
+    user_args$xlab <- parse(text = xlabel)
+  }
+  if (is.null(user_args$ylab)) {
+    if (attr(x, "p_current") == 1) {
+      user_args$ylab <- "loglikelihood"
+    } else {
+      user_args$ylab <- "profile loglikelihood"
+    }
+  }
+  if (is.null(user_args$xlim)) {
+    if (4 %in% type) {
+      lower <- attr(x, "MLE") - 3 * max(attr(x, "adjSE"), attr(x, "SE"))
+      upper <- attr(x, "MLE") + 3 * max(attr(x, "adjSE"), attr(x, "SE"))
+    } else {
       lower <- attr(x, "MLE") - 3 * attr(x, "adjSE")
       upper <- attr(x, "MLE") + 3 * attr(x, "adjSE")
     }
-    x_vals <- seq(lower, upper, len = 100)
-    y <- NULL
-    if (any(type == 1)) {
-      y <- cbind(y, x(x_vals, type = "vertical"))
+    user_args$xlim <- c(lower, upper)
+  }
+  if (is.null(user_args$col)) {
+    user_args$col <- rep(1, 4)
+  }
+  legend_args$col <- user_args$col
+  if (is.null(user_args$lty)) {
+    user_args$lty <- 1:4
+  }
+  legend_args$lty <- user_args$lty
+  if (is.null(user_args$lwd)) {
+    user_args$lwd <- rep(1, 4)
+  }
+  legend_args$lwd <- user_args$lwd
+  # Create values for the plot
+  x_vals <- seq(user_args$xlim[1], user_args$xlim[2], len = 100)
+  y_vals <- NULL
+  if (any(type == 1)) {
+    y_vals <- cbind(y_vals, x(x_vals, type = "vertical"))
+  }
+  if (any(type == 2)) {
+    y_vals <- cbind(y_vals, x(x_vals, type = "cholesky"))
+  }
+  if (any(type == 3)) {
+    y_vals <- cbind(y_vals, x(x_vals, type = "dilation"))
+  }
+  if (any(type == 4)) {
+    y_vals <- cbind(y_vals, x(x_vals, type = "none"))
+  }
+  for_matplot <- c(list(x = x_vals, y = y_vals), user_args)
+  do.call(graphics::matplot, for_matplot)
+  # Add a legend?
+  if (legend | is.character(legend)) {
+    types <- c("vertical", "cholesky", "dilation", "none")
+    legend_args$x <- legend_pos
+    if (legend) {
+      legend_args$legend <- types[type]
+    } else {
+      legend_args$legend <- legend
     }
-    if (any(type == 2)) {
-      y <- cbind(y, x(x_vals, type = "cholesky"))
+    if (is.null(legend_args$title)) {
+      legend_args$title <- "adjustment"
     }
-    if (any(type == 3)) {
-      y <- cbind(y, x(x_vals, type = "dilation"))
-    }
-    if (any(type == 4)) {
-      y <- cbind(y, x(x_vals, type = "none"))
-    }
-    graphics::matplot(x_vals, y, type = "l", ...)
+    do.call(graphics::legend, legend_args)
   }
   return(invisible())
 }
@@ -186,13 +258,11 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
     if (!identical(x$which_pars, y3$which_pars)) {
       stop("y3$which_pars is not identical to x$which_pars")
     }
-    if (!identical(check_name, attr(y2, "name"))) {
-      stop("y2 is not derived from the same model as x")
+    if (!identical(check_name, attr(y3, "name"))) {
+      stop("y3 is not derived from the same model as x")
     }
   }
-  x_range <- range(x$grid1, y$grid1, y2$grid1, y3$grid1, finite = TRUE)
-  y_range <- range(x$grid2, y$grid2, y2$grid2, y3$grid2, finite = TRUE)
-  # User-supplied arguments for contour.
+  # User-supplied arguments for contour
   user_args <- list(...)
   l_cond <- names(user_args) %in% methods::formalArgs(graphics::legend)
   lines_cond <- names(user_args) %in% c("col", "lty", "lwd")
@@ -214,9 +284,11 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
     user_args$drawlabels <- length(conf) > 1
   }
   if (is.null(user_args$xlim)) {
+    x_range <- range(x$grid1, y$grid1, y2$grid1, y3$grid1, finite = TRUE)
     user_args$xlim <- x_range
   }
   if (is.null(user_args$ylim)) {
+    y_range <- range(x$grid2, y$grid2, y2$grid2, y3$grid2, finite = TRUE)
     user_args$ylim <- y_range
   }
   if (is.null(user_args$col)) {
@@ -436,9 +508,7 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
     y_vals <- cbind(y_vals, temp$y_vals)
     types <- c(types, y3$type)
   }
-  x_range <- range(x_vals, finite = TRUE)
-  y_range <- range(y_vals, finite = TRUE)
-  # User-supplied arguments.
+  # User-supplied arguments
   user_args <- list(...)
   # Always plot lines only
   user_args$type = "l"
@@ -458,9 +528,11 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
     }
   }
   if (is.null(user_args$xlim)) {
+    x_range <- range(x_vals, finite = TRUE)
     user_args$xlim <- x_range
   }
   if (is.null(user_args$ylim)) {
+    y_range <- range(y_vals, finite = TRUE)
     user_args$ylim <- y_range
   }
   if (is.null(user_args$col)) {
