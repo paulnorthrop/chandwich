@@ -5,7 +5,7 @@
 #' Performs adjustments of a user-supplied independence loglikelihood for the
 #' presence of cluster dependence, following
 #' \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
-#' The user provides a function that returns observation-specifc
+#' The user provides a function that returns a vector of observation-specifc
 #' loglikelihood contributions and a vector that indicates cluster membership.
 #' The loglikelihood of a sub-model can be adjusted by fixing a set of
 #' parameters at particular values.
