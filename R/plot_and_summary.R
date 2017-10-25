@@ -186,13 +186,10 @@ summary.chandwich <- function(object, digits = max(3, getOption("digits")-3),
   mle <- signif(attr(object, "MLE"), digits = digits)
   SE <- signif(attr(object, "SE"), digits = digits)
   adjSE <- signif(attr(object, "adjSE"), digits = digits)
-  res <- cbind(mle, SE, adjSE)
-  column_names <- c("MLE", "SE", "adjSE")
-  if (!is.null(attr(object, "par_names"))) {
-    res <- cbind(attr(object, "par_names"), res)
-    column_names <- c("parameter", column_names)
+  res <- cbind(MLE = mle, SE = SE, `adj. SE` = adjSE)
+  if (is.null(attr(object, "par_names"))) {
+    rownames(res) <- 1:length(mle)
   }
-  colnames(res) <- column_names
   return(res)
 }
 
