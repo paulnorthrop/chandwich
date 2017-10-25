@@ -202,7 +202,6 @@ pois_glm_loglik <- function(pars, y, x) {
   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
   return(dpois(y, lambda = exp(log_mu), log = TRUE))
 }
-pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3)
 par_names <- c("alpha", "beta", "gamma")
 pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x,
              par_names = par_names)
