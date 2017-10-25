@@ -12,7 +12,7 @@
 #' @param type An integer vector, a subset of the numbers \code{1:4}.
 #'   Indicates which loglikelihoods to plot: \code{1} for \code{"vertical"}
 #'   adjustment; \code{2} for \code{"cholesky"} (horizontal adjustment);
-#'   \code{3} for \code{"dilation"} (horizontal adjustment); \code{4}
+#'   \code{3} for \code{"spectral"} (horizontal adjustment); \code{4}
 #'   for no adjustment, i.e. based on the independence loglikelihood.
 #' @param legend A logical scalar or a character vector.  If this is
 #'   supplied then a legend is added to the plot.  If \code{legend} is a
@@ -113,7 +113,7 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
     y_vals <- cbind(y_vals, x(x_vals, type = "cholesky"))
   }
   if (any(type == 3)) {
-    y_vals <- cbind(y_vals, x(x_vals, type = "dilation"))
+    y_vals <- cbind(y_vals, x(x_vals, type = "spectral"))
   }
   if (any(type == 4)) {
     y_vals <- cbind(y_vals, x(x_vals, type = "none"))
@@ -122,7 +122,7 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
   do.call(graphics::matplot, for_matplot)
   # Add a legend?
   if (legend | is.character(legend)) {
-    types <- c("vertical", "cholesky", "dilation", "none")
+    types <- c("vertical", "cholesky", "spectral", "none")
     legend_args$x <- legend_pos
     if (legend) {
       legend_args$legend <- types[type]

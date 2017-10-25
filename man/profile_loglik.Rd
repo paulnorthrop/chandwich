@@ -5,7 +5,7 @@
 \title{Profile loglikelihood}
 \usage{
 profile_loglik(object, prof_pars = NULL, prof_vals = NULL, init = NULL,
-  type = c("vertical", "cholesky", "dilation", "none"), ...)
+  type = c("vertical", "cholesky", "spectral", "none"), ...)
 }
 \arguments{
 \item{object}{An object of class \code{"chandwich"} returned by

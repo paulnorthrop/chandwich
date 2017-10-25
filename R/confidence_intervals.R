@@ -125,7 +125,7 @@
 #' @export
 conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
                         range2 = c(NA, NA), conf = 95, mult = 2, num = c(10, 10),
-                        type = c("vertical", "cholesky", "dilation", "none"),
+                        type = c("vertical", "cholesky", "spectral", "none"),
                         ...) {
   type <- match.arg(type)
   # Check that arguments supplied in ... can be passed to stats::optim()
@@ -382,7 +382,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' @export
 conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
                      mult = 1.5, num = 10,
-                     type = c("vertical", "cholesky", "dilation", "none"),
+                     type = c("vertical", "cholesky", "spectral", "none"),
                      ...) {
   type <- match.arg(type)
   # Fixed parameters, values at which they are fixed and parameter names
@@ -592,7 +592,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
 #' @export
 profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
                            init = NULL, type = c("vertical", "cholesky",
-                                                 "dilation", "none"), ...) {
+                                                 "spectral", "none"), ...) {
   type <- match.arg(type)
   if (is.null(prof_pars)) {
     stop("prof_pars must be supplied")

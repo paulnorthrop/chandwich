@@ -89,7 +89,7 @@
 #'   described in Section 6 and two `horizontal' adjustments are described
 #'   in Sections 3.2 to 3.4.  See the descriptions of \code{type} and, for the
 #'   horizontal adjustments, the descriptions of \code{C_cholesky} and
-#'   \code{C_dilation}, in \strong{Value}.
+#'   \code{C_spectral}, in \strong{Value}.
 #'
 #'   The adjustments involve first and second derviatives of the loglikelihood
 #'   with respect to the model parameters.  These are estimated using
@@ -108,7 +108,7 @@
 #'     columns (\code{nrow(x)} sets of model parameters), one set in each row
 #'     of \code{x}.}
 #'   \item{type}{A character scalar.  The type of adjustment to use.
-#'     One of \code{"vertical"}, \code{"cholesky"}, \code{"dilation"} or
+#'     One of \code{"vertical"}, \code{"cholesky"}, \code{"spectral"} or
 #'     \code{"none"}.}  The latter results in the evaluation of the
 #'     (unadjusted) independence loglikelihood.
 #'   The function has (additional) attributes
@@ -125,7 +125,7 @@
 #'   \item{SE, adjSE}{The unadjusted and adjusted standard errors, respectively.}
 #'   \item{HI, HA}{The Hessians of the independence and adjusted loglikelihood,
 #'     respectively.}
-#'   \item{C_cholesky, C_dilation}{The matrix C in equation (14) of Chandler and
+#'   \item{C_cholesky, C_spectral}{The matrix C in equation (14) of Chandler and
 #'     Bate (2007), calculated using Cholesky decomposition and spectral
 #'     decomposition, respectively.}
 #'   \item{full_par_names, par_names}{The names of the parameters in the full
@@ -169,7 +169,7 @@
 #' y1 <- rat_res(x, type = "none")
 #' y2 <- rat_res(x, type = "vertical")
 #' y3 <- rat_res(x, type = "cholesky")
-#' y4 <- rat_res(x, type = "dilation")
+#' y4 <- rat_res(x, type = "spectral")
 #' matplot(x, cbind(y1, y2, y3, y4), type = "l", lwd = 2)
 #'
 #' # Misspecified Poisson model for negative binomial data ----------
@@ -620,7 +620,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   MI <- z$vectors %*% diag(sqrt(z$values), n_pars, n_pars) %*% t(z$vectors)
   z <- eigen(-HA, symmetric = TRUE)
   MA <- z$vectors %*% diag(sqrt(z$values), n_pars, n_pars) %*% t(z$vectors)
-  C_dilation <- solve(MI) %*% MA
+  C_spectral <- solve(MI) %*% MA
   # If some parameters are fixed then modify the input loglik so that it
   # accepts an argument of length length(free_pars)
   if (!is.null(fixed_pars)) {
@@ -637,7 +637,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   }
   # Return a function to calculate the adjusted loglikelihood
   # If x = mle then we return the maximum of the independence loglikelihood
-  adjust_loglik_fn <- function(x, type = c("vertical", "cholesky", "dilation",
+  adjust_loglik_fn <- function(x, type = c("vertical", "cholesky", "spectral",
                                            "none")) {
     type <- match.arg(type)
     x <- as.matrix(x)
@@ -660,7 +660,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
         return(max_loglik + s * (ind_loglik - max_loglik))
       }
       return(apply(x, 1, fn))
-    } else if (type %in% c("cholesky", "dilation")) {
+    } else if (type %in% c("cholesky", "spectral")) {
       fn <- function(x) {
         if (isTRUE(all.equal(x, mle, check.attributes = FALSE))) {
           return(max_loglik)
@@ -668,7 +668,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
         if (type == "cholesky") {
           C <- C_cholesky
         } else {
-          C <- C_dilation
+          C <- C_spectral
         }
         x_star <- mle + (C %*% (x - mle))
         loglik_vals <- do.call(ret_loglik, list(x_star))
@@ -710,11 +710,11 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   dimnames(HI) <- list(par_names, par_names)
   dimnames(HA) <- list(par_names, par_names)
   dimnames(C_cholesky) <- list(par_names, par_names)
-  dimnames(C_dilation) <- list(par_names, par_names)
+  dimnames(C_spectral) <- list(par_names, par_names)
   attr(adjust_loglik_fn, "HI") <- HI
   attr(adjust_loglik_fn, "HA") <- HA
   attr(adjust_loglik_fn, "C_cholesky") <- C_cholesky
-  attr(adjust_loglik_fn, "C_dilation") <- C_dilation
+  attr(adjust_loglik_fn, "C_spectral") <- C_spectral
   attr(adjust_loglik_fn, "par_names") <- par_names
   attr(adjust_loglik_fn, "full_par_names") <- full_par_names
   attr(adjust_loglik_fn, "loglik") <- loglik

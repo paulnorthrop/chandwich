@@ -109,7 +109,7 @@ A function of class \code{"chandwich"} to evaluate an adjusted
     columns (\code{nrow(x)} sets of model parameters), one set in each row
     of \code{x}.}
   \item{type}{A character scalar.  The type of adjustment to use.
-    One of \code{"vertical"}, \code{"cholesky"}, \code{"dilation"} or
+    One of \code{"vertical"}, \code{"cholesky"}, \code{"spectral"} or
     \code{"none"}.}  The latter results in the evaluation of the
     (unadjusted) independence loglikelihood.
   The function has (additional) attributes
@@ -126,7 +126,7 @@ A function of class \code{"chandwich"} to evaluate an adjusted
   \item{SE, adjSE}{The unadjusted and adjusted standard errors, respectively.}
   \item{HI, HA}{The Hessians of the independence and adjusted loglikelihood,
     respectively.}
-  \item{C_cholesky, C_dilation}{The matrix C in equation (14) of Chandler and
+  \item{C_cholesky, C_spectral}{The matrix C in equation (14) of Chandler and
     Bate (2007), calculated using Cholesky decomposition and spectral
     decomposition, respectively.}
   \item{full_par_names, par_names}{The names of the parameters in the full
@@ -162,7 +162,7 @@ Three adjustments to the independence loglikelihood described in
   described in Section 6 and two `horizontal' adjustments are described
   in Sections 3.2 to 3.4.  See the descriptions of \code{type} and, for the
   horizontal adjustments, the descriptions of \code{C_cholesky} and
-  \code{C_dilation}, in \strong{Value}.
+  \code{C_spectral}, in \strong{Value}.
 
   The adjustments involve first and second derviatives of the loglikelihood
   with respect to the model parameters.  These are estimated using
@@ -184,7 +184,7 @@ x <- seq(0.01, 0.99, by = 0.01)
 y1 <- rat_res(x, type = "none")
 y2 <- rat_res(x, type = "vertical")
 y3 <- rat_res(x, type = "cholesky")
-y4 <- rat_res(x, type = "dilation")
+y4 <- rat_res(x, type = "spectral")
 matplot(x, cbind(y1, y2, y3, y4), type = "l", lwd = 2)
 
 # Misspecified Poisson model for negative binomial data ----------

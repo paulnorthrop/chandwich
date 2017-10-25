@@ -5,7 +5,7 @@
 \title{Comparison of nested models}
 \usage{
 compare_models(larger, smaller = NULL, approx = FALSE,
-  type = c("vertical", "cholesky", "dilation", "none"), fixed_pars = NULL,
+  type = c("vertical", "cholesky", "spectral", "none"), fixed_pars = NULL,
   fixed_at = 0, init = NULL, ...)
 }
 \arguments{
@@ -138,7 +138,7 @@ compare_models(large, fixed_pars = "xi[1]")$p_value
 compare_models(large, medium)$p_value
 # Horizontal adjustments
 compare_models(large, medium, type = "cholesky")$p_value
-compare_models(large, medium, type = "dilation")$p_value
+compare_models(large, medium, type = "spectral")$p_value
 # No adjustment (independence loglikelihood)
 compare_models(large, medium, type = "none")$p_value
 # Test xi1 = 0, using approximation

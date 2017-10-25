@@ -127,7 +127,7 @@
 #' compare_models(large, medium)$p_value
 #' # Horizontal adjustments
 #' compare_models(large, medium, type = "cholesky")$p_value
-#' compare_models(large, medium, type = "dilation")$p_value
+#' compare_models(large, medium, type = "spectral")$p_value
 #' # No adjustment (independence loglikelihood)
 #' compare_models(large, medium, type = "none")$p_value
 #' # Test xi1 = 0, using approximation
@@ -141,7 +141,7 @@
 #'
 #' @export
 compare_models <- function(larger, smaller = NULL, approx = FALSE,
-                           type = c("vertical", "cholesky", "dilation",
+                           type = c("vertical", "cholesky", "spectral",
                                     "none"),
                            fixed_pars = NULL, fixed_at = 0, init = NULL, ...) {
   type <- match.arg(type)

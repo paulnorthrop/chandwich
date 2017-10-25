@@ -16,7 +16,7 @@
 \item{type}{An integer vector, a subset of the numbers \code{1:4}.
 Indicates which loglikelihoods to plot: \code{1} for \code{"vertical"}
 adjustment; \code{2} for \code{"cholesky"} (horizontal adjustment);
-\code{3} for \code{"dilation"} (horizontal adjustment); \code{4}
+\code{3} for \code{"spectral"} (horizontal adjustment); \code{4}
 for no adjustment, i.e. based on the independence loglikelihood.}
 
 \item{legend}{A logical scalar or a character vector.  If this is
