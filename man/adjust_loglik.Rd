@@ -178,7 +178,7 @@ binom_loglik <- function(prob, data) {
   }
   return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
 }
-rat_res <- adjust_loglik(loglik = binom_loglik, data = rats)
+rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
 
 x <- seq(0.01, 0.99, by = 0.01)
 y1 <- rat_res(x, type = "none")
