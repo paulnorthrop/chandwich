@@ -1,6 +1,6 @@
 ---
 title: "Introducing chandwich: Chandler-Bate Loglikelihood Adjustment"
-author: "Paul J. Northrop and Richard E. Chandler"
+author: "Paul Northrop and Richard Chandler"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
@@ -16,11 +16,37 @@ bibliography: chandwich.bib
 knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 ```
 
-The *chandwich* package 
+The *chandwich* package performs adjustments of an independence loglikelihood using a robust sandwich estimator of the parameter covariance matrix, based on the methodology in @CB2007. This can be used for cluster correlated data when interest lies in the parameter vector $\theta$ of the marginal distributions. 
 
-@CB2007
+Suppose that we have $k$ clusters of observations $\{y_j, j = 1, \ldots, k\}$, where $y_j$ is a vector of observations for the $j$th cluster.  The independence loglikelihood function is given by  
+$$\ell_I(\theta) = \sum_{j=1}^{k} \ell_j(\theta; y_j),$$
+where $\ell_j(\theta; y_j)$ is the contribution from the $j$th cluster.  Suppose that the independence maximum likelihood estimator (MLE) $\hat{\theta}$ is the unique root of 
+$$\frac{\partial \ell_I(\theta)}{\partial \theta} = \sum_{j=1}^{k} \frac{\partial \ell_j(\theta; y_j)}{\partial \theta} = \sum_{j=1}^{k} U_j(\theta) = 0.$$ 
+The adjustments scale $\ell_I(\theta)$ about $\hat{\theta}$ so that the Hessian $\hat{H}_A$ of the adjusted loglikelihood is consistent with the sandwich estimator [@Davison2003] of the covariance matrix of $\hat{\theta}$.  Specifically, 
+$\hat{H}_A = -\hat{H}^{-1} \hat{V} \hat{H}^{-1},$
+where $\hat{H}$ is the Hessian of $l_I(\theta)$ at $\hat{\theta}$ and $\hat{V} =\sum_{j=1}^{k} U_j(\hat{\theta}) U^{T}_j(\hat{\theta})$.
 
-```{r}
+There are two types of adjustment.  A horizontal adjustment 
+$$\ell_A(\theta) = \ell_I(\hat{\theta} + C(\theta - \hat{\theta}))$$
+where the parameter scale is adjusted, and a vertical adjustment
+$$\ell_{A2}(\theta) = \ell_I(\hat{\theta}) + 
+\{(\theta - \hat{\theta})^T \hat{H}_A (\theta - \hat{\theta})\}
+\frac{\ell_I(\theta) - \ell_I(\hat{\theta})}{(\theta - \hat{\theta})^T \hat{H}_I (\theta - \hat{\theta})},$$
+where the loglikelihood is scaled.  The differences between these adjustments are discussed in Section 6 of @CB2007.  The horizontal adjustment involves calculating matrix square roots of $\hat{H}$ and $\hat{H}_A$. @CB2007 consider two ways of doing this, one using Cholesky decomposition another using spectral decomposition.  
+
+## Loglikelihood adjustment using the adjust_loglik function
+
+The function `adjust_loglik` returns an object of class `chandwich`: a function that can be used to evaluate $\ell_I(\theta)$, $\ell_{A2}(\theta)$ and both choices of $\ell_A(\theta)$.  Functions that take a `chandwich` object as an argument have a vector argument `type`, one of `"vertical", "cholesky", "spectral", "none"`, to select the type of adjustment.  The default is `type = "vertical"`.  
+
+We illustrate the loglikelihood adjustments and the use of the functions in *chandwich* using some examples, starting with a simple model that has one parameter.
+
+## Binomial model
+
+The `rats` data [@Tarone1982] contain information about an experiment in which, for each of 71 groups of rats, the total number of rats in the group and the numbers of rats who develop a tumor is recorded.  We model these data using a binomial model, treating each groups of rats as a separate cluster.  A Bayesian analysis of these data based on a hierarchical binomial-beta model is presented in Section 5.3 of @BDA2014.
+
+The following code creates a function that returns a the loglikelihood contribution for each group of rats, calls `adjust_loglik` to make the adjustments, produces a basic summary of the MLE and the unadjusted and adjusted standard errors and plots the adjusted and unadjusted loglikelihood.  There is no need to supply the argument `cluster` in this example because the default, that each observation (groups of rats) forms its own cluster, applies in this example.
+
+```{r, fig.align='center', fig.width=7, fig.height=5}
 library(chandwich)
 binom_loglik <- function(prob, data) {
   if (prob < 0 || prob > 1) {
@@ -28,6 +54,87 @@ binom_loglik <- function(prob, data) {
    }
    return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
 }
-rat_res <- adjust_loglik(loglik = binom_loglik, data = rats)
-plot(rat_res, type = 1:4)
+# Make the adjustments
+rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
+summary(rat_res)
+plot(rat_res, type = 1:4, legend_pos = "bottom", lwd = 2, col = 1:4)
 ```
+
+In the one-dimensional case the (horizontal) Cholesky and spectral adjustments are identical and, over the range in the plot, the vertical adjustment is very similar to the horizontal adjustments.  Appreciable differences only becomes apparent towards the edges of the parameter space, where the behaviour of the vertical adjustment, which approaches $-\infty$ as $p$ approaches 0 and 1, may be preferable to the behaviour of the horizonal adjustments.  As we expect in this example the adjusted standard error is slightly greater than the unadjusted standard error.
+
+```{r, fig.align='center', fig.width=7, fig.height=5}
+plot(rat_res, type = 1:4, legend_pos = "bottom", lwd = 2, col = 1:4, 
+     xlim = c(0, 1))
+```
+
+### Confidence intervals 
+
+The function `conf_intervals` calculates (profile) likelihood-based confidence intervals for individual parameters.  Of course, in this one-dimensional example no profiling of the loglikelihood is performed.
+
+```{r}
+# 95% likelihood-based confidence intervals, unadjusted and vertically adjusted
+conf_intervals(rat_res, type = "none")$prof_CI
+conf_intervals(rat_res)$prof_CI
+```
+
+## Misspecified Poisson model
+
+We repeat an example from Section 5.1 of the 
+[Object-Oriented Computation of Sandwich Estimators](https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf)
+vignette of the *sandwich* package [@sandwich].  The idea is to simulate data from a log-linear negative binomial regression model and fit a misspecified log-quadratic Poisson regression model.  
+
+```{r}
+set.seed(123)
+x <- rnorm(250)
+y <- rnbinom(250, mu = exp(1 + x), size = 1)
+fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
+
+pois_glm_loglik <- function(pars, y, x) {
+  log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
+  return(dpois(y, lambda = exp(log_mu), log = TRUE))
+}
+pars <- c("alpha", "beta", "gamma")
+pois_quadratic <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
+summary(pois_quadratic)
+```
+
+The MLEs and the unadjusted and adjusted standard errors agree with those in the *sandwich* vignette.  The naive standard error associated with the coefficient of the quadratic term is sufficiently low that this coefficient is significantly different from zero.  The (upward) adjustment of standard errors from using the sandwich estimator is sufficient to alleviate the spurious significance of the quadratic term.  For full details please see the *sandwich* vignette.
+
+### Confidence intervals
+
+We use `conf_intervals` to calculate profile likelihood-based confidence intervals for the parameters.
+
+```{r}
+# 95% profile likelihood-based confidence intervals
+conf_intervals(pois_quadratic, type = "none")$prof_CI
+conf_intervals(pois_quadratic)$prof_CI
+```
+
+
+### Confidence regions
+
+We call `adjust_loglik` again to fix the quadratic coefficient to zero, producing a model with two free parameters, and use `conf_region` to calculate the vertically adjusted and unadjusted loglikelihoods over a grid for plotting. The plot below illustrates the way in which the independence loglikelihood for $(\alpha, \beta)$ has been scaled.
+
+```{r, fig.align='center', fig.width=7, fig.height=5}
+pois_linear <- adjust_loglik(larger = pois_quadratic, fixed_pars = "gamma")
+pois_vertical <- conf_region(pois_linear)
+pois_none <- conf_region(pois_linear, type = "none")
+plot(pois_none, pois_vertical, conf = c(50, 75, 95, 99), col = 2:1, lwd = 2, lty = 1)
+```
+
+### Comparing nested models
+
+We could examine the significance of the quadratic term using and adjusted likelihood ratio test.  See Section 3.3 of @CB2007.
+
+```{r}
+compare_models(pois_quadratic, pois_linear)
+```
+
+The $p$-value agrees with the value in the *sandwich* vignette, which is based on a Wald test.
+
+## References
+
+<script type="text/x-mathjax-config">
+   MathJax.Hub.Config({  "HTML-CSS": { minScaleAdjust: 125, availableFonts: [] }  });
+</script>
+
