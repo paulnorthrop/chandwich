@@ -179,13 +179,7 @@ binom_loglik <- function(prob, data) {
   return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
 }
 rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
-
-x <- seq(0.01, 0.99, by = 0.01)
-y1 <- rat_res(x, type = "none")
-y2 <- rat_res(x, type = "vertical")
-y3 <- rat_res(x, type = "cholesky")
-y4 <- rat_res(x, type = "spectral")
-matplot(x, cbind(y1, y2, y3, y4), type = "l", lwd = 2)
+plot(rat_res, type = 1:4, legend_pos = "bottom", lwd = 2, col = 1:4)
 
 # Misspecified Poisson model for negative binomial data ----------
 # ... following Section 5.1 of the
@@ -202,9 +196,9 @@ pois_glm_loglik <- function(pars, y, x) {
   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
   return(dpois(y, lambda = exp(log_mu), log = TRUE))
 }
-par_names <- c("alpha", "beta", "gamma")
-pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x,
-             par_names = par_names)
+pars <- c("alpha", "beta", "gamma")
+pois_quadratic <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
+pois_linear <- adjust_loglik(larger = pois_quadratic, fixed_pars = "gamma")
 
 pois_alg_deriv <- function(pars, y, x) {
   mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)
