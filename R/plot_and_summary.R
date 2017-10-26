@@ -233,29 +233,38 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   if (!inherits(x, "confreg")) {
     stop("x must be a \"confreg\" object")
   }
-  check_name <- attr(x, "name")
+  check_name <- x$name
   # Check that all supplied objects have profiled the same parameters
   if (!is.null(y)) {
+    if (!inherits(y, "confreg")) {
+      stop("y must be a \"confreg\" object")
+    }
     if (!identical(x$which_pars, y$which_pars)) {
       stop("y$which_pars is not identical to x$which_pars")
     }
-    if (!identical(check_name, attr(y, "name"))) {
+    if (!identical(check_name, y$name)) {
       stop("y is not derived from the same model as x")
     }
   }
   if (!is.null(y2)) {
+    if (!inherits(y2, "confreg")) {
+      stop("y2 must be a \"confreg\" object")
+    }
     if (!identical(x$which_pars, y2$which_pars)) {
       stop("y2$which_pars is not identical to x$which_pars")
     }
-    if (!identical(check_name, attr(y2, "name"))) {
+    if (!identical(check_name, y2$name)) {
       stop("y2 is not derived from the same model as x")
     }
   }
   if (!is.null(y3)) {
+    if (!inherits(y3, "confreg")) {
+      stop("y3 must be a \"confreg\" object")
+    }
     if (!identical(x$which_pars, y3$which_pars)) {
       stop("y3$which_pars is not identical to x$which_pars")
     }
-    if (!identical(check_name, attr(y3, "name"))) {
+    if (!identical(check_name, y3$name)) {
       stop("y3 is not derived from the same model as x")
     }
   }
@@ -318,12 +327,6 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   types <- x$type
   # Add to plot using y
   if (!is.null(y)) {
-    if (!inherits(y, "confreg")) {
-      stop("y must be a \"confreg\" object")
-    }
-    if (!identical(check_name, attr(y, "name"))) {
-      stop("y is not derived from the same model as x")
-    }
     max_loglik <- y$max_loglik
     cutoff <- max_loglik - stats::qchisq(conf  / 100, 2) / 2
     user_args$col <- my_col[2]
@@ -336,12 +339,6 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   }
   # Add to plot using y2
   if (!is.null(y2)) {
-    if (!inherits(y2, "confreg")) {
-      stop("y2 must be a \"confreg\" object")
-    }
-    if (!identical(check_name, attr(y2, "name"))) {
-      stop("y2 is not derived from the same model as x")
-    }
     max_loglik <- y2$max_loglik
     cutoff <- max_loglik - stats::qchisq(conf  / 100, 2) / 2
     user_args$col <- my_col[3]
@@ -354,12 +351,6 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   }
   # Add to plot using y3
   if (!is.null(y3)) {
-    if (!inherits(y3, "confreg")) {
-      stop("y3 must be a \"confreg\" object")
-    }
-    if (!identical(check_name, attr(y3, "name"))) {
-      stop("y3 is not derived from the same model as x")
-    }
     max_loglik <- y3$max_loglik
     cutoff <- max_loglik - stats::qchisq(conf  / 100, 2) / 2
     user_args$col <- my_col[4]
