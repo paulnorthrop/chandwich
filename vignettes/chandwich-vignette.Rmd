@@ -20,8 +20,7 @@ The *chandwich* package performs adjustments of an independence loglikelihood us
 
 Suppose that we have $k$ clusters of observations $\{y_j, j = 1, \ldots, k\}$, where $y_j$ is a vector of observations for the $j$th cluster.  The independence loglikelihood function is given by  
 $$\ell_I(\theta) = \sum_{j=1}^{k} \ell_j(\theta; y_j),$$
-where $\ell_j(\theta; y_j)$ is the contribution from the $j$th cluster.  Suppose that the independence maximum likelihood estimator (MLE) $\hat{\theta}$ is the unique root of 
-$$\frac{\partial \ell_I(\theta)}{\partial \theta} = \sum_{j=1}^{k} \frac{\partial \ell_j(\theta; y_j)}{\partial \theta} = \sum_{j=1}^{k} U_j(\theta) = 0.$$ 
+where $\ell_j(\theta; y_j)$ is the contribution from the $j$th cluster.  Suppose that the independence maximum likelihood estimator (MLE) $\hat{\theta}$ is the unique root of $$\frac{\partial \ell_I(\theta)}{\partial \theta} = \sum_{j=1}^{k} \frac{\partial \ell_j(\theta; y_j)}{\partial \theta} = \sum_{j=1}^{k} U_j(\theta) = 0.$$ 
 The adjustments scale $\ell_I(\theta)$ about $\hat{\theta}$ so that the Hessian $\hat{H}_A$ of the adjusted loglikelihood is consistent with the sandwich estimator [@Davison2003] of the covariance matrix of $\hat{\theta}$.  Specifically, 
 $\hat{H}_A = -\hat{H}^{-1} \hat{V} \hat{H}^{-1},$
 where $\hat{H}$ is the Hessian of $l_I(\theta)$ at $\hat{\theta}$ and $\hat{V} =\sum_{j=1}^{k} U_j(\hat{\theta}) U^{T}_j(\hat{\theta})$.
@@ -36,7 +35,7 @@ where the loglikelihood is scaled.  The differences between these adjustments ar
 
 ## Loglikelihood adjustment using the adjust_loglik function
 
-The function `adjust_loglik` returns an object of class `chandwich`: a function that can be used to evaluate $\ell_I(\theta)$, $\ell_{A2}(\theta)$ and both choices of $\ell_A(\theta)$.  Functions that take a `chandwich` object as an argument have a vector argument `type`, one of `"vertical", "cholesky", "spectral", "none"`, to select the type of adjustment.  The default is `type = "vertical"`.  
+The function `adjust_loglik` returns an object of class `chandwich`: a function that can be used to evaluate $\ell_I(\theta)$, $\ell_{A2}(\theta)$ and both choices of $\ell_A(\theta)$.  Functions that take a `chandwich` object as an argument have a vector argument `type`, equal to one of `"vertical", "cholesky", "spectral", "none"`, to select the type of adjustment.  The default is `type = "vertical"`.  
 
 We illustrate the loglikelihood adjustments and the use of the functions in *chandwich* using some examples, starting with a simple model that has one parameter.
 
@@ -69,7 +68,7 @@ plot(rat_res, type = 1:4, legend_pos = "bottom", lwd = 2, col = 1:4,
 
 ### Confidence intervals 
 
-The function `conf_intervals` calculates (profile) likelihood-based confidence intervals for individual parameters.  Of course, in this one-dimensional example no profiling of the loglikelihood is performed.
+The function `conf_intervals` calculates (profile, if necessary) likelihood-based confidence intervals for individual parameters.  Of course, in this one-dimensional example no profiling of the loglikelihood is performed.
 
 ```{r}
 # 95% likelihood-based confidence intervals, unadjusted and vertically adjusted
@@ -98,7 +97,7 @@ pois_quadratic <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
 summary(pois_quadratic)
 ```
 
-The MLEs and the unadjusted and adjusted standard errors agree with those in the *sandwich* vignette.  The naive standard error associated with the coefficient of the quadratic term is sufficiently low that this coefficient is significantly different from zero.  The (upward) adjustment of standard errors from using the sandwich estimator is sufficient to alleviate the spurious significance of the quadratic term.  For full details please see the *sandwich* vignette.
+The MLEs and the unadjusted and adjusted standard errors agree with those in the *sandwich* vignette.  The naive standard error associated with the coefficient of the quadratic term is sufficiently low that this coefficient is significantly different from zero.  The (upward) adjustment of standard errors from using the sandwich estimator is sufficient to alleviate the spurious significance of the quadratic term: the $p$-value changes from 0.034 to 0.18.  For full details please see the *sandwich* vignette.
 
 ### Confidence intervals
 
@@ -106,10 +105,8 @@ We use `conf_intervals` to calculate profile likelihood-based confidence interva
 
 ```{r}
 # 95% profile likelihood-based confidence intervals
-conf_intervals(pois_quadratic, type = "none")$prof_CI
 conf_intervals(pois_quadratic)$prof_CI
 ```
-
 
 ### Confidence regions
 
@@ -124,13 +121,83 @@ plot(pois_none, pois_vertical, conf = c(50, 75, 95, 99), col = 2:1, lwd = 2, lty
 
 ### Comparing nested models
 
-We could examine the significance of the quadratic term using and adjusted likelihood ratio test.  See Section 3.3 of @CB2007.
+We could examine the significance of the quadratic term using an adjusted likelihood ratio test.  If \code{approx = FALSE} (the default) then equation (17) in Section 3.3 of @CB2007 is used.  If \code{approx = TRUE} the approximation in equation (18) is used.
 
 ```{r}
-compare_models(pois_quadratic, pois_linear)
+compare_models(pois_quadratic, pois_linear)$p_value
+compare_models(pois_quadratic, pois_linear, approx = TRUE)$p_value
 ```
 
-The $p$-value agrees with the value in the *sandwich* vignette, which is based on a Wald test.
+The $p$-value based on equation (17) agrees with the value in the *sandwich* vignette, which is based on a Wald test, and the $p$-value based on equation (18) is only slightly different.
+
+## Extreme value modelling of maximum temperatures
+
+We consider the example presented in Section 5.2 of @CB2007.  The `owtemps` data contain annual maximum temperatures in Oxford and Worthing in the U.K. from 1901 to 1980, which are viewed as 80 clusters of independent observations from a bivariate distribution.  We construct an independence loglikelihood based on generalized extreme value (GEV) models for the marginal distributions at Oxford and Worthing.  The model is parameterized so that the marginal distribution at Oxford is GEV($\mu_0 + \mu_1, \sigma_0 + \sigma_1, \xi_0 + \xi_1$) and at Worthing is GEV($\mu_0 - \mu_1, \sigma_0 - \sigma_1, \xi_0 - \xi_1$), where GEV($\mu, \sigma, \xi$) denotes a GEV distribution with location $\mu$, scale $\sigma$ and shape $xi$.
+
+We perform loglikelihood adjustment for the full six-parameter model and reproduce the relevant rows of Table 2 in @CB2007.
+
+```{r}
+gev_loglik <- function(pars, data) {
+  o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
+  w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
+  if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
+  o_data <- data[, "Oxford"]
+  w_data <- data[, "Worthing"]
+  check <- 1 + o_pars[3] * (o_data - o_pars[1]) / o_pars[2]
+  if (any(check <= 0)) return(-Inf)
+  check <- 1 + w_pars[3] * (w_data - w_pars[1]) / w_pars[2]
+  if (any(check <= 0)) return(-Inf)
+  o_loglik <- log_gev(o_data, o_pars[1], o_pars[2], o_pars[3])
+  w_loglik <- log_gev(w_data, w_pars[1], w_pars[2], w_pars[3])
+  return(o_loglik + w_loglik)
+}
+# Initial estimates (method of moments for the Gumbel case)
+sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
+mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
+init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
+
+# Perform the log-likelihood adjustment of the full model 
+par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
+full <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+                      par_names = par_names)
+# Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
+round(attr(full, "MLE"), 4)
+round(attr(full, "SE"), 4)
+round(attr(full, "adjSE"), 4)
+```
+
+### Confidence intervals
+
+We use `conf_intervals` to calculate profile likelihood-based confidence intervals for the parameters.
+
+```{r}
+# Confidence intervals
+conf_intervals(full)$prof_CI
+```
+
+### Confidence regions
+
+We produce a plot akin Figure 4(c) of @CB2007, but including an extra 95\% confidence region for the vertical adjustment.
+
+```{r, fig.align='center', fig.width=7, fig.height=7}
+which_pars <- c("sigma[0]", "xi[0]")
+gev_none <- conf_region(full, which_pars = which_pars, type = "none")
+gev_vertical <- conf_region(full, which_pars = which_pars)
+gev_cholesky <- conf_region(full, which_pars = which_pars, type = "cholesky")
+gev_spectral <- conf_region(full, which_pars = which_pars, type = "spectral")
+plot(gev_none, gev_cholesky, gev_vertical, gev_spectral)
+```
+
+### Comparing nested models
+
+Suppose that we wish to test the null hypothesis that Oxford and Worthing share a common GEV shape parameter, that is, that $\xi_1 = 0$.  In the misspecified Poisson model example we called `adjust_loglik` to perform loglikelihood adjustment under a reduced model and then used `compare_models` to carry out an adjusted likelihood ratio test.  Alternatively, we can use a single call to `compare_models`.
+
+```{r}
+compare_models(full, fixed_pars = "xi[1]")$p_value
+compare_models(full, fixed_pars = "xi[1]", approx = TRUE)$p_value
+```
+
+In this case whether or not we use the approximate approach has a non-negligible effect on the $p$-value but we would probably reject the null in either case.
 
 ## References
 
