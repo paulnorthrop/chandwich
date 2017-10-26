@@ -132,7 +132,7 @@ The $p$-value based on equation (17) agrees with the value in the *sandwich* vig
 
 ## Extreme value modelling of maximum temperatures
 
-We consider the example presented in Section 5.2 of @CB2007.  The `owtemps` data contain annual maximum temperatures in Oxford and Worthing in the U.K. from 1901 to 1980, which are viewed as 80 clusters of independent observations from a bivariate distribution.  We construct an independence loglikelihood based on generalized extreme value (GEV) models for the marginal distributions at Oxford and Worthing.  The model is parameterized so that the marginal distribution at Oxford is GEV($\mu_0 + \mu_1, \sigma_0 + \sigma_1, \xi_0 + \xi_1$) and at Worthing is GEV($\mu_0 - \mu_1, \sigma_0 - \sigma_1, \xi_0 - \xi_1$), where GEV($\mu, \sigma, \xi$) denotes a GEV distribution with location $\mu$, scale $\sigma$ and shape $xi$.
+We consider the example presented in Section 5.2 of @CB2007.  The `owtemps` data contain annual maximum temperatures in Oxford and Worthing in the U.K. from 1901 to 1980, which are viewed as 80 clusters of independent observations from a bivariate distribution.  We construct an independence loglikelihood based on generalized extreme value (GEV) models for the marginal distributions at Oxford and Worthing.  The model is parameterized so that the marginal distribution at Oxford is GEV($\mu_0 + \mu_1, \sigma_0 + \sigma_1, \xi_0 + \xi_1$) and at Worthing is GEV($\mu_0 - \mu_1, \sigma_0 - \sigma_1, \xi_0 - \xi_1$), where GEV($\mu, \sigma, \xi$) denotes a GEV distribution with location $\mu$, scale $\sigma$ and shape $\xi$.
 
 We perform loglikelihood adjustment for the full six-parameter model and reproduce the relevant rows of Table 2 in @CB2007.
 
