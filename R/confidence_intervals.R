@@ -110,17 +110,18 @@
 #' plot(pjn)
 #' \dontrun{
 #' # Plots akin to those in Figure 4 of Chandler and Bate (2007)
-#'
+#' # (a)
 #' which_pars <- c("mu[0]", "mu[1]")
 #' reg_1 <- conf_region(large, which_pars = which_pars)
 #' reg_none_1 <- conf_region(large, which_pars = which_pars, type = "none")
 #' plot(reg_1, reg_none_1)
-#'
+#' # (b)
 #' which_pars <- c("sigma[0]", "sigma[1]")
 #' reg_2 <- conf_region(large, which_pars = which_pars)
 #' reg_none_2 <- conf_region(large, which_pars = which_pars, type = "none")
 #' plot(reg_2, reg_none_2)
-#'
+#' # (c)
+#' # Note: the naive and bivariate model contours are the reversed in the paper
 #' which_pars <- c("sigma[0]", "xi[0]")
 #' reg_3 <- conf_region(large, which_pars = which_pars)
 #' reg_none_3 <- conf_region(large, which_pars = which_pars, type = "none")
