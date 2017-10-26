@@ -20,6 +20,10 @@
 #'   \code{attr(object, "fixed_pars")}.  \code{which_pars} must not contain
 #'   all of the unfixed parameters, i.e. there is no point in profiling over
 #'   all the unfixed parameters.
+#'
+#'   If \code{which_pars} is not supplied but the current model has exactly
+#'   two free parameters, i.e. \code{attr(object, "p_current") = 2} then
+#'   \code{which_pars} is set to \code{attr(object, "free_pars") = 2}.
 #' @param range1,range2 Numeric vectors of length 2.  Respective ranges (of
 #'   the form \code{lower, upper}) of values of \code{which_pars[1]} and
 #'   \code{which_pars[2]} over which to profile.
@@ -137,6 +141,11 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
   # set the default grid on which the profile loglikelihood is calculated
   conf_for_search <- sqrt(conf) * 10
   num <- rep_len(num, 2)
+  # If which_pars has not been supplied and there are 2 free parameters in
+  # the current model then set which_pars to these 2 parameters
+  if (is.null(which_pars) & attr(object, "p_current") == 2) {
+    which_pars <- attr(object, "free_pars")
+  }
   n_which_pars <- length(which_pars)
   if (n_which_pars != 2) {
     stop("which_pars must be a vector of length 2")

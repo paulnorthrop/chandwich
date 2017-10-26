@@ -23,7 +23,11 @@ conf_region(object, which_pars = NULL, range1 = c(NA, NA), range2 = c(NA,
   \code{which_pars} must not have any parameters in common with
   \code{attr(object, "fixed_pars")}.  \code{which_pars} must not contain
   all of the unfixed parameters, i.e. there is no point in profiling over
-  all the unfixed parameters.}
+  all the unfixed parameters.
+
+  If \code{which_pars} is not supplied but the current model has exactly
+  two free parameters, i.e. \code{attr(object, "p_current") = 2} then
+  \code{which_pars} is set to \code{attr(object, "free_pars") = 2}.}
 
 \item{range1, range2}{Numeric vectors of length 2.  Respective ranges (of
 the form \code{lower, upper}) of values of \code{which_pars[1]} and
