@@ -147,8 +147,8 @@ plot(reg_3, reg_none_3)
 \code{\link{summary.chandwich}} for maximum likelihood estimates
   and unadjusted and adjusted standard errors.
 
-\code{\link{plot.chandwich}} for one- and two- dimensional plots
-  of adjusted loglikelihoods.
+\code{\link{plot.chandwich}} for plots of one-dimensional adjusted
+  loglikelihoods.
 
 \code{\link{conf_intervals}} for confidence intervals for
   individual parameters.

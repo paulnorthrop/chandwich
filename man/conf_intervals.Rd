@@ -122,8 +122,8 @@ plot(large_v, large_none)
 \code{\link{summary.chandwich}} for maximum likelihood estimates
   and unadjusted and adjusted standard errors.
 
-\code{\link{plot.chandwich}} for one- and two- dimensional plots
-  of adjusted loglikelihoods.
+\code{\link{plot.chandwich}} for plots of one-dimensional adjusted
+  loglikelihoods.
 
 \code{\link{conf_region}} for a confidence region for
   a pair of parameters.

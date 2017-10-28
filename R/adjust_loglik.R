@@ -151,8 +151,8 @@
 #'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
 #'   and unadjusted and adjusted standard errors.
-#' @seealso \code{\link{plot.chandwich}} for one- and two- dimensional plots
-#'   of adjusted loglikelihoods.
+#' @seealso \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
+#'   loglikelihoods.
 #' @seealso \code{\link{conf_intervals}} for confidence intervals for
 #'   individual parameters.
 #' @seealso \code{\link{conf_region}} for a confidence region for

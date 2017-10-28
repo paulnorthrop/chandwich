@@ -51,5 +51,11 @@ pjn <- adjust_loglik(loglik = norm_loglik, data = norm_data, cluster = cluster,
 summary(pjn)
 }
 \seealso{
+\code{\link{adjust_loglik}} to adjust a user-supplied
+  loglikelhood function.
+
+\code{\link{plot.chandwich}} for plots of one-dimensional adjusted
+  loglikelihoods.
+
 \code{\link{adjust_loglik}}.
 }

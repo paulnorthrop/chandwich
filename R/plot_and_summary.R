@@ -35,18 +35,25 @@
 #' @seealso \code{\link{conf_region}} and \code{\link{plot.confreg}} to
 #'   plot a confidence region for a pair of parameters.
 #' @examples
+#' # ------------------------- Binomial model, rats data ----------------------
+#'
+#' # Contributions to the independence loglikelihood
 #' binom_loglik <- function(prob, data) {
 #'   if (prob < 0 || prob > 1) {
 #'     return(-Inf)
 #'   }
 #'   return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
 #' }
-#' cluster <- 1:nrow(rats)
-#' rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, cluster = cluster)
+#' rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
+#'
+#' # Vertically adjusted loglikelihood only
 #' plot(rat_res)
+#' # Three adjusted loglikelihoods and the independence loglikelihood
 #' plot(rat_res, type = 1:4)
+#' # Plot over (0,1) and reposition the legend
 #' plot(rat_res, type = 1:4, xlim = c(0, 1), legend_pos = "bottom")
-#' @seealso \code{\link{adjust_loglik}}.
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelhood function.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
 #'   and unadjusted and adjusted standard errors.
 #' @export
@@ -159,6 +166,10 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
 #'   \code{par_names} in the call to \code{\link{adjust_loglik}}),
 #'   the MLE, unadjusted standard errors (SE) and adjusted standard errors
 #'   (adjSE).
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelhood function.
+#' @seealso \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
+#'   loglikelihoods.
 #' @examples
 #' norm_loglik <- function(params, data) {
 #'   mu <- params[1]

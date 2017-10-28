@@ -48,23 +48,30 @@ Nothing is returned.
 one free parameter.
 }
 \examples{
+# ------------------------- Binomial model, rats data ----------------------
+
+# Contributions to the independence loglikelihood
 binom_loglik <- function(prob, data) {
   if (prob < 0 || prob > 1) {
     return(-Inf)
   }
   return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
 }
-cluster <- 1:nrow(rats)
-rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, cluster = cluster)
+rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
+
+# Vertically adjusted loglikelihood only
 plot(rat_res)
+# Three adjusted loglikelihoods and the independence loglikelihood
 plot(rat_res, type = 1:4)
+# Plot over (0,1) and reposition the legend
 plot(rat_res, type = 1:4, xlim = c(0, 1), legend_pos = "bottom")
 }
 \seealso{
 \code{\link{conf_region}} and \code{\link{plot.confreg}} to
   plot a confidence region for a pair of parameters.
 
-\code{\link{adjust_loglik}}.
+\code{\link{adjust_loglik}} to adjust a user-supplied
+  loglikelhood function.
 
 \code{\link{summary.chandwich}} for maximum likelihood estimates
   and unadjusted and adjusted standard errors.

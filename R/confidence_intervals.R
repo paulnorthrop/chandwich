@@ -76,8 +76,8 @@
 #'   loglikelhood function.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
 #'   and unadjusted and adjusted standard errors.
-#' @seealso \code{\link{plot.chandwich}} for one- and two- dimensional plots
-#'   of adjusted loglikelihoods.
+#' @seealso \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
+#'   loglikelihoods.
 #' @seealso \code{\link{conf_intervals}} for confidence intervals for
 #'   individual parameters.
 #' @seealso \code{\link{compare_models}} to compare nested models using an
@@ -362,8 +362,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'   loglikelhood function.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
 #'   and unadjusted and adjusted standard errors.
-#' @seealso \code{\link{plot.chandwich}} for one- and two- dimensional plots
-#'   of adjusted loglikelihoods.
+#' @seealso \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
+#'   loglikelihoods.
 #' @seealso \code{\link{conf_region}} for a confidence region for
 #'   a pair of parameters.
 #' @seealso \code{\link{compare_models}} to compare nested models using an
