@@ -173,6 +173,8 @@
 #'
 #' # Plot the loglikelihoods
 #' plot(rat_res, type = 1:4, legend_pos = "bottom", lwd = 2, col = 1:4)
+#' # MLE, SEs and adjusted SEs
+#' summary(rat_res)
 #'
 #' # -------------------------- GEV model, owtemps data -----------------------
 #' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
@@ -206,6 +208,8 @@
 #' round(attr(large, "MLE"), 4)
 #' round(attr(large, "SE"), 4)
 #' round(attr(large, "adjSE"), 4)
+#' # MLE, SEs and adjusted SEs
+#' summary(large)
 #'
 #' # Perform the log-likelihood adjustment of some smaller models
 #'
