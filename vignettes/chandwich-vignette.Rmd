@@ -97,8 +97,8 @@ pois_glm_loglik <- function(pars, y, x) {
   return(dpois(y, lambda = exp(log_mu), log = TRUE))
 }
 pars <- c("alpha", "beta", "gamma")
-pois_quadratic <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
-summary(pois_quadratic)
+pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
+summary(pois_quad)
 ```
 
 The adjusted standard errors agree with those in the *sandwich* vignette and are sufficiently larger than the unadjusted standard errors to alleviate the spurious significance of the quadratic term: the $p$-value changes from 0.034 to 0.18.  For full details please see the *sandwich* vignette.
@@ -109,7 +109,7 @@ We use `conf_intervals` to calculate profile likelihood-based confidence interva
 
 ```{r}
 # 95% profile likelihood-based confidence intervals
-conf_intervals(pois_quadratic)$prof_CI
+conf_intervals(pois_quad)$prof_CI
 ```
 
 ### Confidence regions
@@ -117,9 +117,9 @@ conf_intervals(pois_quadratic)$prof_CI
 We call `adjust_loglik` again to fix the quadratic coefficient to zero, producing a model with two free parameters, and use `conf_region` to calculate the vertically adjusted and unadjusted loglikelihoods over a grid for plotting. The plot below illustrates the way in which the independence loglikelihood for $(\alpha, \beta)$ has been scaled.
 
 ```{r, fig.align='center', fig.width=7, fig.height=5}
-pois_linear <- adjust_loglik(larger = pois_quadratic, fixed_pars = "gamma")
-pois_vertical <- conf_region(pois_linear)
-pois_none <- conf_region(pois_linear, type = "none")
+pois_lin <- adjust_loglik(larger = pois_quad, fixed_pars = "gamma")
+pois_vertical <- conf_region(pois_lin)
+pois_none <- conf_region(pois_lin, type = "none")
 plot(pois_none, pois_vertical, conf = c(50, 75, 95, 99), col = 2:1, lwd = 2, lty = 1)
 ```
 
@@ -128,8 +128,8 @@ plot(pois_none, pois_vertical, conf = c(50, 75, 95, 99), col = 2:1, lwd = 2, lty
 We could examine the significance of the quadratic term using an adjusted likelihood ratio test.  If \code{approx = FALSE} (the default) then equation (17) in Section 3.3 of @CB2007 is used.  If \code{approx = TRUE} the approximation in equation (18) is used.
 
 ```{r}
-compare_models(pois_quadratic, pois_linear)$p_value
-compare_models(pois_quadratic, pois_linear, approx = TRUE)$p_value
+compare_models(pois_quad, pois_lin)$p_value
+compare_models(pois_quad, pois_lin, approx = TRUE)$p_value
 ```
 
 The $p$-value based on equation (17) agrees with the value in the *sandwich* vignette, which is based on a Wald test, and the $p$-value based on equation (18) is only slightly different.
