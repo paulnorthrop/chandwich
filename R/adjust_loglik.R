@@ -10,7 +10,7 @@
 #' The loglikelihood of a sub-model can be adjusted by fixing a set of
 #' parameters at particular values.
 #'
-#' @param loglik A function.  Returns a vector of the
+#' @param loglik A named function.  Returns a vector of the
 #'   loglikelihood contributions of individual observations.  The first
 #'   argument must be the vector of model parameter(s). If any of the model
 #'   parameters are out-of-bounds then \code{loglik} should return either
@@ -137,7 +137,8 @@
 #'     supplied in this call, or a previous call.}
 #'   \item{loglik_args}{A list containing the further arguments passed to
 #'     \code{loglik} via ... in this call, or a previous call.}
-#'   \item{name}{The argument \code{name}.}
+#'   \item{name}{The argument \code{name}, or the name of the function
+#'     \code{loglik} if \code{name} isn't supplied.}
 #'   If \code{fixed_pars} is not \code{NULL} then there are further attributes
 #'   \item{fixed_pars}{The argument \code{fixed_pars}, with names infered from
 #'     \code{par_names} if this was supplied.}
@@ -152,11 +153,16 @@
 #'   and unadjusted and adjusted standard errors.
 #' @seealso \code{\link{plot.chandwich}} for one- and two- dimensional plots
 #'   of of adjusted loglikelihoods.
+#' @seealso \code{\link{conf_intervals}} for confidence intervals for
+#'   individual parameters.
+#' @seealso \code{\link{conf_region}} for a confidence region for
+#'   pairs of parameters.
 #' @seealso \code{\link{compare_models}} to compare nested models using an
 #'   (adjusted) likelihood ratio test.
 #' @examples
-#' # Binomial model, rats data ----------
+#' # ------------------------- Binomial model, rats data ----------------------
 #'
+#' # Contributions to the independence loglikelihood
 #' binom_loglik <- function(prob, data) {
 #'   if (prob < 0 || prob > 1) {
 #'     return(-Inf)
@@ -164,67 +170,14 @@
 #'   return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
 #' }
 #' rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
+#'
+#' # Plot the loglikelihoods
 #' plot(rat_res, type = 1:4, legend_pos = "bottom", lwd = 2, col = 1:4)
 #'
-#' # Misspecified Poisson model for negative binomial data ----------
-#' # ... following Section 5.1 of the
-#' # "Object-Oriented Computation of Sandwich Estimators" vignette of the
-#' # sandwich package
-#' # https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf
+#' # -------------------------- GEV model, owtemps data -----------------------
+#' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
 #'
-#' set.seed(123)
-#' x <- rnorm(250)
-#' y <- rnbinom(250, mu = exp(1 + x), size = 1)
-#' fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
-#'
-#' pois_glm_loglik <- function(pars, y, x) {
-#'   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
-#'   return(dpois(y, lambda = exp(log_mu), log = TRUE))
-#' }
-#' pars <- c("alpha", "beta", "gamma")
-#' pois_quadratic <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
-#' pois_linear <- adjust_loglik(larger = pois_quadratic, fixed_pars = "gamma")
-#'
-#' pois_alg_deriv <- function(pars, y, x) {
-#'   mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)
-#'   return(cbind(y - mu, x * (y - mu), x ^2 * (y - mu)))
-#' }
-#'
-#' pois_alg_hess <- function(pars, y, x) {
-#'   mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)
-#'   alg_hess <- matrix(0, 3, 3)
-#'   alg_hess[1, ] <- -c(sum(mu), sum(x * mu), sum(x ^ 2 * mu))
-#'   alg_hess[2, ] <- -c(sum(x * mu), sum(x ^ 2 * mu), sum(x ^ 3 * mu))
-#'   alg_hess[3, ] <- -c(sum(x ^ 2 * mu), sum(x ^ 3 * mu), sum(x ^ 4 * mu))
-#'   return(alg_hess)
-#' }
-#'
-#' pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
-#'                           alg_deriv = pois_alg_deriv, alg_hess = pois_alg_hess)
-#'
-#'
-#' norm_loglik <- function(params, data) {
-#'   mu <- params[1]
-#'   sigma <- params[2]
-#'   if (sigma <= 0) {
-#'     return(-Inf)
-#'   }
-#'   return(dnorm(data, mean = mu, sd = sigma, log = TRUE))
-#' }
-#' mu <- 0
-#' sigma <- 1
-#' norm_data <- rnorm(2000, mean = mu, sd = sigma)
-#' mu_sigma <- c(0, 1)
-#' cluster <- 1:length(norm_data)
-#' cluster <- rep(1:40, 50)
-#'
-#' pjn <- adjust_loglik(loglik = norm_loglik, data = norm_data, cluster = cluster,
-#'               init = 0:1)
-#'
-#'
-#' # GEV model, owtemps data ----------
-#' # ... following Section 5.2 of Chandler and Bate (2007)
-#'
+#' # Contributions to the independence loglikelihood
 #' gev_loglik <- function(pars, data) {
 #'   o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
 #'   w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
@@ -245,8 +198,7 @@
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 #' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 #'
-#' # Perform the log-likelihood adjustment of the full model ------
-#'
+#' # Loglikelihood adjustment for the full model
 #' par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'                        par_names = par_names)
@@ -255,19 +207,59 @@
 #' round(attr(large, "SE"), 4)
 #' round(attr(large, "adjSE"), 4)
 #'
-#' # Perform the log-likelihood adjustment of some smaller models ------
+#' # Perform the log-likelihood adjustment of some smaller models
 #'
-#' # Starting from larger model
+#' # Starting from a larger model
 #' medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
-#' medium <- adjust_loglik(larger = large, fixed_pars = 6)
 #' small <- adjust_loglik(larger = large, fixed_pars = c("sigma[1]", "xi[1]"))
 #' small <- adjust_loglik(larger = medium, fixed_pars = c("sigma[1]", "xi[1]"))
 #'
 #' # Starting from scratch
-#' medium <- adjust_loglik(gev_loglik, data = owtemps, init = init, fixed_pars = 6)
+#' medium <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+#'           par_names = par_names, fixed_pars = c("sigma[1]", "xi[1]"))
 #' small <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-#'          fixed_pars = c("sigma[1]", "xi[1]"),
-#'          par_names = c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]"))
+#'          par_names = par_names, fixed_pars = c("sigma[1]", "xi[1]"))
+#'
+#' # --------- Misspecified Poisson model for negative binomial data ----------
+#'
+#' # ... following Section 5.1 of the "Object-Oriented Computation of Sandwich
+#' # Estimators" vignette of the sandwich package
+#' # https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf
+#'
+#' # Simulate data
+#' set.seed(123)
+#' x <- rnorm(250)
+#' y <- rnbinom(250, mu = exp(1 + x), size = 1)
+#' # Fit misspecified Poisson model
+#' fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
+#' summary(fm_pois)$coefficients
+#'
+#' # Contributions to the independence loglikelihood
+#' pois_glm_loglik <- function(pars, y, x) {
+#'   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
+#'   return(dpois(y, lambda = exp(log_mu), log = TRUE))
+#' }
+#' pars <- c("alpha", "beta", "gamma")
+#' pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
+#' summary(pois_quad)
+#'
+#' pois_linear <- adjust_loglik(larger = pois_quadratic, fixed_pars = "gamma")
+#'
+#' # Providing algebraic derivatives and Hessian
+#' pois_alg_deriv <- function(pars, y, x) {
+#'   mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)
+#'   return(cbind(y - mu, x * (y - mu), x ^2 * (y - mu)))
+#' }
+#' pois_alg_hess <- function(pars, y, x) {
+#'   mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)
+#'   alg_hess <- matrix(0, 3, 3)
+#'   alg_hess[1, ] <- -c(sum(mu), sum(x * mu), sum(x ^ 2 * mu))
+#'   alg_hess[2, ] <- -c(sum(x * mu), sum(x ^ 2 * mu), sum(x ^ 3 * mu))
+#'   alg_hess[3, ] <- -c(sum(x ^ 2 * mu), sum(x ^ 3 * mu), sum(x ^ 4 * mu))
+#'   return(alg_hess)
+#' }
+#' pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
+#'                            alg_deriv = pois_alg_deriv, alg_hess = pois_alg_hess)
 #' @export
 adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
                           init = NULL, par_names = NULL,
