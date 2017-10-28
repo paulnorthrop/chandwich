@@ -74,15 +74,19 @@
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
 #'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
-#' @seealso \code{\link{adjust_loglik}}: to adjust a user-supplied
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelhood function.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
 #'   and unadjusted and adjusted standard errors.
 #' @seealso \code{\link{plot.chandwich}} for one- and two- dimensional plots
-#'   of of adjusted loglikelihoods.
+#'   of adjusted loglikelihoods.
+#' @seealso \code{\link{conf_intervals}} for confidence intervals for
+#'   individual parameters.
+#' @seealso \code{\link{conf_region}} for a confidence region for
+#'   pairs of parameters.
 #' @examples
-#' # GEV model, owtemps data ----------
-#' # ... following Section 5.2 of Chandler and Bate (2007)
+#' # -------------------------- GEV model, owtemps data -----------------------
+#' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
 #'
 #' gev_loglik <- function(pars, data) {
 #'   o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
@@ -104,41 +108,34 @@
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 #' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 #'
-#' # Perform the log-likelihood adjustment of the full model ------
+#' # Log-likelihood adjustment of the full model
 #' par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'          par_names = par_names)
-#' # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
-#' round(attr(large, "MLE"), 4)
-#' round(attr(large, "SE"), 4)
-#' round(attr(large, "adjSE"), 4)
 #'
-#' # Perform the log-likelihood adjustment of some smaller models ------
+#' # Log-likelihood adjustment of some smaller models: xi[1] = 0 etc
 #'
-#' # Fix xi1 = 0
 #' medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
-#' # Fix sigma1 = xi1 = 0
 #' small <- adjust_loglik(larger = medium, fixed_pars = c("sigma[1]", "xi[1]"))
 #'
-#' # Perform tests ------
+#' # Tests
 #'
-#' # Test xi1 = 0 (2 equivalent ways)
+#' # Test xi1 = 0 (2 equivalent ways), vertical adjustment
 #' compare_models(large, fixed_pars = "xi[1]")$p_value
 #' compare_models(large, medium)$p_value
+#' # Test xi1 = 0, using approximation
+#' compare_models(large, medium, approx = TRUE)$p_value
+#'
 #' # Horizontal adjustments
 #' compare_models(large, medium, type = "cholesky")$p_value
 #' compare_models(large, medium, type = "spectral")$p_value
 #' # No adjustment (independence loglikelihood)
 #' compare_models(large, medium, type = "none")$p_value
-#' # Test xi1 = 0, using approximation
-#' compare_models(large, medium, approx = TRUE)$p_value
 #'
-#' # Test sigma1 = 0 for xi1 = 0
+#' # Test sigma1 = 0 for model with xi1 = 0
 #' compare_models(medium, small)$p_value
-#'
 #' # Test sigma1 = xi1 = 0
 #' compare_models(large, small)$p_value
-#'
 #' @export
 compare_models <- function(larger, smaller = NULL, approx = FALSE,
                            type = c("vertical", "cholesky", "spectral",
