@@ -43,7 +43,7 @@ We illustrate the loglikelihood adjustments and the use of the functions in *cha
 
 The `rats` data [@Tarone1982] contain information about an experiment in which, for each of 71 groups of rats, the total number of rats in the group and the numbers of rats who develop a tumor is recorded.  We model these data using a binomial distribution, treating each groups of rats as a separate cluster.  A Bayesian analysis of these data based on a hierarchical binomial-beta model is presented in Section 5.3 of @BDA2014.
 
-The following code creates a function that returns a vector of the loglikelihood contributions from each group of rats, calls `adjust_loglik` to make the adjustments, produces a basic summary of the MLE and the unadjusted and adjusted standard errors and plots the adjusted and unadjusted loglikelihood.  There is no need to supply the argument `cluster` in this example because the default, that each observation (groups of rats) forms its own cluster, applies in this example.
+The following code creates a function that returns a vector of the loglikelihood contributions from individual groups of rats, calls `adjust_loglik` to make the adjustments, produces a basic summary of the MLE and the unadjusted and adjusted standard errors and plots the adjusted and unadjusted loglikelihood.  There is no need to supply the argument `cluster` in this example because the default, that each observation (group of rats) forms its own cluster applies here.
 
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 library(chandwich)
@@ -68,7 +68,7 @@ plot(rat_res, type = 1:4, legend_pos = "bottom", lwd = 2, col = 1:4,
 
 ### Confidence intervals 
 
-The function `conf_intervals` calculates (profile, if necessary) likelihood-based confidence intervals for individual parameters.  Of course, in this one-dimensional example no profiling of the loglikelihood is performed.
+The function `conf_intervals` calculates (profile, if necessary) likelihood-based confidence intervals for individual parameters.
 
 ```{r}
 # 95% likelihood-based confidence intervals, unadjusted and vertically adjusted
@@ -78,16 +78,20 @@ conf_intervals(rat_res)$prof_CI
 
 ## Misspecified Poisson model
 
-We repeat an example from Section 5.1 of the 
-[Object-Oriented Computation of Sandwich Estimators](https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf)
-vignette of the *sandwich* package [@sandwich].  The idea is to simulate data from a log-linear negative binomial regression model and fit a misspecified log-quadratic Poisson regression model.  
+We repeat part of an example from Section 5.1 of the 
+[Object-Oriented Computation of Sandwich Estimators](https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf) vignette of the *sandwich* package [@sandwich], using the same simulated dataset.  This example illustrates that sandwich estimators may result in inferences that are robust against certain types model misspecification.  We simulate data from a log-linear negative binomial regression model and fit a misspecified log-quadratic Poisson regression model.  
 
 ```{r}
 set.seed(123)
 x <- rnorm(250)
 y <- rnbinom(250, mu = exp(1 + x), size = 1)
 fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
+round(summary(fm_pois)$coefficients, 3)
+```
 
+Although the conditional mean of `y` is linear in `x` overdispersion of the responses relative to the Poisson distribution contributes to the spurious significance of the quadratic term.  We adjust the independence log-likelihood, with each observation forming its own cluster.
+
+```{r}
 pois_glm_loglik <- function(pars, y, x) {
   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
   return(dpois(y, lambda = exp(log_mu), log = TRUE))
@@ -97,7 +101,7 @@ pois_quadratic <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
 summary(pois_quadratic)
 ```
 
-The MLEs and the unadjusted and adjusted standard errors agree with those in the *sandwich* vignette.  The naive standard error associated with the coefficient of the quadratic term is sufficiently low that this coefficient is significantly different from zero.  The (upward) adjustment of standard errors from using the sandwich estimator is sufficient to alleviate the spurious significance of the quadratic term: the $p$-value changes from 0.034 to 0.18.  For full details please see the *sandwich* vignette.
+The adjusted standard errors agree with those in the *sandwich* vignette and are sufficiently larger than the unadjusted standard errors to alleviate the spurious significance of the quadratic term: the $p$-value changes from 0.034 to 0.18.  For full details please see the *sandwich* vignette.
 
 ### Confidence intervals
 
@@ -177,19 +181,19 @@ conf_intervals(full)$prof_CI
 
 ### Confidence regions
 
-We produce a plot akin Figure 4(a) of @CB2007, but including an extra 95\% confidence region for the vertical adjustment.
+We reproduce Figure 4(b) of @CB2007, adding a 95\% confidence region for the vertical adjustment.
 
 ```{r, fig.align='center', fig.width=7, fig.height=7}
-which_pars <- c("mu[0]", "mu[1]")
+which_pars <- c("sigma[0]", "sigma[1]")
 gev_none <- conf_region(full, which_pars = which_pars, type = "none")
 gev_vertical <- conf_region(full, which_pars = which_pars)
 gev_cholesky <- conf_region(full, which_pars = which_pars, type = "cholesky")
 gev_spectral <- conf_region(full, which_pars = which_pars, type = "spectral")
-plot(gev_none, gev_cholesky, gev_vertical, gev_spectral, lwd = 2, 
-     xlim = c(80, 82.25), ylim = c(1.75, 3.5))
+plot(gev_none, gev_cholesky, gev_vertical, gev_spectral, lwd = 2,
+     xlim = c(3.0, 4.5), ylim = c(-0.1, 1.25))
 ```
 
-The 95\% contours of the profile adjusted loglikelihoods are virtually identical.
+The 95\% contours of the profile adjusted loglikelihoods are similar.
 
 ### Comparing nested models
 
