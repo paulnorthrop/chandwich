@@ -365,7 +365,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' @seealso \code{\link{plot.chandwich}} for one- and two- dimensional plots
 #'   of adjusted loglikelihoods.
 #' @seealso \code{\link{conf_region}} for a confidence region for
-#'   pairs of parameters.
+#'   a pair of parameters.
 #' @seealso \code{\link{compare_models}} to compare nested models using an
 #'   (adjusted) likelihood ratio test.
 #' @examples
@@ -582,7 +582,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
 #' @seealso \code{\link{conf_intervals}} for confidence intervals for
 #'   individual parameters.
 #' @seealso \code{\link{conf_region}} for a confidence region for
-#'   pairs of parameters.
+#'   a pair of parameters.
 #' @examples
 #' # -------------------------- GEV model, owtemps data -----------------------
 #' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------

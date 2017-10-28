@@ -126,7 +126,7 @@ plot(large_v, large_none)
   of adjusted loglikelihoods.
 
 \code{\link{conf_region}} for a confidence region for
-  pairs of parameters.
+  a pair of parameters.
 
 \code{\link{compare_models}} to compare nested models using an
   (adjusted) likelihood ratio test.

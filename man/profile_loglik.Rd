@@ -98,5 +98,5 @@ profile_loglik(medium, prof_pars = "xi[0]", prof_vals = -0.1)
   individual parameters.
 
 \code{\link{conf_region}} for a confidence region for
-  pairs of parameters.
+  a pair of parameters.
 }

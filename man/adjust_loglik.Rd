@@ -290,7 +290,7 @@ Chandler, R. E. and Bate, S. (2007). Inference for clustered
   individual parameters.
 
 \code{\link{conf_region}} for a confidence region for
-  pairs of parameters.
+  a pair of parameters.
 
 \code{\link{compare_models}} to compare nested models using an
   (adjusted) likelihood ratio test.
