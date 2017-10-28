@@ -211,7 +211,7 @@
 #' # MLE, SEs and adjusted SEs
 #' summary(large)
 #'
-#' # Perform the log-likelihood adjustment of some smaller models
+#' # Log-likelihood adjustment of some smaller models: xi[1] = 0 etc
 #'
 #' # Starting from a larger model
 #' medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
