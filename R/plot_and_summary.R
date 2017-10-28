@@ -32,6 +32,8 @@
 #'   standard errors are used.  Otherwise, the larger of the adjust and
 #'   unadjusted standard errors are used.
 #' @return Nothing is returned.
+#' @seealso \code{\link{conf_region}} and \code{\link{plot.confreg}} to
+#'   plot a confidence region for a pair of parameters.
 #' @examples
 #' binom_loglik <- function(prob, data) {
 #'   if (prob < 0 || prob > 1) {
