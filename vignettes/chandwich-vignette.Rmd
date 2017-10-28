@@ -76,64 +76,6 @@ conf_intervals(rat_res, type = "none")$prof_CI
 conf_intervals(rat_res)$prof_CI
 ```
 
-## Misspecified Poisson model
-
-We repeat part of an example from Section 5.1 of the 
-[Object-Oriented Computation of Sandwich Estimators](https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf) vignette of the *sandwich* package [@sandwich], using the same simulated dataset.  This example illustrates that sandwich estimators may result in inferences that are robust against certain types model misspecification.  We simulate data from a log-linear negative binomial regression model and fit a misspecified log-quadratic Poisson regression model.  
-
-```{r}
-set.seed(123)
-x <- rnorm(250)
-y <- rnbinom(250, mu = exp(1 + x), size = 1)
-fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
-round(summary(fm_pois)$coefficients, 3)
-```
-
-Although the conditional mean of `y` is linear in `x` overdispersion of the responses relative to the Poisson distribution contributes to the spurious significance of the quadratic term.  We adjust the independence log-likelihood, with each observation forming its own cluster.
-
-```{r}
-pois_glm_loglik <- function(pars, y, x) {
-  log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
-  return(dpois(y, lambda = exp(log_mu), log = TRUE))
-}
-pars <- c("alpha", "beta", "gamma")
-pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
-summary(pois_quad)
-```
-
-The adjusted standard errors agree with those in the *sandwich* vignette and are sufficiently larger than the unadjusted standard errors to alleviate the spurious significance of the quadratic term: the $p$-value changes from 0.034 to 0.18.  For full details please see the *sandwich* vignette.
-
-### Confidence intervals
-
-We use `conf_intervals` to calculate profile likelihood-based confidence intervals for the parameters.
-
-```{r}
-# 95% profile likelihood-based confidence intervals
-conf_intervals(pois_quad)$prof_CI
-```
-
-### Confidence regions
-
-We call `adjust_loglik` again to fix the quadratic coefficient to zero, producing a model with two free parameters, and use `conf_region` to calculate the vertically adjusted and unadjusted loglikelihoods over a grid for plotting. The plot below illustrates the way in which the independence loglikelihood for $(\alpha, \beta)$ has been scaled.
-
-```{r, fig.align='center', fig.width=7, fig.height=5}
-pois_lin <- adjust_loglik(larger = pois_quad, fixed_pars = "gamma")
-pois_vertical <- conf_region(pois_lin)
-pois_none <- conf_region(pois_lin, type = "none")
-plot(pois_none, pois_vertical, conf = c(50, 75, 95, 99), col = 2:1, lwd = 2, lty = 1)
-```
-
-### Comparing nested models
-
-We could examine the significance of the quadratic term using an adjusted likelihood ratio test.  If \code{approx = FALSE} (the default) then equation (17) in Section 3.3 of @CB2007 is used.  If \code{approx = TRUE} the approximation in equation (18) is used.
-
-```{r}
-compare_models(pois_quad, pois_lin)$p_value
-compare_models(pois_quad, pois_lin, approx = TRUE)$p_value
-```
-
-The $p$-value based on equation (17) agrees with the value in the *sandwich* vignette, which is based on a Wald test, and the $p$-value based on equation (18) is only slightly different.
-
 ## Extreme value modelling of maximum temperatures
 
 We consider the example presented in Section 5.2 of @CB2007.  The `owtemps` data contain annual maximum temperatures in Oxford and Worthing in the U.K. from 1901 to 1980, which are viewed as 80 clusters of independent observations from a bivariate distribution.  We construct an independence loglikelihood based on generalized extreme value (GEV) models for the marginal distributions at Oxford and Worthing.  The model is parameterized so that the marginal distribution at Oxford is GEV($\mu_0 + \mu_1, \sigma_0 + \sigma_1, \xi_0 + \xi_1$) and at Worthing is GEV($\mu_0 - \mu_1, \sigma_0 - \sigma_1, \xi_0 - \xi_1$), where GEV($\mu, \sigma, \xi$) denotes a GEV distribution with location $\mu$, scale $\sigma$ and shape $\xi$.
@@ -175,7 +117,7 @@ round(attr(full, "adjSE"), 4)
 We use `conf_intervals` to calculate profile likelihood-based confidence intervals for the parameters.
 
 ```{r}
-# Confidence intervals
+# 95% likelihood-based confidence intervals, vertically adjusted
 conf_intervals(full)$prof_CI
 ```
 
@@ -205,6 +147,64 @@ compare_models(full, fixed_pars = "xi[1]", approx = TRUE)$p_value
 ```
 
 In this case whether or not we use the approximate approach has a non-negligible effect on the $p$-value but we would probably reject the null in either case.
+
+## Misspecified Poisson model
+
+We repeat part of an example from Section 5.1 of the 
+[Object-Oriented Computation of Sandwich Estimators](https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf) vignette of the *sandwich* package [@sandwich], using the same simulated dataset.  This example illustrates that sandwich estimators may result in inferences that are robust against certain types model misspecification.  We simulate data from a log-linear negative binomial regression model and fit a misspecified log-quadratic Poisson regression model.  
+
+```{r}
+set.seed(123)
+x <- rnorm(250)
+y <- rnbinom(250, mu = exp(1 + x), size = 1)
+fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
+round(summary(fm_pois)$coefficients, 3)
+```
+
+Although the conditional mean of `y` is linear in `x` overdispersion of the responses relative to the Poisson distribution contributes to the spurious significance of the quadratic term.  We adjust the independence log-likelihood, with each observation forming its own cluster.
+
+```{r}
+pois_glm_loglik <- function(pars, y, x) {
+  log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
+  return(dpois(y, lambda = exp(log_mu), log = TRUE))
+}
+pars <- c("alpha", "beta", "gamma")
+pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
+summary(pois_quad)
+```
+
+The adjusted standard errors agree with those in the *sandwich* vignette and are sufficiently larger than the unadjusted standard errors to alleviate the spurious significance of the quadratic term: the $p$-value changes from 0.034 to 0.18.  For full details please see the *sandwich* vignette.
+
+### Confidence intervals
+
+We use `conf_intervals` to calculate profile likelihood-based confidence intervals for the parameters.
+
+```{r}
+# 95% likelihood-based confidence intervals, vertically adjusted
+conf_intervals(pois_quad)$prof_CI
+```
+
+### Confidence regions
+
+We call `adjust_loglik` again to fix the quadratic coefficient to zero, producing a model with two free parameters, and use `conf_region` to calculate the vertically adjusted and unadjusted loglikelihoods over a grid for plotting. The plot below illustrates the way in which the independence loglikelihood for $(\alpha, \beta)$ has been scaled.
+
+```{r, fig.align='center', fig.width=7, fig.height=5}
+pois_lin <- adjust_loglik(larger = pois_quad, fixed_pars = "gamma")
+pois_vertical <- conf_region(pois_lin)
+pois_none <- conf_region(pois_lin, type = "none")
+plot(pois_none, pois_vertical, conf = c(50, 75, 95, 99), col = 2:1, lwd = 2, lty = 1)
+```
+
+### Comparing nested models
+
+We could examine the significance of the quadratic term using an adjusted likelihood ratio test.  If \code{approx = FALSE} (the default) then equation (17) in Section 3.3 of @CB2007 is used.  If \code{approx = TRUE} the approximation in equation (18) is used.
+
+```{r}
+compare_models(pois_quad, pois_lin)$p_value
+compare_models(pois_quad, pois_lin, approx = TRUE)$p_value
+```
+
+The $p$-value based on equation (17) agrees with the value in the *sandwich* vignette, which is based on a Wald test, and the $p$-value based on equation (18) is only slightly different.
 
 ## References
 
