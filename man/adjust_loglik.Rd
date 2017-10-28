@@ -258,8 +258,6 @@ pars <- c("alpha", "beta", "gamma")
 pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
 summary(pois_quad)
 
-pois_linear <- adjust_loglik(larger = pois_quadratic, fixed_pars = "gamma")
-
 # Providing algebraic derivatives and Hessian
 pois_alg_deriv <- function(pars, y, x) {
   mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)

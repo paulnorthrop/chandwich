@@ -57,8 +57,8 @@ This function is provided primarily so that it can be called by
 \code{\link{conf_intervals}} and \code{\link{conf_region}}.
 }
 \examples{
-# GEV model, owtemps data ----------
-# ... following Section 5.2 of Chandler and Bate (2007)
+# -------------------------- GEV model, owtemps data -----------------------
+# ------------ following Section 5.2 of Chandler and Bate (2007) -----------
 
 gev_loglik <- function(pars, data) {
   o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
@@ -80,14 +80,17 @@ sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
 mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 
-# Perform the log-likelihood adjustment of the full model ------
-
+# Log-likelihood adjustment of the full model
 par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
                        par_names = par_names)
-profile_loglik(large, prof_pars = "xi[1]", prof_vals = -0.1)
 
-medium <- adjust_loglik(larger = large, fixed_pars = "xi1")
+# Profile loglikelihood for xi1, evaluated at xi1 = 0
+profile_loglik(large, prof_pars = "xi[1]", prof_vals = 0)
+
+# Model with xi1 fixed at 0
+medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
+# Profile loglikelihood for xi0, evaluated at xi0 = -0.1
 profile_loglik(medium, prof_pars = "xi[0]", prof_vals = -0.1)
 }
 \seealso{

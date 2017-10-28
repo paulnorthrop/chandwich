@@ -83,8 +83,8 @@
 #' @seealso \code{\link{compare_models}} to compare nested models using an
 #'   (adjusted) likelihood ratio test.
 #' @examples
-#' # GEV model, owtemps data ----------
-#' # ... following Section 5.2 of Chandler and Bate (2007)
+#' # -------------------------- GEV model, owtemps data -----------------------
+#' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
 #'
 #' gev_loglik <- function(pars, data) {
 #'   o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
@@ -106,20 +106,13 @@
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 #' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 #'
-#' # Perform the log-likelihood adjustment of the full model ------
-#'
+#' # Log-likelihood adjustment of the full model
 #' par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'                        par_names = par_names)
 #'
-#' # Create a model with only 2 free parameters
-#' fixed_pars <- c("mu[0]", "mu[1]", "sigma[1]", "xi[1]")
-#' fixed_at <- c(attr(large, "MLE")[1], 0, 0, 0)
-#' model2 <- adjust_loglik(larger = large, fixed_pars = fixed_pars, fixed_at = fixed_at)
-#' pjn <- conf_region(model2, which_pars = c("sigma[0]", "xi[0]"))
-#' plot(pjn)
 #' \dontrun{
-#' # Plots akin to those in Figure 4 of Chandler and Bate (2007)
+#' # Plots like those in Figure 4 of Chandler and Bate (2007)
 #' # (a)
 #' which_pars <- c("mu[0]", "mu[1]")
 #' reg_1 <- conf_region(large, which_pars = which_pars)
@@ -376,8 +369,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' @seealso \code{\link{compare_models}} to compare nested models using an
 #'   (adjusted) likelihood ratio test.
 #' @examples
-#' # GEV model, owtemps data ----------
-#' # ... following Section 5.2 of Chandler and Bate (2007)
+#' # -------------------------- GEV model, owtemps data -----------------------
+#' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
 #'
 #' gev_loglik <- function(pars, data) {
 #'   o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
@@ -399,12 +392,12 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 #' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 #'
-#' # Perform the log-likelihood adjustment of the full model ------
-#'
+#' # Log-likelihood adjustment of the full model
 #' par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'                        par_names = par_names)
 #'
+#' # Adjusted and unadjusted confidence intervals
 #' large_v <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"))
 #' large_none <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"),
 #'                              type = "none")
@@ -591,8 +584,8 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
 #' @seealso \code{\link{conf_region}} for a confidence region for
 #'   pairs of parameters.
 #' @examples
-#' # GEV model, owtemps data ----------
-#' # ... following Section 5.2 of Chandler and Bate (2007)
+#' # -------------------------- GEV model, owtemps data -----------------------
+#' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
 #'
 #' gev_loglik <- function(pars, data) {
 #'   o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
@@ -614,14 +607,17 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 #' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 #'
-#' # Perform the log-likelihood adjustment of the full model ------
-#'
+#' # Log-likelihood adjustment of the full model
 #' par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'                        par_names = par_names)
-#' profile_loglik(large, prof_pars = "xi[1]", prof_vals = -0.1)
 #'
-#' medium <- adjust_loglik(larger = large, fixed_pars = "xi1")
+#' # Profile loglikelihood for xi1, evaluated at xi1 = 0
+#' profile_loglik(large, prof_pars = "xi[1]", prof_vals = 0)
+#'
+#' # Model with xi1 fixed at 0
+#' medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
+#' # Profile loglikelihood for xi0, evaluated at xi0 = -0.1
 #' profile_loglik(medium, prof_pars = "xi[0]", prof_vals = -0.1)
 #' @export
 profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,

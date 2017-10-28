@@ -143,6 +143,35 @@ compare_models(large, medium, type = "none")$p_value
 compare_models(medium, small)$p_value
 # Test sigma1 = xi1 = 0
 compare_models(large, small)$p_value
+
+# --------- Misspecified Poisson model for negative binomial data ----------
+
+# ... following Section 5.1 of the "Object-Oriented Computation of Sandwich
+# Estimators" vignette of the sandwich package
+# https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf
+
+# Simulate data
+set.seed(123)
+x <- rnorm(250)
+y <- rnbinom(250, mu = exp(1 + x), size = 1)
+# Fit misspecified Poisson model
+fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
+summary(fm_pois)$coefficients
+
+# Contributions to the independence loglikelihood
+pois_glm_loglik <- function(pars, y, x) {
+  log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
+  return(dpois(y, lambda = exp(log_mu), log = TRUE))
+}
+pars <- c("alpha", "beta", "gamma")
+pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
+summary(pois_quad)
+
+pois_lin <- adjust_loglik(larger = pois_quad, fixed_pars = "gamma")
+
+# Test the significance of the quadratic term
+compare_models(pois_quad, pois_lin)$p_value
+compare_models(pois_quad, pois_lin, approx = TRUE)$p_value
 }
 \references{
 Chandler, R. E. and Bate, S. (2007). Inference for clustered
