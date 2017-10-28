@@ -369,6 +369,21 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' @seealso \code{\link{compare_models}} to compare nested models using an
 #'   (adjusted) likelihood ratio test.
 #' @examples
+#' # ------------------------- Binomial model, rats data ----------------------
+#'
+#' # Contributions to the independence loglikelihood
+#' binom_loglik <- function(prob, data) {
+#'   if (prob < 0 || prob > 1) {
+#'     return(-Inf)
+#'   }
+#'   return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
+#' }
+#' rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
+#'
+#' # 95% likelihood-based confidence intervals, unadjusted and vertically adjusted
+#' conf_intervals(rat_res, type = "none")$prof_CI
+#' conf_intervals(rat_res)$prof_CI
+#'
 #' # -------------------------- GEV model, owtemps data -----------------------
 #' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
 #'
