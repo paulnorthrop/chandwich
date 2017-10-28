@@ -170,26 +170,8 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
 #'   loglikelhood function.
 #' @seealso \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
 #'   loglikelihoods.
-#' @examples
-#' norm_loglik <- function(params, data) {
-#'   mu <- params[1]
-#'   sigma <- params[2]
-#'   if (sigma <= 0) {
-#'     return(-Inf)
-#'   }
-#'   return(dnorm(data, mean = mu, sd = sigma, log = TRUE))
-#' }
-#' mu <- 0
-#' sigma <- 1
-#' norm_data <- rnorm(2000, mean = mu, sd = sigma)
-#' mu_sigma <- c(0, 1)
-#' cluster <- 1:length(norm_data)
-#' cluster <- rep(1:40, 50)
-#'
-#' pjn <- adjust_loglik(loglik = norm_loglik, data = norm_data, cluster = cluster,
-#'               init = 0:1)
-#' summary(pjn)
-#' @seealso \code{\link{adjust_loglik}}.
+#' @section Examples:
+#' See the examples in \code{\link{adjust_loglik}}.
 #' @export
 summary.chandwich <- function(object, digits = max(3, getOption("digits")-3),
                               ...) {

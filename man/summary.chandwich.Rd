@@ -30,32 +30,15 @@ Returns a numeric matrix with 3 or 4 columns and \code{object$d}
 \description{
 \code{summary} method for class "chandwich"
 }
-\examples{
-norm_loglik <- function(params, data) {
-  mu <- params[1]
-  sigma <- params[2]
-  if (sigma <= 0) {
-    return(-Inf)
-  }
-  return(dnorm(data, mean = mu, sd = sigma, log = TRUE))
-}
-mu <- 0
-sigma <- 1
-norm_data <- rnorm(2000, mean = mu, sd = sigma)
-mu_sigma <- c(0, 1)
-cluster <- 1:length(norm_data)
-cluster <- rep(1:40, 50)
+\section{Examples}{
 
-pjn <- adjust_loglik(loglik = norm_loglik, data = norm_data, cluster = cluster,
-              init = 0:1)
-summary(pjn)
+See the examples in \code{\link{adjust_loglik}}.
 }
+
 \seealso{
 \code{\link{adjust_loglik}} to adjust a user-supplied
   loglikelhood function.
 
 \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
   loglikelihoods.
-
-\code{\link{adjust_loglik}}.
 }
