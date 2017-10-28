@@ -115,3 +115,19 @@ large_none <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"),
                              type = "none")
 plot(large_v, large_none)
 }
+\seealso{
+\code{\link{adjust_loglik}} to adjust a user-supplied
+  loglikelhood function.
+
+\code{\link{summary.chandwich}} for maximum likelihood estimates
+  and unadjusted and adjusted standard errors.
+
+\code{\link{plot.chandwich}} for one- and two- dimensional plots
+  of adjusted loglikelihoods.
+
+\code{\link{conf_region}} for a confidence region for
+  pairs of parameters.
+
+\code{\link{compare_models}} to compare nested models using an
+  (adjusted) likelihood ratio test.
+}

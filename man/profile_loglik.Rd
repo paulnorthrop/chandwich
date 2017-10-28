@@ -90,3 +90,10 @@ profile_loglik(large, prof_pars = "xi[1]", prof_vals = -0.1)
 medium <- adjust_loglik(larger = large, fixed_pars = "xi1")
 profile_loglik(medium, prof_pars = "xi[0]", prof_vals = -0.1)
 }
+\seealso{
+\code{\link{conf_intervals}} for confidence intervals for
+  individual parameters.
+
+\code{\link{conf_region}} for a confidence region for
+  pairs of parameters.
+}

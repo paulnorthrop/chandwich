@@ -147,3 +147,19 @@ reg_none_3 <- conf_region(large, which_pars = which_pars, type = "none")
 plot(reg_3, reg_none_3)
 }
 }
+\seealso{
+\code{\link{adjust_loglik}} to adjust a user-supplied
+  loglikelhood function.
+
+\code{\link{summary.chandwich}} for maximum likelihood estimates
+  and unadjusted and adjusted standard errors.
+
+\code{\link{plot.chandwich}} for one- and two- dimensional plots
+  of adjusted loglikelihoods.
+
+\code{\link{conf_intervals}} for confidence intervals for
+  individual parameters.
+
+\code{\link{compare_models}} to compare nested models using an
+  (adjusted) likelihood ratio test.
+}

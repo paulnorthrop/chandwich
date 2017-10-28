@@ -72,6 +72,16 @@
 #'     \item{\strong{name}: }{A character scalar. The name of the model,
 #'       stored in \code{attr(object, "name")}.}
 #'   }
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelhood function.
+#' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
+#'   and unadjusted and adjusted standard errors.
+#' @seealso \code{\link{plot.chandwich}} for one- and two- dimensional plots
+#'   of adjusted loglikelihoods.
+#' @seealso \code{\link{conf_intervals}} for confidence intervals for
+#'   individual parameters.
+#' @seealso \code{\link{compare_models}} to compare nested models using an
+#'   (adjusted) likelihood ratio test.
 #' @examples
 #' # GEV model, owtemps data ----------
 #' # ... following Section 5.2 of Chandler and Bate (2007)
@@ -355,6 +365,16 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'     \item{\strong{p_current}: }{The number of free parameters in the
 #'       current model.}
 #'   }
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelhood function.
+#' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
+#'   and unadjusted and adjusted standard errors.
+#' @seealso \code{\link{plot.chandwich}} for one- and two- dimensional plots
+#'   of adjusted loglikelihoods.
+#' @seealso \code{\link{conf_region}} for a confidence region for
+#'   pairs of parameters.
+#' @seealso \code{\link{compare_models}} to compare nested models using an
+#'   (adjusted) likelihood ratio test.
 #' @examples
 #' # GEV model, owtemps data ----------
 #' # ... following Section 5.2 of Chandler and Bate (2007)
@@ -566,6 +586,10 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
 #'   parameters, which happens if an attempt is made to profile over
 #'   \emph{all} non-fixed parameters, then thiis attribute is not present and
 #'   the value returned is calculated using the function \code{object}.
+#' @seealso \code{\link{conf_intervals}} for confidence intervals for
+#'   individual parameters.
+#' @seealso \code{\link{conf_region}} for a confidence region for
+#'   pairs of parameters.
 #' @examples
 #' # GEV model, owtemps data ----------
 #' # ... following Section 5.2 of Chandler and Bate (2007)
