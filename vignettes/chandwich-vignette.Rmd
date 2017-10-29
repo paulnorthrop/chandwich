@@ -16,7 +16,7 @@ bibliography: chandwich.bib
 knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 ```
 
-The *chandwich* package performs adjustments of an independence loglikelihood using a robust sandwich estimator of the parameter covariance matrix, based on the methodology in @CB2007. This can be used for cluster correlated data when interest lies in the parameter vector $\theta$ of the marginal distributions. 
+The *chandwich* package performs adjustments of an independence loglikelihood using a robust sandwich estimator of the parameter covariance matrix, based on the methodology in @CB2007. This can be used for cluster correlated data when interest lies in the parameter vector $\theta$ of the marginal distributions or for performing inferences that are robust to certain types of model misspecification.
 
 Suppose that we have $k$ clusters of observations $\{y_j, j = 1, \ldots, k\}$, where $y_j$ is a vector of observations for the $j$th cluster.  The independence loglikelihood function is given by  
 $$\ell_I(\theta) = \sum_{j=1}^{k} \ell_j(\theta; y_j),$$
