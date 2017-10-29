@@ -92,9 +92,12 @@ binom_loglik <- function(prob, data) {
 }
 rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
 
-# 95\% likelihood-based confidence intervals, unadjusted and vertically adjusted
-conf_intervals(rat_res, type = "none")$prof_CI
+# 95\% likelihood-based confidence intervals, vertically adjusted
 conf_intervals(rat_res)$prof_CI
+\dontrun{
+# Unadjusted
+conf_intervals(rat_res, type = "none")$prof_CI
+}
 
 # -------------------------- GEV model, owtemps data -----------------------
 # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
@@ -124,11 +127,15 @@ par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
                        par_names = par_names)
 
-# Adjusted and unadjusted confidence intervals
+# 95\% likelihood-based confidence intervals, vertically adjusted
 large_v <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"))
+plot(large_v)
+\dontrun{
+# Unadjusted
 large_none <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"),
                              type = "none")
 plot(large_v, large_none)
+}
 }
 \seealso{
 \code{\link{adjust_loglik}} to adjust a user-supplied
