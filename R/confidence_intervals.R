@@ -29,9 +29,6 @@
 #'   \code{which_pars[2]} over which to profile.
 #'   Missing values in \code{range1} and/or \code{range2} are
 #'   filled in using \code{conf} and \code{mult}.  See below for details.
-#' @param lower,upper Numeric vectors of length 2.  For i = 1, 2:
-#'   (\code{lower[i], \code{upper[i]}}) specifies the range of values of
-#'   parameter i over which the (profile) loglikelihood is evaluated.
 #' @param conf A numeric scalar in (0, 100).  The highest confidence level
 #'   of interest. This is only relevant if \code{lower} and \code{upper} are
 #'   not supplied.  In that event \code{conf} is used, in combination with
@@ -206,7 +203,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
   res_SE <- res_adjSE <- numeric(p)
   res_SE[free_pars] <- attr(object, "SE")
   res_adjSE[free_pars] <- attr(object, "adjSE")
-  z_val <- qnorm(1 - (1 - conf_for_search / 100) / 2)
+  z_val <- stats::qnorm(1 - (1 - conf_for_search / 100) / 2)
   which_mle <- res_mle[which_pars]
   #
   lower <- c(range1[1], range2[1])
@@ -472,7 +469,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
   res_SE <- res_adjSE <- numeric(p)
   res_SE[free_pars] <- attr(object, "SE")
   res_adjSE[free_pars] <- attr(object, "adjSE")
-  z_val <- qnorm(1 - (1 - conf / 100) / 2)
+  z_val <- stats::qnorm(1 - (1 - conf / 100) / 2)
   which_mle <- res_mle[which_pars]
   if (type == "none") {
     sym_lower <- which_mle - z_val * res_SE[which_pars]

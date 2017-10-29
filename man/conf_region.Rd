@@ -62,10 +62,6 @@ or \code{control}.  Any arguments that are not appropriate for
 \code{\link[stats]{optim}}, i.e. not in
 \code{methods::formalArgs(stats::optim)},
 will be removed without warning.}
-
-\item{lower, upper}{Numeric vectors of length 2.  For i = 1, 2:
-(\code{lower[i], \code{upper[i]}}) specifies the range of values of
-parameter i over which the (profile) loglikelihood is evaluated.}
 }
 \value{
 A list with components
