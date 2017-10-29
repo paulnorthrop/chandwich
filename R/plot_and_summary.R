@@ -392,7 +392,7 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
 #'   is produced.  Can be either a numeric vector, specifying index of the
 #'   component of the \strong{full} parameter vector, or a character scalar
 #'   parameter name.  The former must be in \code{x$which_pars}, the latter
-#'   must be in \code{names(\code{x$which_pars})}.
+#'   must be in \code{names(x$which_pars)}.
 #' @param add_lines A logical scalar.  Whether or not to add horizontal lines
 #'   to the plot to identify the confidence limits.
 #' @param conf A numeric vector of values in (0, 100).  If

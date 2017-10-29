@@ -18,7 +18,7 @@ loglikelihood will be plotted for each object.}
 is produced.  Can be either a numeric vector, specifying index of the
 component of the \strong{full} parameter vector, or a character scalar
 parameter name.  The former must be in \code{x$which_pars}, the latter
-must be in \code{names(\code{x$which_pars})}.}
+must be in \code{names(x$which_pars)}.}
 
 \item{conf}{A numeric vector of values in (0, 100).  If
 \code{add_lines = TRUE} then a horizontal line is added for each
