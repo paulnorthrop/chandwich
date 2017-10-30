@@ -127,6 +127,34 @@
 #' reg_none_3 <- conf_region(large, which_pars = which_pars, type = "none")
 #' plot(reg_3, reg_none_3)
 #' }
+#'
+#' # --------- Misspecified Poisson model for negative binomial data ----------
+#'
+#' # ... following Section 5.1 of the "Object-Oriented Computation of Sandwich
+#' # Estimators" vignette of the sandwich package
+#' # https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf
+#'
+#' # Simulate data
+#' set.seed(123)
+#' x <- rnorm(250)
+#' y <- rnbinom(250, mu = exp(1 + x), size = 1)
+#' # Fit misspecified Poisson model
+#' fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
+#' summary(fm_pois)$coefficients
+#'
+#' # Contributions to the independence loglikelihood
+#' pois_glm_loglik <- function(pars, y, x) {
+#'   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
+#'   return(dpois(y, lambda = exp(log_mu), log = TRUE))
+#' }
+#' pars <- c("alpha", "beta", "gamma")
+#' # Linear model (gamma fixed at 0)
+#' pois_lin <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars,
+#'                           fixed_pars = "gamma")
+#' pois_vertical <- conf_region(pois_lin)
+#' pois_none <- conf_region(pois_lin, type = "none")
+#' plot(pois_none, pois_vertical, conf = c(50, 75, 95, 99), col = 2:1, lwd = 2,
+#'      lty = 1)
 #' @export
 conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
                         range2 = c(NA, NA), conf = 95, mult = 2, num = c(10, 10),
@@ -421,6 +449,30 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'                              type = "none")
 #' plot(large_v, large_none)
 #' }
+#'
+#' # --------- Misspecified Poisson model for negative binomial data ----------
+#'
+#' # ... following Section 5.1 of the "Object-Oriented Computation of Sandwich
+#' # Estimators" vignette of the sandwich package
+#' # https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf
+#'
+#' # Simulate data
+#' set.seed(123)
+#' x <- rnorm(250)
+#' y <- rnbinom(250, mu = exp(1 + x), size = 1)
+#' # Fit misspecified Poisson model
+#' fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
+#' summary(fm_pois)$coefficients
+#'
+#' # Contributions to the independence loglikelihood
+#' pois_glm_loglik <- function(pars, y, x) {
+#'   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
+#'   return(dpois(y, lambda = exp(log_mu), log = TRUE))
+#' }
+#' pars <- c("alpha", "beta", "gamma")
+#' pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
+#' summary(pois_quad)
+#' conf_intervals(pois_quad)$prof_CI
 #' @export
 conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
                      mult = 1.5, num = 10,
