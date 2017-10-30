@@ -12,13 +12,13 @@ ses <- c(0.0414, 0.0535, 0.0231)
 adj_ses <- c(0.0838, 0.1052, 0.0363)
 
 set.seed(123)
-x <- rnorm(250)
-y <- rnbinom(250, mu = exp(1 + x), size = 1)
+x <- stats::rnorm(250)
+y <- stats::rnbinom(250, mu = exp(1 + x), size = 1)
 fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
 
 pois_glm_loglik <- function(pars, y, x) {
   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
-  return(dpois(y, lambda = exp(log_mu), log = TRUE))
+  return(stats::dpois(y, lambda = exp(log_mu), log = TRUE))
 }
 pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3)
 
