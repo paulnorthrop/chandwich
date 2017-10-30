@@ -98,7 +98,7 @@ gev_loglik <- function(pars, data) {
   return(o_loglik + w_loglik)
 }
 # Initial estimates (method of moments for the Gumbel case)
-sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
+sigma <- as.numeric(sqrt(6 * diag(var(owtemps))) / pi)
 mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 
@@ -157,7 +157,7 @@ We repeat part of an example from Section 5.1 of the
 set.seed(123)
 x <- rnorm(250)
 y <- rnbinom(250, mu = exp(1 + x), size = 1)
-fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
+fm_pois <- glm(y ~ x + I(x^2), family = poisson)
 round(summary(fm_pois)$coefficients, 3)
 ```
 
