@@ -11,10 +11,12 @@ Description: Performs adjustments of a user-supplied independence loglikelihood
     function using a robust sandwich estimator of the parameter covariance 
     matrix, based on the methodology in Chandler and Beta (2007) 
     <doi:10.1093/biomet/asm015>.  This can be used for cluster correlated data 
-    when interest lies in the parameters of the marginal distributions.  
-    Functions for profiling the adjusted loglikelihoods are also provided, as 
-    are functions for calculating and plotting confidence intervals, for single
-    model parameters, and confidence regions, for pairs of model parameters.
+    when interest lies in the parameters of the marginal distributions or for 
+    performing inferences that are robust to certain types of model 
+    misspecification.  Functions for profiling the adjusted loglikelihoods are 
+    also provided, as are functions for calculating and plotting confidence 
+    intervals, for single model parameters, and confidence regions, for pairs 
+    of model parameters.
 Imports: graphics,
     methods,
     numDeriv,
