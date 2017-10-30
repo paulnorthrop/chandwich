@@ -29,14 +29,21 @@ larger <- adjust_loglik(gev_loglik, data = owtemps, init = init,
                         par_names = par_names)
 
 # Restricted model
-smaller <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-                         par_names = par_names, fixed_pars = 6)
+smaller_1 <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+                           par_names = par_names, fixed_pars = 6)
 
-res1 <- compare_models(larger, smaller)
-res2 <- compare_models(larger, fixed_pars = 6)
+# Restricted model, using larger to start and character name
+smaller_2 <- adjust_loglik(larger = larger, fixed_pars = "xi1")
+
+res1 <- compare_models(larger, smaller_1)
+res2 <- compare_models(larger, smaller_2)
+res3 <- compare_models(larger, fixed_pars = 6)
 
 my_tol <- 1e-5
 
-test_that("the two approaches agree", {
-  testthat::expect_equal(res1, res2, tolerance = my_tol)
+test_that("approaches 1 and 3 agree", {
+  testthat::expect_equal(res1, res3, tolerance = my_tol)
+})
+test_that("approaches 2 and 3 agree", {
+  testthat::expect_equal(res2, res3, tolerance = my_tol)
 })
