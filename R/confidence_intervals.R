@@ -99,7 +99,7 @@
 #' }
 #'
 #' # Initial estimates (method of moments for the Gumbel case)
-#' sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
+#' sigma <- as.numeric(sqrt(6 * diag(var(owtemps))) / pi)
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 #' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 #'
@@ -139,7 +139,7 @@
 #' x <- rnorm(250)
 #' y <- rnbinom(250, mu = exp(1 + x), size = 1)
 #' # Fit misspecified Poisson model
-#' fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
+#' fm_pois <- glm(y ~ x + I(x^2), family = poisson)
 #' summary(fm_pois)$coefficients
 #'
 #' # Contributions to the independence loglikelihood
@@ -431,7 +431,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' }
 #'
 #' # Initial estimates (method of moments for the Gumbel case)
-#' sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
+#' sigma <- as.numeric(sqrt(6 * diag(var(owtemps))) / pi)
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 #' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 #'
@@ -461,7 +461,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' x <- rnorm(250)
 #' y <- rnbinom(250, mu = exp(1 + x), size = 1)
 #' # Fit misspecified Poisson model
-#' fm_pois <- stats::glm(y ~ x + I(x^2), family = poisson)
+#' fm_pois <- glm(y ~ x + I(x^2), family = poisson)
 #' summary(fm_pois)$coefficients
 #'
 #' # Contributions to the independence loglikelihood
@@ -674,7 +674,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
 #' }
 #'
 #' # Initial estimates (method of moments for the Gumbel case)
-#' sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
+#' sigma <- as.numeric(sqrt(6 * diag(var(owtemps))) / pi)
 #' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 #' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 #'

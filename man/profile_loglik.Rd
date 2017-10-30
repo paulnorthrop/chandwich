@@ -76,7 +76,7 @@ gev_loglik <- function(pars, data) {
 }
 
 # Initial estimates (method of moments for the Gumbel case)
-sigma <- as.numeric(sqrt(6 * diag(stats::var(owtemps))) / pi)
+sigma <- as.numeric(sqrt(6 * diag(var(owtemps))) / pi)
 mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
 init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 
