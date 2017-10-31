@@ -376,7 +376,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'     \item{\strong{max_loglik}: }{The value of the adjusted loglikelihood
 #'       at its maximum, stored in \code{object$max_loglik}.}
 #'     \item{\strong{type}: }{The argument \code{type} supplied in the call
-#'       to \code{adjust_loglik}, i.e. the type of loglikelihood adjustment.}
+#'       to \code{conf_intervals}, i.e. the type of loglikelihood adjustment.}
 #'     \item{\strong{which_pars}: }{The argument \code{which_pars}.}
 #'     \item{\strong{name}: }{A character scalar. The name of the model,
 #'       stored in \code{attr(object, "name")}.}
