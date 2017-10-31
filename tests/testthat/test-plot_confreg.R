@@ -1,4 +1,4 @@
-context("conf_reg")
+context("conf_region")
 
 # --------- Misspecified Poisson model for negative binomial data ----------
 
@@ -22,20 +22,30 @@ pars <- c("alpha", "beta", "gamma")
 # Linear model (gamma fixed at 0)
 pois_lin <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars,
                           fixed_pars = "gamma")
-pois_vertical <- conf_region(pois_lin)
-pois_none <- conf_region(pois_lin, type = "none")
-check_NULL <- try(plot(pois_none, pois_vertical, conf = c(50, 75, 95, 99),
-                       col = 2:1, lwd = 2, lty = 1), silent = TRUE)
-
+pois_v <- conf_region(pois_lin)
+pois_n <- conf_region(pois_lin, type = "none")
+pois_c <- conf_region(pois_lin, type = "cholesky")
+pois_s <- conf_region(pois_lin, type = "spectral")
+check_NULL <- try(plot(pois_n, pois_v, pois_c, pois_s,
+                       conf = c(50, 75, 95, 99),
+                       col = 4:1, lwd = 2, lty = 1), silent = TRUE)
 
 test_that("Consistent names gives no error", {
   testthat::expect_identical(check_NULL, NULL)
 })
 
+# Repeat for character which_pars
+pois_v_char <- conf_region(pois_lin, which_pars = c("alpha", "beta"))
+check_NULL <- try(plot(pois_n, pois_v_char, pois_c, pois_s), silent = TRUE)
+
+test_that("Consistent names gives no error, which_pars is character", {
+  testthat::expect_identical(check_NULL, NULL)
+})
+
 new_pois_lin <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars,
                               fixed_pars = "gamma", name = "wrong_name")
-new_pois_none <- conf_region(new_pois_lin, type = "none")
-check_error <- try(plot(new_pois_none, pois_vertical, conf = c(50, 75, 95, 99)),
+new_pois_n <- conf_region(new_pois_lin, type = "none")
+check_error <- try(plot(new_pois_n, pois_v, conf = c(50, 75, 95, 99)),
                    silent = TRUE)
 
 test_that("Inconsistent names gives an error", {
