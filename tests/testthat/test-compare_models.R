@@ -38,6 +38,7 @@ smaller_2 <- adjust_loglik(larger = larger, fixed_pars = "xi1")
 res1 <- compare_models(larger, smaller_1)
 res2 <- compare_models(larger, smaller_2)
 res3 <- compare_models(larger, fixed_pars = 6)
+res4 <- compare_models(larger, fixed_pars = "xi1")
 
 my_tol <- 1e-5
 
@@ -46,4 +47,19 @@ test_that("approaches 1 and 3 agree", {
 })
 test_that("approaches 2 and 3 agree", {
   testthat::expect_equal(res2, res3, tolerance = my_tol)
+})
+test_that("approaches 3 and 4 agree", {
+  testthat::expect_equal(res3, res4, tolerance = my_tol)
+})
+
+# Repeat for approx = TRUE and specifying an optim method
+# Note: approx only relevant when smaller is supplied
+
+smaller_3 <- adjust_loglik(larger = larger, fixed_pars = 6)
+
+res5 <- compare_models(larger, smaller_2, approx = TRUE, method = "L-BFGS-B")
+res6 <- compare_models(larger, smaller_3, approx = TRUE, method = "L-BFGS-B")
+
+test_that("approx = TRUE, numeric and character which_pars agree", {
+  testthat::expect_equal(res5, res6, tolerance = my_tol)
 })
