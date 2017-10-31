@@ -441,9 +441,9 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
       stop("which_par can be character only if names(x$which_pars) isn't NULL")
     }
     par_names <- names(x$which_pars)
-    xlabel <- par_names[which_index]
     which_index <- match(which_par, par_names)
     which_par <- x$which_pars[which_index]
+    xlabel <- par_names[which_index]
   } else {
     stop("which_par must be numeric or character")
   }
