@@ -27,7 +27,7 @@ pois_n <- conf_region(pois_lin, type = "none")
 pois_c <- conf_region(pois_lin, type = "cholesky")
 pois_s <- conf_region(pois_lin, type = "spectral")
 check_NULL <- try(plot(pois_n, pois_v, pois_c, pois_s,
-                       conf = c(50, 75, 95, 99),
+                       conf = c(50, 95),
                        col = 4:1, lwd = 2, lty = 1), silent = TRUE)
 
 test_that("Consistent names gives no error", {
@@ -45,7 +45,7 @@ test_that("Consistent names gives no error, which_pars is character", {
 new_pois_lin <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars,
                               fixed_pars = "gamma", name = "wrong_name")
 new_pois_n <- conf_region(new_pois_lin, type = "none")
-check_error <- try(plot(new_pois_n, pois_v, conf = c(50, 75, 95, 99)),
+check_error <- try(plot(new_pois_n, pois_v, conf = c(50, 95)),
                    silent = TRUE)
 
 test_that("Inconsistent names gives an error", {
