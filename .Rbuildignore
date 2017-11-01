@@ -1,7 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
-^README-.*\.png$
+^cran-comments\.md$
 ^R/adjust_object\.R$
 ^\.travis\.yml$
 ^appveyor\.yml$
