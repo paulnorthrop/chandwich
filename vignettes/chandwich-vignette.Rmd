@@ -151,7 +151,7 @@ In this case whether or not we use the approximate approach has a non-negligible
 ## Misspecified Poisson model
 
 We repeat part of an example from Section 5.1 of the 
-[Object-Oriented Computation of Sandwich Estimators](https://cran.r-project.org/web/packages/sandwich/vignettes/sandwich-OOP.pdf) vignette of the *sandwich* package [@sandwich], using the same simulated dataset.  This example illustrates that sandwich estimators may result in inferences that are robust against certain types model misspecification.  We simulate data from a log-linear negative binomial regression model and fit a misspecified log-quadratic Poisson regression model.  
+[Object-Oriented Computation of Sandwich Estimators](https://cran.r-project.org/package=sandwich) vignette of the *sandwich* package [@sandwich], using the same simulated dataset.  This example illustrates that sandwich estimators may result in inferences that are robust against certain types model misspecification.  We simulate data from a log-linear negative binomial regression model and fit a misspecified log-quadratic Poisson regression model.  
 
 ```{r}
 set.seed(123)
