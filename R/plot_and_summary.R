@@ -154,7 +154,7 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
 #'
 #' @param object an object of class "chandwich", a result of a call to
 #'   \code{adjust_loglik}.
-#' @param digits A integer. Used for number formatting with
+#' @param digits An integer. Used for number formatting with
 #'   \code{\link{signif}}.
 #' @param ... Additional optional arguments. At present no optional
 #'   arguments are used.
@@ -173,8 +173,8 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
 #' @section Examples:
 #' See the examples in \code{\link{adjust_loglik}}.
 #' @export
-summary.chandwich <- function(object, digits = max(3, getOption("digits")-3),
-                              ...) {
+summary.chandwich <- function(object,
+                              digits = max(3, getOption("digits") - 3L)) {
   if (!inherits(object, "chandwich")) {
     stop("use only with \"chandwich\" objects")
   }
@@ -550,4 +550,53 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
     do.call(graphics::legend, legend_args)
   }
   return(invisible())
+}
+
+# =============================== print.confint ===============================
+
+#' Print method for objects of class "confint"
+#'
+#' \code{print} method for class "confint".
+#'
+#' @param x an object of class "confint", a result of a call to
+#'   \code{\link{conf_intervals}}.
+#' @param digits An integer. The argument \code{digits} to
+#'   \code{\link{print.default}}.
+#' @param ... Additional optional arguments. At present no optional
+#'   arguments are used.
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelhood function.
+#' @seealso \code{\link{conf_intervals}} for confidence intervals for
+#'   individual parameters.
+#' @section Examples:
+#' See the examples in \code{\link{conf_intervals}}.
+#' @export
+print.confint <- function(x, digits = max(3, getOption("digits") - 3L)) {
+  if (!inherits(x, "confint")) {
+    stop("use only with \"confint\" objects")
+  }
+  if (x$type == "none") {
+    cat("Based on the independence loglikelihood ...\n")
+  } else {
+    cat("Based on the adjusted loglikelihood with type =", x$type, "...\n")
+  }
+  cat("\n")
+  if (x$p_current == 1) {
+    cat(paste(x$conf, "%", sep = ""), "Symmetric confidence interval:\n")
+  } else {
+    cat(paste(x$conf, "%", sep = ""), "Symmetric confidence intervals:\n")
+  }
+  print.default(format(x$sym_CI, digits = digits), print.gap = 2L,
+                quote = FALSE)
+  cat("\n")
+  if (x$p_current == 1) {
+    cat(paste(x$conf, "%", sep = ""),
+        "likelihood-based confidence interval:\n")
+  } else {
+    cat(paste(x$conf, "%", sep = ""),
+        "profile likelihood-based confidence intervals:\n")
+  }
+  print.default(format(x$prof_CI, digits = digits), print.gap = 2L,
+                quote = FALSE)
+  invisible(x)
 }

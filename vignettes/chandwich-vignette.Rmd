@@ -71,9 +71,9 @@ plot(rat_res, type = 1:4, legend_pos = "bottom", lwd = 2, col = 1:4,
 The function `conf_intervals` calculates (profile, if necessary) likelihood-based confidence intervals for individual parameters.
 
 ```{r}
-# 95% likelihood-based confidence intervals, unadjusted and vertically adjusted
-conf_intervals(rat_res, type = "none")$prof_CI
-conf_intervals(rat_res)$prof_CI
+# 95% confidence intervals, unadjusted and vertically adjusted
+conf_intervals(rat_res, type = "none")
+conf_intervals(rat_res)
 ```
 
 ## Extreme value modelling of maximum temperatures
@@ -117,8 +117,8 @@ round(attr(full, "adjSE"), 4)
 We use `conf_intervals` to calculate profile likelihood-based confidence intervals for the parameters.
 
 ```{r}
-# 95% likelihood-based confidence intervals, vertically adjusted
-conf_intervals(full)$prof_CI
+# 95% confidence intervals, vertically adjusted
+conf_intervals(full)
 ```
 
 ### Confidence regions
@@ -180,8 +180,8 @@ The adjusted standard errors agree with those in the *sandwich* vignette and are
 We use `conf_intervals` to calculate profile likelihood-based confidence intervals for the parameters.
 
 ```{r}
-# 95% likelihood-based confidence intervals, vertically adjusted
-conf_intervals(pois_quad)$prof_CI
+# 95% confidence intervals, vertically adjusted
+conf_intervals(pois_quad)
 ```
 
 ### Confidence regions

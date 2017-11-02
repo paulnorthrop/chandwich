@@ -4,14 +4,13 @@
 \alias{summary.chandwich}
 \title{Summarizing adjusted loglikelihoods}
 \usage{
-\method{summary}{chandwich}(object, digits = max(3, getOption("digits") - 3),
-  ...)
+\method{summary}{chandwich}(object, digits = max(3, getOption("digits") - 3L))
 }
 \arguments{
 \item{object}{an object of class "chandwich", a result of a call to
 \code{adjust_loglik}.}
 
-\item{digits}{A integer. Used for number formatting with
+\item{digits}{An integer. Used for number formatting with
 \code{\link{signif}}.}
 
 \item{...}{Additional optional arguments. At present no optional

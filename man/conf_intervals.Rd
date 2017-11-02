@@ -93,10 +93,10 @@ binom_loglik <- function(prob, data) {
 rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
 
 # 95\% likelihood-based confidence intervals, vertically adjusted
-conf_intervals(rat_res)$prof_CI
+conf_intervals(rat_res)
 \dontrun{
 # Unadjusted
-conf_intervals(rat_res, type = "none")$prof_CI
+conf_intervals(rat_res, type = "none")
 }
 
 # -------------------------- GEV model, owtemps data -----------------------
@@ -129,11 +129,13 @@ large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 
 # 95\% likelihood-based confidence intervals, vertically adjusted
 large_v <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"))
+large_v
 plot(large_v)
 \dontrun{
 # Unadjusted
 large_none <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"),
                              type = "none")
+large_none
 plot(large_v, large_none)
 }
 
@@ -159,7 +161,7 @@ pois_glm_loglik <- function(pars, y, x) {
 pars <- c("alpha", "beta", "gamma")
 pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
 summary(pois_quad)
-conf_intervals(pois_quad)$prof_CI
+conf_intervals(pois_quad)
 }
 \seealso{
 \code{\link{adjust_loglik}} to adjust a user-supplied
