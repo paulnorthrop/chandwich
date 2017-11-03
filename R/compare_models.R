@@ -12,6 +12,9 @@
 #'   \code{adjust_loglik}.  The larger of the two models.
 #' @param smaller An object of class \code{"chandwich"} returned by
 #'   \code{adjust_loglik}.  The smaller of the two models.
+#'
+#'   If \code{smaller} is supplied then the arguments \code{fixed_pars} and
+#'   \code{fixed_at} are ignored.
 #' @param approx A logical scalar.  If \code{approx = TRUE} then the
 #'   approximation detailed by equations (18)-(20) of Chandler and Bate (2007)
 #'   is used.  This option is available only if \code{smaller} is supplied.
@@ -33,7 +36,7 @@
 #'   of the parameter vector are all fixed at \code{fixed_at}.
 #'   If \code{length(fixed_at) = length(fixed_pars)} then the component
 #'   \code{fixed_pars[i]} is fixed at \code{fixed_at[i]} for each \code{i}.
-#' @param init (Only relevant is \code{approx = FALSE}).
+#' @param init (Only relevant if \code{approx = FALSE}).
 #'   A numeric vector of initial values for use in the search for
 #'   the MLE under the smaller model.  Must have length equal to the number
 #'   of parameters in the smaller of the two models being compared.  If
@@ -174,8 +177,9 @@
 #' @export
 compare_models <- function(larger, smaller = NULL, approx = FALSE,
                            type = c("vertical", "cholesky", "spectral",
-                                    "none"),
-                           fixed_pars = NULL, fixed_at = 0, init = NULL, ...) {
+                                    "none"), fixed_pars = NULL,
+                           fixed_at = rep_len(0, length(fixed_pars)),
+                           init = NULL, ...) {
   type <- match.arg(type)
   if (type == "none" & approx) {
     approx <- FALSE
@@ -185,6 +189,9 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   #
   # The number of parameters in the larger model
   p <- attr(larger, "p_current")
+  # Extract the fixed parameters (if any) from the larger model
+  l_fixed_pars <- attr(larger, "fixed_pars")
+  l_fixed_at <- attr(larger, "fixed_at")
   # If smaller is supplied then .......
   if (!is.null(smaller)) {
     # Check that smaller is nested within larger
@@ -204,9 +211,8 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     fixed_at <- attr(smaller, "fixed_at")
     s_fixed_pars <- fixed_pars
     s_fixed_at <- fixed_at
-    l_fixed_pars <- attr(larger, "fixed_pars")
-    l_fixed_at <- attr(larger, "fixed_at")
-    l_fixed_at <- attr(larger, "fixed_at")
+#    l_fixed_pars <- attr(larger, "fixed_pars")
+#    l_fixed_at <- attr(larger, "fixed_at")
     nest_2 <- all(l_fixed_pars %in% s_fixed_pars)
     if (!nest_1 | !nest_2) {
       stop("smaller is not nested in larger")
@@ -260,6 +266,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   if (is.null(fixed_pars)) {
     stop("'fixed_pars' must be supplied")
   } else {
+    fixed_at <- rep_len(fixed_at, length(fixed_pars))
     # If fixed_pars is a character vector then
     # (a) check that full_par_names is not NULL
     # (b) check that fixed_pars is a subset of full_par_names
@@ -277,6 +284,8 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
       names(fixed_pars) <- temp
     }
   }
+  s_fixed_pars <- fixed_pars
+  s_fixed_at <- fixed_at
   # The number of parameters that are fixed
   qq <- length(fixed_pars)
   if (qq >= p) {

@@ -6,14 +6,17 @@
 \usage{
 compare_models(larger, smaller = NULL, approx = FALSE,
   type = c("vertical", "cholesky", "spectral", "none"), fixed_pars = NULL,
-  fixed_at = 0, init = NULL, ...)
+  fixed_at = rep_len(0, length(fixed_pars)), init = NULL, ...)
 }
 \arguments{
 \item{larger}{An object of class \code{"chandwich"} returned by
 \code{adjust_loglik}.  The larger of the two models.}
 
 \item{smaller}{An object of class \code{"chandwich"} returned by
-\code{adjust_loglik}.  The smaller of the two models.}
+  \code{adjust_loglik}.  The smaller of the two models.
+
+  If \code{smaller} is supplied then the arguments \code{fixed_pars} and
+  \code{fixed_at} are ignored.}
 
 \item{approx}{A logical scalar.  If \code{approx = TRUE} then the
   approximation detailed by equations (18)-(20) of Chandler and Bate (2007)
@@ -40,7 +43,7 @@ of the parameter vector are all fixed at \code{fixed_at}.
 If \code{length(fixed_at) = length(fixed_pars)} then the component
 \code{fixed_pars[i]} is fixed at \code{fixed_at[i]} for each \code{i}.}
 
-\item{init}{(Only relevant is \code{approx = FALSE}).
+\item{init}{(Only relevant if \code{approx = FALSE}).
 A numeric vector of initial values for use in the search for
 the MLE under the smaller model.  Must have length equal to the number
 of parameters in the smaller of the two models being compared.  If
