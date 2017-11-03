@@ -4,7 +4,7 @@
 \alias{print.confint}
 \title{Print method for objects of class "confint"}
 \usage{
-\method{print}{confint}(x, digits = max(3L, getOption("digits") - 3L))
+\method{print}{confint}(x, digits = max(3L, getOption("digits") - 3L), ...)
 }
 \arguments{
 \item{x}{an object of class "confint", a result of a call to
@@ -16,8 +16,18 @@
 \item{...}{Additional optional arguments. At present no optional
 arguments are used.}
 }
+\value{
+The argument \code{x}, invisibly, as for all \code{\link{print}}
+  methods.
+}
 \description{
 \code{print} method for class "confint".
+}
+\details{
+Prints the name of the model, details of any fixed parameters,
+  the confidence level of the interval(s) and whether or not
+  the loglikelihood has been adjusted, and symmetric and (profile) likelihood
+  based intervals.
 }
 \section{Examples}{
 
