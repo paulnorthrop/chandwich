@@ -575,26 +575,27 @@ print.confint <- function(x, digits = max(3, getOption("digits") - 3L)) {
   if (!inherits(x, "confint")) {
     stop("use only with \"confint\" objects")
   }
-  if (x$type == "none") {
-    cat("Based on the independence loglikelihood ...\n")
+  conf_level <- paste(x$conf, "%", sep = "")
+  if (x$p_current == 1) {
+    conf_name <- "confidence interval,"
   } else {
-    cat("Based on the adjusted loglikelihood with type =", x$type, "...\n")
+    conf_name <- "confidence intervals,"
+  }
+  if (x$type == "none") {
+    cat(conf_level, conf_name, "independence loglikelihood\n")
+  } else {
+    cat(conf_level, conf_name, "adjusted loglikelihod with type =",
+        paste("''", x$type, "''", sep = ""), "\n")
   }
   cat("\n")
-  if (x$p_current == 1) {
-    cat(paste(x$conf, "%", sep = ""), "Symmetric confidence interval:\n")
-  } else {
-    cat(paste(x$conf, "%", sep = ""), "Symmetric confidence intervals:\n")
-  }
+  cat("Symmetric:\n")
   print.default(format(x$sym_CI, digits = digits), print.gap = 2L,
                 quote = FALSE)
   cat("\n")
   if (x$p_current == 1) {
-    cat(paste(x$conf, "%", sep = ""),
-        "likelihood-based confidence interval:\n")
+    cat("Likelihood-based:\n")
   } else {
-    cat(paste(x$conf, "%", sep = ""),
-        "profile likelihood-based confidence intervals:\n")
+    cat("Profile likelihood-based:\n")
   }
   print.default(format(x$prof_CI, digits = digits), print.gap = 2L,
                 quote = FALSE)
