@@ -211,8 +211,6 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     fixed_at <- attr(smaller, "fixed_at")
     s_fixed_pars <- fixed_pars
     s_fixed_at <- fixed_at
-#    l_fixed_pars <- attr(larger, "fixed_pars")
-#    l_fixed_at <- attr(larger, "fixed_at")
     nest_2 <- all(l_fixed_pars %in% s_fixed_pars)
     if (!nest_1 | !nest_2) {
       stop("smaller is not nested in larger")
@@ -223,8 +221,6 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
       stop("smaller is not nested in larger: ",
            "parameter(s) fixed at different values")
     }
-#    fixed_pars <- attr(smaller, "fixed_pars")
-#    fixed_at <- attr(smaller, "fixed_at")
     qq <- length(fixed_pars)
     p <- attr(larger, "p_current")
     s_mle <- attr(smaller, "MLE")
@@ -286,6 +282,20 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   }
   s_fixed_pars <- fixed_pars
   s_fixed_at <- fixed_at
+  # Check that the implied smaller model is nested within larger
+  # (1) all values in l_fixed_pars must also appear in s_fixed_pars
+  if (!all(l_fixed_pars %in% s_fixed_pars)) {
+    stop("smaller is not nested in larger")
+  }
+  # (2) Any parameters that appear in both attr(larger, "fixed_pars") and
+  #     attr(smaller, "fixed_pars") must have the same corresponding values
+  #     in attr(larger, "fixed_at") and attr(smaller, "fixed_at")
+  l_in_s <- which(l_fixed_pars %in% s_fixed_pars)
+  s_in_l <- which(s_fixed_pars %in% l_fixed_pars)
+  if (any(l_fixed_at[l_in_s] != s_fixed_at[s_in_l])) {
+    stop("smaller is not nested in larger: ",
+         "parameter(s) fixed at different values")
+  }
   # The number of parameters that are fixed
   qq <- length(fixed_pars)
   if (qq >= p) {
