@@ -53,7 +53,7 @@ These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
 or \code{control}.}
 }
 \value{
-A list containing Test statistic, degrees of freedom (q) and p-value.
+An object of class "compmod", a list with components
  \item{alrts}{the adjusted likelihood ratio test statistic.}
  \item{df}{under the null hypothesis that the smaller model is a valid
    simplification of the larger model the adjusted likelihood ratio

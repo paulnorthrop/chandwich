@@ -61,7 +61,7 @@
 #'   MLE under the smaller model.  The same null distribution (chi-squared with
 #'   degrees of freedom equal to the number of parameters that are fixed)
 #'   is used in both cases.
-#' @return A list containing Test statistic, degrees of freedom (q) and p-value.
+#' @return An object of class "compmod", a list with components
 #'  \item{alrts}{the adjusted likelihood ratio test statistic.}
 #'  \item{df}{under the null hypothesis that the smaller model is a valid
 #'    simplification of the larger model the adjusted likelihood ratio
@@ -313,6 +313,9 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   #
   temp <- do.call(stats::optim, for_optim)
   alrts <- 2 * (attr(larger, "max_loglik") + temp$value)
-  return(list(alrts = alrts, df = qq, p_value = 1 - stats::pchisq(alrts, qq),
-              larger_mle = attr(larger, "MLE"), smaller_mle = temp$par))
+  comp_list <- list(alrts = alrts, df = qq,
+                    p_value = 1 - stats::pchisq(alrts, qq),
+                    larger_mle = attr(larger, "MLE"), smaller_mle = temp$par)
+  class(comp_list) <- "compmod"
+  return(comp_list)
 }
