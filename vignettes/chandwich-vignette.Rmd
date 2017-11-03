@@ -104,12 +104,12 @@ init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 
 # Perform the log-likelihood adjustment of the full model 
 par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
-full <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-                      par_names = par_names)
+large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+                       par_names = par_names)
 # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
-round(attr(full, "MLE"), 4)
-round(attr(full, "SE"), 4)
-round(attr(full, "adjSE"), 4)
+round(attr(large, "MLE"), 4)
+round(attr(large, "SE"), 4)
+round(attr(large, "adjSE"), 4)
 ```
 
 ### Confidence intervals
@@ -118,7 +118,7 @@ We use `conf_intervals` to calculate profile likelihood-based confidence interva
 
 ```{r}
 # 95% confidence intervals, vertically adjusted
-conf_intervals(full)
+conf_intervals(large)
 ```
 
 ### Confidence regions
@@ -127,10 +127,10 @@ We reproduce Figure 4(b) of @CB2007, adding a 95\% confidence region for the ver
 
 ```{r, fig.align='center', fig.width=7, fig.height=7}
 which_pars <- c("sigma[0]", "sigma[1]")
-gev_none <- conf_region(full, which_pars = which_pars, type = "none")
-gev_vertical <- conf_region(full, which_pars = which_pars)
-gev_cholesky <- conf_region(full, which_pars = which_pars, type = "cholesky")
-gev_spectral <- conf_region(full, which_pars = which_pars, type = "spectral")
+gev_none <- conf_region(large, which_pars = which_pars, type = "none")
+gev_vertical <- conf_region(large, which_pars = which_pars)
+gev_cholesky <- conf_region(large, which_pars = which_pars, type = "cholesky")
+gev_spectral <- conf_region(large, which_pars = which_pars, type = "spectral")
 plot(gev_none, gev_cholesky, gev_vertical, gev_spectral, lwd = 2,
      xlim = c(3.0, 4.5), ylim = c(-0.1, 1.25))
 ```
@@ -139,11 +139,19 @@ The 95\% contours of the profile adjusted loglikelihoods are similar.
 
 ### Comparing nested models
 
-Suppose that we wish to test the null hypothesis that Oxford and Worthing share a common GEV shape parameter, that is, that $\xi_1 = 0$.  In the misspecified Poisson model example we called `adjust_loglik` to perform loglikelihood adjustment under a reduced model and then used `compare_models` to carry out an adjusted likelihood ratio test.  Alternatively, we can use a single call to `compare_models`.
+Suppose that we wish to test the null hypothesis that Oxford and Worthing share a common GEV shape parameter, that is, that $\xi_1 = 0$.  We call `adjust_loglik` again using the argument `fixed_pars` to fix $\xi_1$ to zero and perform loglikelihood adjustment under the reduced model.   Then we use `compare_models` to carry out an adjusted likelihood ratio test.  If `approx = FALSE` (the default) then equation (17) in Section 3.3 of @CB2007 is used.  If `approx = TRUE` then the approximation in equation (18) is used.
 
 ```{r}
-compare_models(full, fixed_pars = "xi[1]")$p_value
-compare_models(full, fixed_pars = "xi[1]", approx = TRUE)$p_value
+medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
+compare_models(large, medium)
+compare_models(large, medium, approx = TRUE)
+```
+
+Alternatively, we can call `compare_models` directly without first creating `medium`, using the argument `fixed_pars` to fix $\xi_1$ to zero.
+
+```{r}
+compare_models(large, fixed_pars = "xi[1]")
+compare_models(large, fixed_pars = "xi[1]", approx = TRUE)
 ```
 
 In this case whether or not we use the approximate approach has a non-negligible effect on the $p$-value but we would probably reject the null in either case.
@@ -186,7 +194,7 @@ conf_intervals(pois_quad)
 
 ### Confidence regions
 
-We call `adjust_loglik` again to fix the quadratic coefficient to zero, producing a model with two free parameters, and use `conf_region` to calculate the vertically adjusted and unadjusted loglikelihoods over a grid for plotting. The plot below illustrates the way in which the independence loglikelihood for $(\alpha, \beta)$ has been scaled.
+We call `adjust_loglik` again to fix the quadratic coefficient at zero, producing a model with two free parameters, and use `conf_region` to calculate the vertically adjusted and unadjusted loglikelihoods over a grid for plotting. The plot below illustrates the way in which the independence loglikelihood for $(\alpha, \beta)$ has been scaled.
 
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 pois_lin <- adjust_loglik(larger = pois_quad, fixed_pars = "gamma")
@@ -197,11 +205,11 @@ plot(pois_none, pois_vertical, conf = c(50, 75, 95, 99), col = 2:1, lwd = 2, lty
 
 ### Comparing nested models
 
-We could examine the significance of the quadratic term using an adjusted likelihood ratio test.  If \code{approx = FALSE} (the default) then equation (17) in Section 3.3 of @CB2007 is used.  If \code{approx = TRUE} the approximation in equation (18) is used.
+We could examine the significance of the quadratic term using an adjusted likelihood ratio test.  
 
 ```{r}
-compare_models(pois_quad, pois_lin)$p_value
-compare_models(pois_quad, pois_lin, approx = TRUE)$p_value
+compare_models(pois_quad, pois_lin)
+compare_models(pois_quad, pois_lin, approx = TRUE)
 ```
 
 The $p$-value based on equation (17) agrees with the value in the *sandwich* vignette, which is based on a Wald test, and the $p$-value based on equation (18) is only slightly different.
