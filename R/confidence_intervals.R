@@ -52,7 +52,7 @@
 #'   \code{\link[stats]{optim}}, i.e. not in
 #'   \code{methods::formalArgs(stats::optim)},
 #'   will be removed without warning.
-#' @return A list with components
+#' @return An object of class "confreg", a list with components
 #'   \itemize{
 #'     \item{\strong{grid1, grid2}: }{Numeric vectors.   Respective values of
 #'       \code{which_pars[1]} and \code{which_pars[2]} in the grid over which
@@ -358,7 +358,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' @param ... Further arguments to be passed to \code{\link[stats]{optim}}.
 #'   These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
 #'   or \code{control}.
-#' @return A list with components
+#' @return An object of class "confint", a list with components
 #'   \itemize{
 #'     \item{\strong{conf}: }{The argument \code{conf}.}
 #'     \item{\strong{cutoff}: }{A numeric scalar.  For values inside the

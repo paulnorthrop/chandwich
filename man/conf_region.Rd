@@ -64,7 +64,7 @@ or \code{control}.  Any arguments that are not appropriate for
 will be removed without warning.}
 }
 \value{
-A list with components
+An object of class "confreg", a list with components
   \itemize{
     \item{\strong{grid1, grid2}: }{Numeric vectors.   Respective values of
       \code{which_pars[1]} and \code{which_pars[2]} in the grid over which

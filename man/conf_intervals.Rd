@@ -51,7 +51,7 @@ These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
 or \code{control}.}
 }
 \value{
-A list with components
+An object of class "confint", a list with components
   \itemize{
     \item{\strong{conf}: }{The argument \code{conf}.}
     \item{\strong{cutoff}: }{A numeric scalar.  For values inside the
