@@ -605,6 +605,10 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
                     type = type, which_pars = which_pars,
                     name = attr(object, "name"),
                     p_current = attr(object, "p_current"))
+  if (!is.null(attr(object, "fixed_pars"))){
+    conf_list <- c(conf_list, list(fixed_pars = attr(object, "fixed_pars"),
+                                   fixed_at = attr(object, "fixed_at")))
+  }
   class(conf_list) <- "confint"
   return(conf_list)
 }
@@ -756,8 +760,7 @@ profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
   p <- attr(object, "p_current")
   neg_prof_loglik <- function(x) {
     pars <- numeric(p)
-    pars[prof_pars] <- prof_vals
-    pars[free_pars] <- x
+    pars[rank(c(prof_pars, free_pars))]<- c(prof_vals, x)
     return(-do.call(object, list(pars, type = type)))
   }
   # L-BFGS-B and Brent don't like Inf or NA or NaN
@@ -765,8 +768,7 @@ profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
     big_finite_val <- 10 ^ 10
     neg_prof_loglik <- function(x) {
       pars <- numeric(p)
-      pars[prof_pars] <- prof_vals
-      pars[free_pars] <- x
+      pars[rank(c(prof_pars, free_pars))]<- c(prof_vals, x)
       check <- -do.call(object, list(pars, type = type))
       if (!is.finite(check)) {
         check <- big_finite_val
