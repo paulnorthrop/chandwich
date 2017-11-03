@@ -17,14 +17,11 @@
 arguments are used.}
 }
 \value{
-Returns a numeric matrix with 3 or 4 columns and \code{object$d}
-  rows, where \code{object$d} is the number of parameters in the model
-  defined by the argument \code{loglik} in the call to
-  \code{\link{adjust_loglik}}.
-  The columns contain: the parameter names (if these were supplied using
-  \code{par_names} in the call to \code{\link{adjust_loglik}}),
-  the MLE, unadjusted standard errors (SE) and adjusted standard errors
-  (adjSE).
+Returns a numeric matrix with 3 columns and the number of rows
+  equal to the number of parameters in the current model, i.e.
+  \code{attr(object, "p_current")}.
+  The columns contain: the maximum likelihood estimates (MLE), unadjusted
+  standard errors (SE) and adjusted standard errors (adjSE).
 }
 \description{
 \code{summary} method for class "chandwich"
