@@ -158,14 +158,11 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
 #'   \code{\link{signif}}.
 #' @param ... Additional optional arguments. At present no optional
 #'   arguments are used.
-#' @return Returns a numeric matrix with 3 or 4 columns and \code{object$d}
-#'   rows, where \code{object$d} is the number of parameters in the model
-#'   defined by the argument \code{loglik} in the call to
-#'   \code{\link{adjust_loglik}}.
-#'   The columns contain: the parameter names (if these were supplied using
-#'   \code{par_names} in the call to \code{\link{adjust_loglik}}),
-#'   the MLE, unadjusted standard errors (SE) and adjusted standard errors
-#'   (adjSE).
+#' @return Returns a numeric matrix with 3 columns and the number of rows
+#'   equal to the number of parameters in the current model, i.e.
+#'   \code{attr(object, "p_current")}.
+#'   The columns contain: the maximum likelihood estimates (MLE), unadjusted
+#'   standard errors (SE) and adjusted standard errors (adjSE).
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelhood function.
 #' @seealso \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
@@ -564,6 +561,12 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
 #'   \code{\link{print.default}}.
 #' @param ... Additional optional arguments. At present no optional
 #'   arguments are used.
+#' @details Prints the name of the model, details of any fixed parameters,
+#'   the confidence level of the interval(s) and whether or not
+#'   the loglikelihood has been adjusted, and symmetric and (profile) likelihood
+#'   based intervals.
+#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
+#'   methods.
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelhood function.
 #' @seealso \code{\link{conf_intervals}} for confidence intervals for
@@ -571,10 +574,28 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
 #' @section Examples:
 #' See the examples in \code{\link{conf_intervals}}.
 #' @export
-print.confint <- function(x, digits = max(3, getOption("digits") - 3L)) {
+print.confint <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   if (!inherits(x, "confint")) {
     stop("use only with \"confint\" objects")
   }
+  cat("Model:", x$name, "\n")
+  if (!is.null(x$fixed_pars)) {
+    if (length(x$fixed_pars) == 1) {
+      par_text <- "Fixed parameter:"
+      my_first <- 1
+    } else {
+      par_text <- "Fixed parameters:"
+      my_first <- 2
+    }
+    vals_text <- substring(deparse(as.numeric(x$fixed_at)), first = my_first)
+    if (is.null(names(x$fixed_pars))) {
+      names_text <- substring(deparse(x$fixed_pars), first = my_first)
+    } else {
+      names_text <- substring(deparse(names(x$fixed_pars)), first = my_first)
+    }
+    cat(par_text, names_text, "=", vals_text, "\n")
+  }
+  cat("\n")
   conf_level <- paste(x$conf, "%", sep = "")
   if (x$p_current == 1) {
     conf_name <- "confidence interval,"
@@ -599,5 +620,74 @@ print.confint <- function(x, digits = max(3, getOption("digits") - 3L)) {
   }
   print.default(format(x$prof_CI, digits = digits), print.gap = 2L,
                 quote = FALSE)
+  invisible(x)
+}
+
+# =============================== print.compmod ===============================
+
+#' Print method for objects of class "compmod"
+#'
+#' \code{print} method for class "compmod".
+#'
+#' @param x an object of class "compmod", a result of a call to
+#'   \code{\link{compare_models}}.
+#' @param digits An integer. The argument \code{digits} to
+#'   \code{\link{signif}}.
+#' @param ... Additional optional arguments. At present no optional
+#'   arguments are used.
+#' @details Prints the name of the model, the null (H0) and alternative
+#' hypotheses (HA), the test statistic, degress of freedom and the p-value.
+#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
+#'   methods.
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelhood function.
+#' @seealso \code{\link{compare_models}} to compare nested models using an
+#'   (adjusted) likelihood ratio test.
+#' @section Examples:
+#' See the examples in \code{\link{compare_models}}.
+#' @export
+print.compmod <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+  if (!inherits(x, "compmod")) {
+    stop("use only with \"compmod\" objects")
+  }
+  cat("Model:", x$name, "\n")
+  if (length(x$smaller_fixed_pars) == 1) {
+    my_first <- 1
+  } else {
+    my_first <- 2
+  }
+  if (is.null(names(x$smaller_fixed_pars))) {
+    names_text <- substring(deparse(x$smaller_fixed_pars), first = my_first)
+  } else {
+    names_text <- substring(deparse(names(x$smaller_fixed_pars)),
+                            first = my_first)
+  }
+  vals_text <- substring(deparse(as.numeric(x$smaller_fixed_at)),
+                         first = my_first)
+  cat("H0:", names_text, "=", vals_text, "\n")
+  if (is.null(x$larger_fixed_pars)) {
+    cat("HA:", "unrestricted model", "\n")
+  } else {
+    if (length(x$larger_fixed_pars) == 1) {
+      my_first <- 1
+    } else {
+      my_first <- 2
+    }
+    if (is.null(names(x$larger_fixed_pars))) {
+      names_text <- substring(deparse(x$larger_fixed_pars), first = my_first)
+    } else {
+      names_text <- substring(deparse(names(x$larger_fixed_pars)),
+                              first = my_first)
+    }
+    vals_text <- substring(deparse(as.numeric(x$larger_fixed_at)),
+                           first = my_first)
+    cat("HA:", names_text, "=", vals_text, "\n")
+  }
+  cat("\n")
+  out <- character()
+  out <- c(out, paste("test statistic", "=", format(signif(x$alrts, digits))))
+  out <- c(out, paste("df", "=", format(signif(x$df, digits))))
+  out <- c(out, paste("p-value", "=", format(signif(x$p_value, digits))))
+  cat(strwrap(paste(out, collapse = ", ")), sep = "\\n")
   invisible(x)
 }
