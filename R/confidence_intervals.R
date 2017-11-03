@@ -367,8 +367,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'     \item{\strong{parameter_vals}, \strong{prof_loglik_vals}: }
 #'       {\code{2 * num + 1} by \code{length{which_pars}} numeric matrices.
 #'       Column i of \code{parameter_vals} contains the profiled values of
-#'       parameter \code{which_par[i]}.  Column i of \code{prof_loglik_vals}}
-#'       contains the corresponding values of the profile loglikelihood.
+#'       parameter \code{which_par[i]}.  Column i of \code{prof_loglik_vals}
+#'       contains the corresponding values of the profile loglikelihood.}
 #'     \item{\strong{sym_CI}, \strong{prof_CI}: }{\code{length(which_pars)}
 #'       by 2 numeric matrices.  Row i of \code{sym_CI} (\code{prof_CI})
 #'       contains the symmetric (profile loglikelihood-based) confidence
@@ -382,6 +382,11 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'       stored in \code{attr(object, "name")}.}
 #'     \item{\strong{p_current}: }{The number of free parameters in the
 #'       current model.}
+#'     \item{\strong{fixed_pars}, \strong{fixed_at}: }
+#'       {\code{attr(object, "fixed_pars")} and
+#'       \code{attr(object, "fixed_at")}, the arguments \code{fixed_pars} and
+#'       \code{fixed_at} to \code{\link{adjust_loglik}}, if these were
+#'       supplied.}
 #'   }
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelhood function.
