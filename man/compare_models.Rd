@@ -72,6 +72,7 @@ An object of class "compmod", a list with components
  \item{larger_fixed_at, smaller_fixed_at}{Numeric vectors of the
    values at which the parameters in \code{larger_fixed_pars} and
    \code{smaller_fixed_pars} are fixed.}
+ \item{approx}{the argument \code{approx}.}
 }
 \description{
 Compares nested models using the adjusted likelihood ratio statistic (ALRS)

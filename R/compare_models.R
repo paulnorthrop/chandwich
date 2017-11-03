@@ -80,6 +80,7 @@
 #'  \item{larger_fixed_at, smaller_fixed_at}{Numeric vectors of the
 #'    values at which the parameters in \code{larger_fixed_pars} and
 #'    \code{smaller_fixed_pars} are fixed.}
+#'  \item{approx}{the argument \code{approx}.}
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
 #'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
@@ -236,9 +237,13 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     if (approx) {
       HA <- attr(larger, "HA")
       R <- solve(-HA)
-      R_rest <- solve(-R[fixed_pars, fixed_pars])
-      num <- t(l_mle[fixed_pars] - fixed_at) %*% R_rest %*%
-        (l_mle[fixed_pars] - fixed_at)
+      # We want only the parameters that are fixed in smaller but not in larger
+      s_not_in_l <- which(!(s_fixed_pars %in% l_fixed_pars))
+      new_fixed_pars <- s_fixed_pars[s_not_in_l]
+      new_fixed_at <- fixed_at[s_not_in_l]
+      R_rest <- solve(-R[new_fixed_pars, new_fixed_pars])
+      num <- t(l_mle[new_fixed_pars] - new_fixed_at) %*% R_rest %*%
+        (l_mle[new_fixed_pars] - new_fixed_at)
       den <- t(l_mle - pars) %*% HA %*% (l_mle - pars)
       const <- num / den
       alrts <- 2 * const * (attr(larger, "max_loglik") - max_loglik_smaller)
@@ -250,7 +255,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
                         larger_fixed_pars = l_fixed_pars,
                         larger_fixed_at = l_fixed_at,
                         smaller_fixed_pars = s_fixed_pars,
-                        smaller_fixed_at = s_fixed_at)
+                        smaller_fixed_at = s_fixed_at, approx = approx)
       class(comp_list) <- "compmod"
       return(comp_list)
     } else {
@@ -366,7 +371,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
                     larger_fixed_pars = l_fixed_pars,
                     larger_fixed_at = l_fixed_at,
                     smaller_fixed_pars = s_fixed_pars,
-                    smaller_fixed_at = s_fixed_at)
+                    smaller_fixed_at = s_fixed_at, approx = approx)
   class(comp_list) <- "compmod"
   return(comp_list)
 }
