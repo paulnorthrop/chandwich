@@ -63,6 +63,12 @@ An object of class "compmod", a list with components
    hypothesis.}
  \item{larger_mle}{the MLE of the parameters under the larger model.}
  \item{smaller_mle}{the MLE of the parameters under the smaller model.}
+ \item{larger_fixed_pars, smaller_fixed_pars}{Numeric vectors of the
+   indices of parameters fixed in the larger and smaller models,
+   respectively.}
+ \item{larger_fixed_at, smaller_fixed_at}{Numeric vectors of the
+   values at which the parameters in \code{larger_fixed_pars} and
+   \code{smaller_fixed_pars} are fixed.}
 }
 \description{
 Compares nested models using the adjusted likelihood ratio statistic (ALRS)

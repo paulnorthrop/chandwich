@@ -71,6 +71,12 @@
 #'    hypothesis.}
 #'  \item{larger_mle}{the MLE of the parameters under the larger model.}
 #'  \item{smaller_mle}{the MLE of the parameters under the smaller model.}
+#'  \item{larger_fixed_pars, smaller_fixed_pars}{Numeric vectors of the
+#'    indices of parameters fixed in the larger and smaller models,
+#'    respectively.}
+#'  \item{larger_fixed_at, smaller_fixed_at}{Numeric vectors of the
+#'    values at which the parameters in \code{larger_fixed_pars} and
+#'    \code{smaller_fixed_pars} are fixed.}
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
 #'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
@@ -189,16 +195,30 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     # (2) larger must have more parameters than smaller
     # (3) all values in attr(larger, "fixed_pars") must also appear in
     #     attr(smaller, "fixed_pars")
+    # (4) Any parameters that appear in both attr(larger, "fixed_pars") and
+    #     attr(smaller, "fixed_pars") must have the same corresponding values
+    #     in attr(larger, "fixed_at") and attr(smaller, "fixed_at")
     p_s <- attr(smaller, "p_current")
     nest_1 <- p > p_s
     fixed_pars <- attr(smaller, "fixed_pars")
+    fixed_at <- attr(smaller, "fixed_at")
+    s_fixed_pars <- fixed_pars
+    s_fixed_at <- fixed_at
     l_fixed_pars <- attr(larger, "fixed_pars")
-    nest_2 <- all(attr(larger, "fixed_pars") %in% attr(smaller, "fixed_pars"))
+    l_fixed_at <- attr(larger, "fixed_at")
+    l_fixed_at <- attr(larger, "fixed_at")
+    nest_2 <- all(l_fixed_pars %in% s_fixed_pars)
     if (!nest_1 | !nest_2) {
       stop("smaller is not nested in larger")
     }
-    fixed_pars <- attr(smaller, "fixed_pars")
-    fixed_at <- attr(smaller, "fixed_at")
+    l_in_s <- which(l_fixed_pars %in% s_fixed_pars)
+    s_in_l <- which(s_fixed_pars %in% l_fixed_pars)
+    if (any(l_fixed_at[l_in_s] != s_fixed_at[s_in_l])) {
+      stop("smaller is not nested in larger: ",
+           "parameter(s) fixed at different values")
+    }
+#    fixed_pars <- attr(smaller, "fixed_pars")
+#    fixed_at <- attr(smaller, "fixed_at")
     qq <- length(fixed_pars)
     p <- attr(larger, "p_current")
     s_mle <- attr(smaller, "MLE")
@@ -221,9 +241,16 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
       const <- num / den
       alrts <- 2 * const * (attr(larger, "max_loglik") - max_loglik_smaller)
       alrts <- as.numeric(alrts)
-      return(list(alrts = alrts, df = qq,
-                  p_value = 1 - stats::pchisq(alrts, qq),
-                  larger_mle = l_mle, smaller_mle = s_mle))
+      comp_list <- list(alrts = alrts, df = qq,
+                        p_value = 1 - stats::pchisq(alrts, qq),
+                        larger_mle = l_mle, smaller_mle = s_mle,
+                        name = attr(larger, "name"),
+                        larger_fixed_pars = l_fixed_pars,
+                        larger_fixed_at = l_fixed_at,
+                        smaller_fixed_pars = s_fixed_pars,
+                        smaller_fixed_at = s_fixed_at)
+      class(comp_list) <- "compmod"
+      return(comp_list)
     } else {
       if (is.null(init) || length(init) != p_s) {
         init <- attr(smaller, "MLE")
@@ -315,7 +342,12 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   alrts <- 2 * (attr(larger, "max_loglik") + temp$value)
   comp_list <- list(alrts = alrts, df = qq,
                     p_value = 1 - stats::pchisq(alrts, qq),
-                    larger_mle = attr(larger, "MLE"), smaller_mle = temp$par)
+                    larger_mle = attr(larger, "MLE"), smaller_mle = temp$par,
+                    name = attr(larger, "name"),
+                    larger_fixed_pars = l_fixed_pars,
+                    larger_fixed_at = l_fixed_at,
+                    smaller_fixed_pars = s_fixed_pars,
+                    smaller_fixed_at = s_fixed_at)
   class(comp_list) <- "compmod"
   return(comp_list)
 }
