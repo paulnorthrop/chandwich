@@ -16,9 +16,14 @@ check_NULL <- try(plot(rat_res), silent = TRUE)
 test_that("Default plot gives no error", {
   testthat::expect_identical(check_NULL, NULL)
 })
+check_NULL <- try(plot(rat_res, type = 1:4, legend_pos = "bottom"),
+                  silent = TRUE)
+test_that("Adding arguments gives no error", {
+  testthat::expect_identical(check_NULL, NULL)
+})
 check_NULL <- try(plot(rat_res, type = 1:4, xlim = c(0, 1),
                        legend_pos = "bottom"), silent = TRUE)
-test_that("Adding arguments gives no error", {
+test_that("Adding arguments, inc. xlim, gives no error", {
   testthat::expect_identical(check_NULL, NULL)
 })
 
@@ -45,6 +50,6 @@ pois_glm_loglik <- function(pars, y, x) {
 pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3)
 check_error <- try(plot(pois_quad), silent = TRUE)
 
-test_that("More than one free parameters produces an error", {
+test_that("More than one free parameter produces an error", {
   testthat::expect_identical(class(check_error), "try-error")
 })

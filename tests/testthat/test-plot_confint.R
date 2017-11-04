@@ -48,3 +48,31 @@ check_error <- try(plot(large_v, which_par = 1), silent = TRUE)
 test_that("Inappropriate which_par gives an error", {
   testthat::expect_identical(class(check_error), "try-error")
 })
+
+# ------------------------- Binomial model, rats data ----------------------
+
+# Contributions to the independence loglikelihood
+binom_loglik <- function(prob, data) {
+  if (prob < 0 || prob > 1) {
+    return(-Inf)
+  }
+  return(dbinom(data[, "y"], data[, "n"], prob, log = TRUE))
+}
+rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
+
+conf_v <- conf_intervals(rat_res)
+conf_none <- conf_intervals(rat_res, type = "none")
+conf_s <- conf_intervals(rat_res, type = "spectral")
+conf_c <- conf_intervals(rat_res, type = "cholesky")
+
+check_NULL <- try(plot(conf_v, conf_none, conf_s, conf_c), silent = TRUE)
+test_that("Plotting 4 intervals gives no error", {
+  testthat::expect_identical(check_NULL, NULL)
+})
+
+check_error <- try(plot(conf_v, conf_none, conf_s, conf_c, which_par = 3),
+                   silent = TRUE)
+test_that("Wrong parameter number gives an error", {
+  testthat::expect_identical(class(check_error), "try-error")
+})
+
