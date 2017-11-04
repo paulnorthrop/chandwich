@@ -139,7 +139,7 @@ The 95\% contours of the profile adjusted loglikelihoods are similar.
 
 ### Comparing nested models
 
-Suppose that we wish to test the null hypothesis that Oxford and Worthing share a common GEV shape parameter, that is, that $\xi_1 = 0$.  We call `adjust_loglik` again using the argument `fixed_pars` to fix $\xi_1$ to zero and perform loglikelihood adjustment under the reduced model.   Then we use `compare_models` to carry out an adjusted likelihood ratio test.  If `approx = FALSE` (the default) then equation (17) in Section 3.3 of @CB2007 is used.  If `approx = TRUE` then the approximation in equation (18) is used.
+Suppose that we wish to test the null hypothesis that Oxford and Worthing share a common GEV shape parameter, that is, that $\xi_1 = 0$.  We call `adjust_loglik` again using the argument `fixed_pars` to fix $\xi_1$ to zero and perform loglikelihood adjustment under the reduced model.   Then we use `compare_models` to carry out an adjusted likelihood ratio test.  If `approx = FALSE` (the default) then equation (17) in Section 3.3 of @CB2007 is used.  If `approx = TRUE` then the approximation detailed in equations (18)-(20) is used.
 
 ```{r}
 medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
@@ -212,7 +212,7 @@ compare_models(pois_quad, pois_lin)
 compare_models(pois_quad, pois_lin, approx = TRUE)
 ```
 
-The $p$-value based on equation (17) agrees with the value in the *sandwich* vignette, which is based on a Wald test, and the $p$-value based on equation (18) is only slightly different.
+The $p$-value based on equation (17) of @CB2007 agrees with the value in the *sandwich* vignette, which is based on a Wald test, and the $p$-value based on equations (18)-(20) is only slightly different.
 
 ## References
 
