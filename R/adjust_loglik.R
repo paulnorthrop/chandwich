@@ -29,7 +29,9 @@
 #' @param cluster A vector or factor indicating from which cluster the
 #'   respective loglikelihood contributions from \code{loglik} originate.
 #'   Must have the same length as the vector returned by \code{loglik}.
-#'   By default each observation is its own cluster.
+#'   If \code{cluster} is not supplied then it is set inside
+#'   \code{adjust_loglik} under the assumption that each observation forms
+#'   its own cluster.
 #' @param p A numeric scalar.  The dimension of the \strong{full} parameter
 #'   vector, i.e. the number of parameters in the full model.  Must be
 #'   consistent with the lengths of \code{init} and \code{par_names},
@@ -205,11 +207,7 @@
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'                        par_names = par_names)
 #' # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
-#' round(attr(large, "MLE"), 4)
-#' round(attr(large, "SE"), 4)
-#' round(attr(large, "adjSE"), 4)
-#' # MLE, SEs and adjusted SEs
-#' summary(large)
+#' t(summary(large))
 #'
 #' # Log-likelihood adjustment of some smaller models: xi[1] = 0 etc
 #'
