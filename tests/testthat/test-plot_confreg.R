@@ -1,4 +1,4 @@
-context("conf_region")
+context("conf_region and print")
 
 # --------- Misspecified Poisson model for negative binomial data ----------
 
@@ -50,4 +50,15 @@ check_error <- try(plot(new_pois_n, pois_v, conf = c(50, 95)),
 
 test_that("Inconsistent names gives an error", {
   testthat::expect_identical(class(check_error), "try-error")
+})
+
+# Print
+
+check_same <- try(pois_v, silent = TRUE)
+test_that("Printing gives no error for type = vertical", {
+  testthat::expect_identical(check_same, pois_v)
+})
+check_same <- try(pois_n, silent = TRUE)
+test_that("Printing gives no error for type = none", {
+  testthat::expect_identical(check_same, pois_n)
 })

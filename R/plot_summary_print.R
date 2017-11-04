@@ -621,7 +621,7 @@ print.confint <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   }
   print.default(format(x$prof_CI, digits = digits), print.gap = 2L,
                 quote = FALSE)
-  invisible(x)
+  return(invisible(x))
 }
 
 # =============================== print.compmod ===============================
@@ -695,5 +695,5 @@ print.compmod <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   out <- c(out, paste("df", "=", format(signif(x$df, digits))))
   out <- c(out, paste("p-value", "=", format(signif(x$p_value, digits))))
   cat(strwrap(paste(out, collapse = ", ")), sep = "\\n")
-  invisible(x)
+  return(invisible(x))
 }
