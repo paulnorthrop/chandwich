@@ -171,7 +171,8 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
 #' See the examples in \code{\link{adjust_loglik}}.
 #' @export
 summary.chandwich <- function(object,
-                              digits = max(3, getOption("digits") - 3L)) {
+                              digits = max(3, getOption("digits") - 3L),
+                              ...) {
   if (!inherits(object, "chandwich")) {
     stop("use only with \"chandwich\" objects")
   }
