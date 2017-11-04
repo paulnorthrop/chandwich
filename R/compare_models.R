@@ -14,7 +14,7 @@
 #'   \code{adjust_loglik}.  The smaller of the two models.
 #'
 #'   If \code{smaller} is supplied then the arguments \code{fixed_pars} and
-#'   \code{fixed_at} are ignored.
+#'   \code{fixed_at} described below are ignored.
 #' @param approx A logical scalar.  If \code{approx = TRUE} then the
 #'   approximation detailed by equations (18)-(20) of Chandler and Bate (2007)
 #'   is used.  This option is available only if \code{smaller} is supplied.
@@ -60,9 +60,9 @@
 #'   maximised subject to the constraint that a subset of the parameters
 #'   in the larger model are fixed.  If \code{smaller} is supplied
 #'   then this maximisation can be avoided using an approximation
-#'   detailed by (18)-(20) of Chandler and Bate (2007), which uses the
-#'   MLE under the smaller model.  The same null distribution (chi-squared with
-#'   degrees of freedom equal to the number of parameters that are fixed)
+#'   detailed by equations (18)-(20) of Chandler and Bate (2007), which uses
+#'   the MLE under the smaller model.  The same null distribution (chi-squared
+#'   with degrees of freedom equal to the number of parameters that are fixed)
 #'   is used in both cases.
 #' @return An object of class "compmod", a list with components
 #'  \item{alrts}{the adjusted likelihood ratio test statistic.}
@@ -131,10 +131,10 @@
 #' # Tests
 #'
 #' # Test xi1 = 0 (2 equivalent ways), vertical adjustment
-#' compare_models(large, fixed_pars = "xi[1]")$p_value
-#' compare_models(large, medium)$p_value
+#' compare_models(large, fixed_pars = "xi[1]")
+#' compare_models(large, medium)
 #' # Test xi1 = 0, using approximation
-#' compare_models(large, medium, approx = TRUE)$p_value
+#' compare_models(large, medium, approx = TRUE)
 #'
 #' # Horizontal adjustments
 #' compare_models(large, medium, type = "cholesky")$p_value
@@ -143,9 +143,9 @@
 #' compare_models(large, medium, type = "none")$p_value
 #'
 #' # Test sigma1 = 0 for model with xi1 = 0
-#' compare_models(medium, small)$p_value
+#' compare_models(medium, small)
 #' # Test sigma1 = xi1 = 0
-#' compare_models(large, small)$p_value
+#' compare_models(large, small)
 #'
 #' # --------- Misspecified Poisson model for negative binomial data ----------
 #'

@@ -637,6 +637,8 @@ print.confint <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
 #'   arguments are used.
 #' @details Prints the name of the model, the null (H0) and alternative
 #' hypotheses (HA), the test statistic, degress of freedom and the p-value.
+#' If the test is based on the approximation detailed by equations (18)-(20)
+#' of Chandler and Bate (2007), rather than equation (17), then this stated.
 #' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
 #'   methods.
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
@@ -684,6 +686,9 @@ print.compmod <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
     cat("HA:", names_text, "=", vals_text, "\n")
   }
   cat("\n")
+  if (x$approx) {
+    cat("Using using approximation (18) of Chandler and Bate (2007):", "\n")
+  }
   out <- character()
   out <- c(out, paste("test statistic", "=", format(signif(x$alrts, digits))))
   out <- c(out, paste("df", "=", format(signif(x$df, digits))))
