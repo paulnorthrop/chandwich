@@ -60,8 +60,8 @@ test_that("approaches 2 and 4 agree", {
 
 small_3 <- adjust_loglik(larger = large, fixed_pars = 6)
 
-res5 <- compare_models(larger, small_2, approx = TRUE, method = "L-BFGS-B")
-res6 <- compare_models(larger, small_3, approx = TRUE, method = "L-BFGS-B")
+res5 <- compare_models(large, small_2, approx = TRUE, method = "L-BFGS-B")
+res6 <- compare_models(large, small_3, approx = TRUE, method = "L-BFGS-B")
 
 test_that("approx = TRUE, numeric and character which_pars agree", {
   testthat::expect_equal(res5, res6, tolerance = my_tol)
