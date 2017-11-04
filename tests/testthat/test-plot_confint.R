@@ -1,4 +1,4 @@
-context("conf_intervals")
+context("conf_intervals and profile_loglik")
 
 # -------------------------- GEV model, owtemps data -----------------------
 # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
@@ -47,6 +47,29 @@ test_that("Default which_par = xi[1], gives no error", {
 check_error <- try(plot(large_v, which_par = 1), silent = TRUE)
 test_that("Inappropriate which_par gives an error", {
   testthat::expect_identical(class(check_error), "try-error")
+})
+
+# profile_loglik
+
+my_tol <- 1e-5
+
+# Profile loglikelihood for xi1, evaluated at xi1 = 0
+res1 <- profile_loglik(large, prof_pars = "xi[1]", prof_vals = 0)
+res2 <- profile_loglik(large, prof_pars = 6, prof_vals = 0)
+
+test_that("large GEV model: numeric vs character which_pars", {
+  testthat::expect_equal(res1, res2, tolerance = my_tol)
+})
+
+# Model with xi1 fixed at 0
+medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
+
+# Profile loglikelihood for xi0, evaluated at xi0 = -0.1
+res3 <- profile_loglik(medium, prof_pars = "xi[0]", prof_vals = -0.1)
+res4 <- profile_loglik(medium, prof_pars = 5, prof_vals = -0.1)
+
+test_that("medium GEV model: numeric vs character which_pars", {
+  testthat::expect_equal(res3, res4, tolerance = my_tol)
 })
 
 # ------------------------- Binomial model, rats data ----------------------
