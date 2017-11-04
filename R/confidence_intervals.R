@@ -359,35 +359,31 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'   These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
 #'   or \code{control}.
 #' @return An object of class "confint", a list with components
-#'   \itemize{
-#'     \item{\strong{conf}: }{The argument \code{conf}.}
-#'     \item{\strong{cutoff}: }{A numeric scalar.  For values inside the
+#'     \item{conf}{The argument \code{conf}.}
+#'     \item{cutoff}{A numeric scalar.  For values inside the
 #'       confidence interval the profile loglikelihood lies above
 #'       \code{cutoff}.}
-#'     \item{\strong{parameter_vals}, \strong{prof_loglik_vals}: }
-#'       {\code{2 * num + 1} by \code{length{which_pars}} numeric matrices.
+#'     \item{parameter_vals, prof_loglik_vals}{\code{2 * num + 1} by
+#'       \code{length{which_pars}} numeric matrices.
 #'       Column i of \code{parameter_vals} contains the profiled values of
 #'       parameter \code{which_par[i]}.  Column i of \code{prof_loglik_vals}
 #'       contains the corresponding values of the profile loglikelihood.}
-#'     \item{\strong{sym_CI}, \strong{prof_CI}: }{\code{length(which_pars)}
+#'     \item{sym_CI, prof_CI}{\code{length(which_pars)}
 #'       by 2 numeric matrices.  Row i of \code{sym_CI} (\code{prof_CI})
 #'       contains the symmetric (profile loglikelihood-based) confidence
 #'       intervals for parameter \code{which_pars[i]}.}
-#'     \item{\strong{max_loglik}: }{The value of the adjusted loglikelihood
+#'     \item{max_loglik}{The value of the adjusted loglikelihood
 #'       at its maximum, stored in \code{object$max_loglik}.}
-#'     \item{\strong{type}: }{The argument \code{type} supplied in the call
+#'     \item{type}{The argument \code{type} supplied in the call
 #'       to \code{conf_intervals}, i.e. the type of loglikelihood adjustment.}
-#'     \item{\strong{which_pars}: }{The argument \code{which_pars}.}
-#'     \item{\strong{name}: }{A character scalar. The name of the model,
+#'     \item{which_pars}{The argument \code{which_pars}.}
+#'     \item{name}{A character scalar. The name of the model,
 #'       stored in \code{attr(object, "name")}.}
-#'     \item{\strong{p_current}: }{The number of free parameters in the
-#'       current model.}
-#'     \item{\strong{fixed_pars}, \strong{fixed_at}: }
-#'       {\code{attr(object, "fixed_pars")} and
+#'     \item{p_current}{The number of free parameters in the current model.}
+#'     \item{fixed_pars, fixed_at}{\code{attr(object, "fixed_pars")} and
 #'       \code{attr(object, "fixed_at")}, the arguments \code{fixed_pars} and
 #'       \code{fixed_at} to \code{\link{adjust_loglik}}, if these were
 #'       supplied.}
-#'   }
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelhood function.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
