@@ -46,10 +46,13 @@ test_that("approaches 1 and 3 agree", {
   testthat::expect_equal(res1, res3, tolerance = my_tol)
 })
 test_that("approaches 2 and 3 agree", {
-  testthat::expect_equal(res2, res3, tolerance = my_tol)
+  testthat::expect_equal(res2$p_value, res3$p_value, tolerance = my_tol)
 })
 test_that("approaches 3 and 4 agree", {
-  testthat::expect_equal(res3, res4, tolerance = my_tol)
+  testthat::expect_equal(res3$p_value, res4$p_value, tolerance = my_tol)
+})
+test_that("approaches 2 and 4 agree", {
+  testthat::expect_equal(res2, res4, tolerance = my_tol)
 })
 
 # Repeat for approx = TRUE and specifying an optim method
