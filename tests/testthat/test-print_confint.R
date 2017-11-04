@@ -14,11 +14,11 @@ rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
 conf_v <- conf_intervals(rat_res)
 conf_none <- conf_intervals(rat_res, type = "none")
 
-check_same <- try(conf_v, silent = TRUE)
+check_same <- try(print(conf_v), silent = TRUE)
 test_that("Printing gives no error for type = vertical", {
   testthat::expect_identical(check_same, conf_v)
 })
-check_same <- try(conf_none, silent = TRUE)
+check_same <- try(print(conf_none), silent = TRUE)
 test_that("Printing gives no error for type = none", {
   testthat::expect_identical(check_same, conf_none)
 })
@@ -49,11 +49,11 @@ pois_lin <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars,
 conf_1 <- conf_intervals(pois_lin, which_par = "alpha")
 conf_2 <- conf_intervals(pois_lin, which_par = 1, type = "none")
 
-check_same <- try(conf_1, silent = TRUE)
+check_same <- try(print(conf_1), silent = TRUE)
 test_that("Printing gives no error for type = vertical", {
   testthat::expect_identical(check_same, conf_1)
 })
-check_same <- try(conf_2, silent = TRUE)
+check_same <- try(print(conf_2), silent = TRUE)
 test_that("Printing gives no error for type = none", {
   testthat::expect_identical(check_same, conf_2)
 })

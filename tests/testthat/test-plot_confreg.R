@@ -54,11 +54,11 @@ test_that("Inconsistent names gives an error", {
 
 # Print
 
-check_same <- try(pois_v, silent = TRUE)
+check_same <- try(print(pois_v), silent = TRUE)
 test_that("Printing gives no error for type = vertical", {
   testthat::expect_identical(check_same, pois_v)
 })
-check_same <- try(pois_n, silent = TRUE)
+check_same <- try(print(pois_n), silent = TRUE)
 test_that("Printing gives no error for type = none", {
   testthat::expect_identical(check_same, pois_n)
 })

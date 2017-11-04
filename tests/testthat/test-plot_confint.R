@@ -36,11 +36,11 @@ test_that("Default which_par gives no error", {
   testthat::expect_identical(check_NULL, NULL)
 })
 check_NULL <- try(plot(large_v, which_par = 6), silent = TRUE)
-test_that("Default which_par = 6 gives no error", {
+test_that("which_par = 6 gives no error", {
   testthat::expect_identical(check_NULL, NULL)
 })
 check_NULL <- try(plot(large_v, which_par = "xi[1]"), silent = TRUE)
-test_that("Default which_par = xi[1], gives no error", {
+test_that("which_par = xi[1], gives no error", {
   testthat::expect_identical(check_NULL, NULL)
 })
 
@@ -48,6 +48,26 @@ check_error <- try(plot(large_v, which_par = 1), silent = TRUE)
 test_that("Inappropriate which_par gives an error", {
   testthat::expect_identical(class(check_error), "try-error")
 })
+
+# Check a restricted model, i.e. one with non-NULL fixed_pars
+
+medium <- adjust_loglik(larger = large, fixed_pars = c("sigma[1]", "xi[1]"))
+med_v <- conf_intervals(medium, which_pars = "xi[0]")
+
+check_NULL <- try(plot(med_v, which_par = 5), silent = TRUE)
+test_that("which_par = 5 gives no error", {
+  testthat::expect_identical(check_NULL, NULL)
+})
+check_error <- try(plot(large_v, which_par = "mu[0]"), silent = TRUE)
+test_that("Inappropriate which_par gives an error", {
+  testthat::expect_identical(class(check_error), "try-error")
+})
+
+check_error <- try(conf_intervals(medium, which_pars = "xi[1]"), silent = TRUE)
+test_that("Inappropriate which_pars in conf_intervals gives an error", {
+  testthat::expect_identical(class(check_error), "try-error")
+})
+
 
 # profile_loglik
 
