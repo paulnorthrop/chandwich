@@ -25,20 +25,20 @@ init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
 par_names <-  c("mu0", "mu1", "sigma0", "sigma1", "xi0", "xi1")
 
 # Full model
-larger <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
                         par_names = par_names)
 
 # Restricted model
-smaller_1 <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-                           par_names = par_names, fixed_pars = 6)
+small_1 <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+                         par_names = par_names, fixed_pars = 6)
 
 # Restricted model, using larger to start and character name
-smaller_2 <- adjust_loglik(larger = larger, fixed_pars = "xi1")
+small_2 <- adjust_loglik(larger = large, fixed_pars = "xi1")
 
-res1 <- compare_models(larger, smaller_1)
-res2 <- compare_models(larger, smaller_2)
-res3 <- compare_models(larger, fixed_pars = 6)
-res4 <- compare_models(larger, fixed_pars = "xi1")
+res1 <- compare_models(large, small_1)
+res2 <- compare_models(large, small_2)
+res3 <- compare_models(large, fixed_pars = 6)
+res4 <- compare_models(large, fixed_pars = "xi1")
 
 my_tol <- 1e-5
 
@@ -58,11 +58,22 @@ test_that("approaches 2 and 4 agree", {
 # Repeat for approx = TRUE and specifying an optim method
 # Note: approx only relevant when smaller is supplied
 
-smaller_3 <- adjust_loglik(larger = larger, fixed_pars = 6)
+small_3 <- adjust_loglik(larger = large, fixed_pars = 6)
 
-res5 <- compare_models(larger, smaller_2, approx = TRUE, method = "L-BFGS-B")
-res6 <- compare_models(larger, smaller_3, approx = TRUE, method = "L-BFGS-B")
+res5 <- compare_models(larger, small_2, approx = TRUE, method = "L-BFGS-B")
+res6 <- compare_models(larger, small_3, approx = TRUE, method = "L-BFGS-B")
 
 test_that("approx = TRUE, numeric and character which_pars agree", {
   testthat::expect_equal(res5, res6, tolerance = my_tol)
+})
+
+# Print
+
+check_same <- try(print(res5), silent = TRUE)
+test_that("Printing gives no error for type = vertical", {
+  testthat::expect_identical(check_same, res5)
+})
+check_same <- try(print(res6), silent = TRUE)
+test_that("Printing gives no error for type = none", {
+  testthat::expect_identical(check_same, res6)
 })
