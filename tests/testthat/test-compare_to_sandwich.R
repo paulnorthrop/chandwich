@@ -54,19 +54,43 @@ pois_alg_hess <- function(pars, y, x) {
   return(alg_hess)
 }
 
-pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
-                          alg_deriv = pois_alg_deriv, alg_hess = pois_alg_hess)
+pois_res_alg <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
+                              alg_deriv = pois_alg_deriv,
+                              alg_hess = pois_alg_hess)
 
-my_ests <- round(attr(pois_res, "MLE"), 4)
-my_ses <- round(attr(pois_res, "SE"), 4)
-my_adj_ses <- round(attr(pois_res, "adjSE"), 4)
+my_ests <- round(attr(pois_res_alg, "MLE"), 4)
+my_ses <- round(attr(pois_res_alg, "SE"), 4)
+my_adj_ses <- round(attr(pois_res_alg, "adjSE"), 4)
 
-test_that("MLEs agree", {
+test_that("MLEs agree, algebraic derivatives", {
   testthat::expect_equal(ests, my_ests, tolerance = my_tol)
 })
-test_that("SEs agree", {
+test_that("SEs agree, algebraic derivatives", {
   testthat::expect_equal(ses, my_ses, tolerance = my_tol)
 })
-test_that("adjusted SEs agree", {
+test_that("adjusted SEs agree, algebraic derivatives", {
   testthat::expect_equal(adj_ses, my_adj_ses, tolerance = my_tol)
+})
+
+# Check that for the linear model we get the same answer using algebraic
+# derivatives as using numerical derivatives
+
+pois_lin <- adjust_loglik(larger = pois_res, fixed_pars = 3)
+pois_lin_alg <- adjust_loglik(larger = pois_res_alg, fixed_pars = 3)
+
+lin_ests <- round(attr(pois_lin, "MLE"), 4)
+lin_ses <- round(attr(pois_lin, "SE"), 4)
+lin_adj_ses <- round(attr(pois_lin, "adjSE"), 4)
+lin_ests_alg <- round(attr(pois_lin, "MLE"), 4)
+lin_ses_alg <- round(attr(pois_lin, "SE"), 4)
+lin_adj_ses_alg <- round(attr(pois_lin, "adjSE"), 4)
+
+test_that("MLEs agree: linear, algebraic vs numeric derivatives", {
+  testthat::expect_equal(lin_ests, lin_ests_alg, tolerance = my_tol)
+})
+test_that("SEs agree: linear, algebraic vs numeric derivatives", {
+  testthat::expect_equal(lin_ses, lin_ses_alg, tolerance = my_tol)
+})
+test_that("adj. SEs agree: linear, algebraic vs numeric derivatives", {
+  testthat::expect_equal(lin_adj_ses, lin_adj_ses_alg, tolerance = my_tol)
 })

@@ -101,7 +101,21 @@ test_that("Larger model not full, numeric vs. character fixed_pars", {
   testthat::expect_equal(res1, res2, tolerance = my_tol)
 })
 
-# Check that errors are produced when they shoould be
+# Repeat fixed_pars numeric vs fixed_pars character, specifying an optim method
+
+small <- adjust_loglik(larger = medium, fixed_pars = c("sigma1", "xi1"),
+                       method = "L-BFGS-B")
+small_2 <- adjust_loglik(larger = medium, fixed_pars = c(4, 6),
+                         method = "L-BFGS-B")
+
+res1 <- compare_models(medium, small)
+res2 <- compare_models(medium, small_2)
+
+test_that("Larger model not full, numeric vs. character fixed_pars, L-BFGS-B", {
+  testthat::expect_equal(res1, res2, tolerance = my_tol)
+})
+
+# Check that errors are produced when they should be
 
 # Models are provided in the wrong order
 
