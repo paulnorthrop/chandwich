@@ -53,22 +53,20 @@
 #'   \code{methods::formalArgs(stats::optim)},
 #'   will be removed without warning.
 #' @return An object of class "confreg", a list with components
-#'   \itemize{
-#'     \item{\strong{grid1, grid2}: }{Numeric vectors.   Respective values of
+#'     \item{grid1, grid2}{Numeric vectors.   Respective values of
 #'       \code{which_pars[1]} and \code{which_pars[2]} in the grid over which
 #'       the (profile) loglikelihood is evaluated. }
-#'     \item{\strong{max_loglik}: }{A numeric scalar.  The value value of
+#'     \item{max_loglik}{A numeric scalar.  The value value of
 #'       the loglikelihood at its maxium.}
-#'     \item{\strong{prof_loglik}: }{An 2 \code{num} + 1 by 2 \code{num} + 1
+#'     \item{prof_loglik}{An 2 \code{num} + 1 by 2 \code{num} + 1
 #'       numeric matrix containing the values of the (profile) loglikelihood.}
-#'     \item{\strong{type}: }{A character scalar. The input \code{type}.}
-#'     \item{\strong{which_pars}: }{A numeric or character vector.  The input
+#'     \item{type}{A character scalar. The input \code{type}.}
+#'     \item{which_pars}{A numeric or character vector.  The input
 #'       \code{which_pars}.  If the \code{which_pars} was numeric then
 #'       it is supplemented by the parameter names, if these are available
 #'       in \code{object}.}
-#'     \item{\strong{name}: }{A character scalar. The name of the model,
+#'     \item{name}{A character scalar. The name of the model,
 #'       stored in \code{attr(object, "name")}.}
-#'   }
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelhood function.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
