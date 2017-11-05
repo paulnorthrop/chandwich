@@ -64,7 +64,7 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
   }
   n_pars <- attr(x, "p_current")
   if (n_pars != 1) {
-    stop("x must have one free parameter, i'e. attr(x, ''p_current'') = 1")
+    stop("x must have one free parameter, i.e. attr(x, ''p_current'') = 1")
   }
   # User-supplied arguments
   user_args <- list(...)
@@ -84,11 +84,7 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
     user_args$xlab <- parse(text = xlabel)
   }
   if (is.null(user_args$ylab)) {
-    if (attr(x, "p_current") == 1) {
-      user_args$ylab <- "loglikelihood"
-    } else {
-      user_args$ylab <- "profile loglikelihood"
-    }
+    user_args$ylab <- "loglikelihood"
   }
   if (is.null(user_args$xlim)) {
     if (4 %in% type) {
