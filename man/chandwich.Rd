@@ -17,7 +17,7 @@ are functions for calculating and plotting confidence intervals, for single
 model parameters, and confidence regions, for pairs of model parameters.
 }
 \details{
-The main function in the threshr package is \code{adjust_loglik}.  It finds the
+The main function in the chandwich package is \code{adjust_loglik}.  It finds the
 maximum likelihood estimate (MLE) of model parameters based on an
 independence loglikelihood in which cluster dependence in the data is
 ignored.  The independence loglikelihood is adjusted in a way that ensures
