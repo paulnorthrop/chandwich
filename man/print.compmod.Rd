@@ -36,7 +36,7 @@ See the examples in \code{\link{compare_models}}.
 
 \seealso{
 \code{\link{adjust_loglik}} to adjust a user-supplied
-  loglikelhood function.
+  loglikelihood function.
 
 \code{\link{compare_models}} to compare nested models using an
   (adjusted) likelihood ratio test.

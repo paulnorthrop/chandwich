@@ -166,7 +166,7 @@ conf_intervals(pois_quad)
 }
 \seealso{
 \code{\link{adjust_loglik}} to adjust a user-supplied
-  loglikelhood function.
+  loglikelihood function.
 
 \code{\link{summary.chandwich}} for maximum likelihood estimates
   and unadjusted and adjusted standard errors.

@@ -71,7 +71,7 @@ plot(rat_res, type = 1:4, xlim = c(0, 1), legend_pos = "bottom")
   plot a confidence region for a pair of parameters.
 
 \code{\link{adjust_loglik}} to adjust a user-supplied
-  loglikelhood function.
+  loglikelihood function.
 
 \code{\link{summary.chandwich}} for maximum likelihood estimates
   and unadjusted and adjusted standard errors.

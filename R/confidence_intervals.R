@@ -68,7 +68,7 @@
 #'     \item{name}{A character scalar. The name of the model,
 #'       stored in \code{attr(object, "name")}.}
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
-#'   loglikelhood function.
+#'   loglikelihood function.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
 #'   and unadjusted and adjusted standard errors.
 #' @seealso \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
@@ -383,7 +383,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'       \code{fixed_at} to \code{\link{adjust_loglik}}, if these were
 #'       supplied.}
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
-#'   loglikelhood function.
+#'   loglikelihood function.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
 #'   and unadjusted and adjusted standard errors.
 #' @seealso \code{\link{plot.chandwich}} for plots of one-dimensional adjusted

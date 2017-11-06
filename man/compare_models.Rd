@@ -190,13 +190,7 @@ Chandler, R. E. and Bate, S. (2007). Inference for clustered
 }
 \seealso{
 \code{\link{adjust_loglik}} to adjust a user-supplied
-  loglikelhood function.
-
-\code{\link{summary.chandwich}} for maximum likelihood estimates
-  and unadjusted and adjusted standard errors.
-
-\code{\link{plot.chandwich}} for plots of one-dimensional adjusted
-  loglikelihoods.
+  loglikelihood function.
 
 \code{\link{conf_intervals}} for confidence intervals for
   individual parameters.

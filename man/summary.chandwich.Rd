@@ -34,7 +34,7 @@ See the examples in \code{\link{adjust_loglik}}.
 
 \seealso{
 \code{\link{adjust_loglik}} to adjust a user-supplied
-  loglikelhood function.
+  loglikelihood function.
 
 \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
   loglikelihoods.

@@ -87,8 +87,8 @@
 #'   the Hessian of \code{loglik}, i.e. the matrix of second derivatives of
 #'   the function \code{loglik}.
 #' @details Three adjustments to the independence loglikelihood described in
-#'   Chandler and Bate (2007) are available.  The `vertical' adjustment is
-#'   described in Section 6 and two `horizontal' adjustments are described
+#'   Chandler and Bate (2007) are available.  The vertical adjustment is
+#'   described in Section 6 and two horizontal adjustments are described
 #'   in Sections 3.2 to 3.4.  See the descriptions of \code{type} and, for the
 #'   horizontal adjustments, the descriptions of \code{C_cholesky} and
 #'   \code{C_spectral}, in \strong{Value}.
@@ -218,7 +218,7 @@
 #'
 #' # Starting from scratch
 #' medium <- adjust_loglik(gev_loglik, data = owtemps, init = init,
-#'           par_names = par_names, fixed_pars = c("sigma[1]", "xi[1]"))
+#'           par_names = par_names, fixed_pars = "xi[1]")
 #' small <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'          par_names = par_names, fixed_pars = c("sigma[1]", "xi[1]"))
 #'
@@ -260,6 +260,7 @@
 #' }
 #' pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
 #'                            alg_deriv = pois_alg_deriv, alg_hess = pois_alg_hess)
+#' summary(pois_quad)
 #' @export
 adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
                           init = NULL, par_names = NULL,

@@ -36,7 +36,7 @@ See the examples in \code{\link{conf_intervals}}.
 
 \seealso{
 \code{\link{adjust_loglik}} to adjust a user-supplied
-  loglikelhood function.
+  loglikelihood function.
 
 \code{\link{conf_intervals}} for confidence intervals for
   individual parameters.

@@ -53,7 +53,7 @@
 #' # Plot over (0,1) and reposition the legend
 #' plot(rat_res, type = 1:4, xlim = c(0, 1), legend_pos = "bottom")
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
-#'   loglikelhood function.
+#'   loglikelihood function.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
 #'   and unadjusted and adjusted standard errors.
 #' @export
@@ -160,7 +160,7 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
 #'   The columns contain: the maximum likelihood estimates (MLE), unadjusted
 #'   standard errors (SE) and adjusted standard errors (adjSE).
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
-#'   loglikelhood function.
+#'   loglikelihood function.
 #' @seealso \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
 #'   loglikelihoods.
 #' @section Examples:
@@ -565,7 +565,7 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
 #' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
 #'   methods.
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
-#'   loglikelhood function.
+#'   loglikelihood function.
 #' @seealso \code{\link{conf_intervals}} for confidence intervals for
 #'   individual parameters.
 #' @section Examples:
@@ -639,7 +639,7 @@ print.confint <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
 #' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
 #'   methods.
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
-#'   loglikelhood function.
+#'   loglikelihood function.
 #' @seealso \code{\link{compare_models}} to compare nested models using an
 #'   (adjusted) likelihood ratio test.
 #' @section Examples:
