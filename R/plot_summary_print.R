@@ -32,8 +32,6 @@
 #'   standard errors are used.  Otherwise, the larger of the adjust and
 #'   unadjusted standard errors are used.
 #' @return Nothing is returned.
-#' @seealso \code{\link{conf_region}} and \code{\link{plot.confreg}} to
-#'   plot a confidence region for a pair of parameters.
 #' @examples
 #' # ------------------------- Binomial model, rats data ----------------------
 #'
@@ -56,6 +54,10 @@
 #'   loglikelihood function.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
 #'   and unadjusted and adjusted standard errors.
+#' @seealso \code{\link{conf_intervals}} and \code{\link{plot.confint}} to
+#'   plot confidence intervals for individual parameters.
+#' @seealso \code{\link{conf_region}} and \code{\link{plot.confreg}} to
+#'   plot a confidence region for a pair of parameters.
 #' @export
 plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
                            legend_pos = "topleft", ...) {
@@ -212,6 +214,12 @@ summary.chandwich <- function(object,
 #'  and \code{lwd} will (in a consistent way) by both
 #'  \code{\link[graphics]{contour}} and \code{\link[graphics]{legend}}.
 #' @return Nothing is returned.
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelihood function.
+#' @seealso \code{\link{conf_region}} for a confidence region for
+#'   a pair of parameters.
+#' @seealso \code{\link{conf_intervals}} and \code{\link{plot.confint}} to
+#'   plot confidence intervals for individual parameters.
 #' @section Examples:
 #' See the examples in \code{\link{conf_region}}.
 #' @export
@@ -406,6 +414,12 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
 #'   and \code{lwd} will (in a consistent way) by both
 #'   \code{\link[graphics]{matplot}} and \code{\link[graphics]{legend}}.
 #' @return Nothing is returned.
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelihood function.
+#' @seealso \code{\link{conf_intervals}} for confidence intervals for
+#'   individual parameters.
+#' @seealso \code{\link{conf_region}} and \code{\link{plot.confreg}} to
+#'   plot a confidence region for a pair of parameters.
 #' @section Examples:
 #' See the examples in \code{\link{conf_intervals}}.
 #' @export

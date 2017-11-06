@@ -69,10 +69,6 @@
 #'       stored in \code{attr(object, "name")}.}
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelihood function.
-#' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
-#'   and unadjusted and adjusted standard errors.
-#' @seealso \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
-#'   loglikelihoods.
 #' @seealso \code{\link{conf_intervals}} for confidence intervals for
 #'   individual parameters.
 #' @seealso \code{\link{compare_models}} to compare nested models using an
@@ -443,12 +439,14 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' large_v <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"))
 #' large_v
 #' plot(large_v)
+#' plot(large_v, which_par = "xi[1]")
 #' \dontrun{
 #' # Unadjusted
 #' large_none <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"),
 #'                              type = "none")
 #' large_none
 #' plot(large_v, large_none)
+#' plot(large_v, large_none, which_par = "xi[1]")
 #' }
 #'
 #' # --------- Misspecified Poisson model for negative binomial data ----------
@@ -472,7 +470,6 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' }
 #' pars <- c("alpha", "beta", "gamma")
 #' pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
-#' summary(pois_quad)
 #' conf_intervals(pois_quad)
 #' @export
 conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
@@ -655,6 +652,8 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
 #'   parameters, which happens if an attempt is made to profile over
 #'   \emph{all} non-fixed parameters, then thiis attribute is not present and
 #'   the value returned is calculated using the function \code{object}.
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelihood function.
 #' @seealso \code{\link{conf_intervals}} for confidence intervals for
 #'   individual parameters.
 #' @seealso \code{\link{conf_region}} for a confidence region for

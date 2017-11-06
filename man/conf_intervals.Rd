@@ -132,12 +132,14 @@ large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 large_v <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"))
 large_v
 plot(large_v)
+plot(large_v, which_par = "xi[1]")
 \dontrun{
 # Unadjusted
 large_none <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"),
                              type = "none")
 large_none
 plot(large_v, large_none)
+plot(large_v, large_none, which_par = "xi[1]")
 }
 
 # --------- Misspecified Poisson model for negative binomial data ----------
@@ -161,7 +163,6 @@ pois_glm_loglik <- function(pars, y, x) {
 }
 pars <- c("alpha", "beta", "gamma")
 pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
-summary(pois_quad)
 conf_intervals(pois_quad)
 }
 \seealso{

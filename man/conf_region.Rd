@@ -166,12 +166,6 @@ plot(pois_none, pois_vertical, conf = c(50, 75, 95, 99), col = 2:1, lwd = 2,
 \code{\link{adjust_loglik}} to adjust a user-supplied
   loglikelihood function.
 
-\code{\link{summary.chandwich}} for maximum likelihood estimates
-  and unadjusted and adjusted standard errors.
-
-\code{\link{plot.chandwich}} for plots of one-dimensional adjusted
-  loglikelihoods.
-
 \code{\link{conf_intervals}} for confidence intervals for
   individual parameters.
 

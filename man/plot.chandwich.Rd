@@ -67,12 +67,15 @@ plot(rat_res, type = 1:4)
 plot(rat_res, type = 1:4, xlim = c(0, 1), legend_pos = "bottom")
 }
 \seealso{
-\code{\link{conf_region}} and \code{\link{plot.confreg}} to
-  plot a confidence region for a pair of parameters.
-
 \code{\link{adjust_loglik}} to adjust a user-supplied
   loglikelihood function.
 
 \code{\link{summary.chandwich}} for maximum likelihood estimates
   and unadjusted and adjusted standard errors.
+
+\code{\link{conf_intervals}} and \code{\link{plot.confint}} to
+  plot confidence intervals for individual parameters.
+
+\code{\link{conf_region}} and \code{\link{plot.confreg}} to
+  plot a confidence region for a pair of parameters.
 }

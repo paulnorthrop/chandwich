@@ -61,3 +61,13 @@ in \code{\link{conf_intervals}} are indicated on the plot .
 See the examples in \code{\link{conf_intervals}}.
 }
 
+\seealso{
+\code{\link{adjust_loglik}} to adjust a user-supplied
+  loglikelihood function.
+
+\code{\link{conf_intervals}} for confidence intervals for
+  individual parameters.
+
+\code{\link{conf_region}} and \code{\link{plot.confreg}} to
+  plot a confidence region for a pair of parameters.
+}

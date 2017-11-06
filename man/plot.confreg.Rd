@@ -48,3 +48,13 @@ may be superimposed on the same plot.
 See the examples in \code{\link{conf_region}}.
 }
 
+\seealso{
+\code{\link{adjust_loglik}} to adjust a user-supplied
+  loglikelihood function.
+
+\code{\link{conf_region}} for a confidence region for
+  a pair of parameters.
+
+\code{\link{conf_intervals}} and \code{\link{plot.confint}} to
+  plot confidence intervals for individual parameters.
+}

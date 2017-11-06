@@ -94,6 +94,9 @@ medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
 profile_loglik(medium, prof_pars = "xi[0]", prof_vals = -0.1)
 }
 \seealso{
+\code{\link{adjust_loglik}} to adjust a user-supplied
+  loglikelihood function.
+
 \code{\link{conf_intervals}} for confidence intervals for
   individual parameters.
 
