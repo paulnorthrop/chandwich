@@ -89,7 +89,7 @@ The smaller of the two models is specified either by supplying
   For full details see Section 3.5 of
   \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
   if \code{approx = FALSE} then the a likelihood ratio test of the null
-  hypothesis that the smaller model is a valid simplication of the larger
+  hypothesis that the smaller model is a valid simplification of the larger
   model is carried out directly using equation (17) of Chandler and Bate
   (2007) based on the adjusted loglikelihood under the larger model,
   returned by \code{adjust_loglik}.  This adjusted loglikelihood is

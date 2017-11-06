@@ -48,7 +48,7 @@ A numeric vector of length 1.  The value of the profile
   parameters \code{prof_pars} and \code{attr(object, "fixed_pars")} have
   been removed from the full parameter vector.  If there are no such
   parameters, which happens if an attempt is made to profile over
-  \emph{all} non-fixed parameters, then thiis attribute is not present and
+  \emph{all} non-fixed parameters, then this attribute is not present and
   the value returned is calculated using the function \code{object}.
 }
 \description{

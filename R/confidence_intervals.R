@@ -57,7 +57,7 @@
 #'       \code{which_pars[1]} and \code{which_pars[2]} in the grid over which
 #'       the (profile) loglikelihood is evaluated. }
 #'     \item{max_loglik}{A numeric scalar.  The value value of
-#'       the loglikelihood at its maxium.}
+#'       the loglikelihood at its maximum.}
 #'     \item{prof_loglik}{An 2 \code{num} + 1 by 2 \code{num} + 1
 #'       numeric matrix containing the values of the (profile) loglikelihood.}
 #'     \item{type}{A character scalar. The input \code{type}.}
@@ -650,7 +650,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
 #'   parameters \code{prof_pars} and \code{attr(object, "fixed_pars")} have
 #'   been removed from the full parameter vector.  If there are no such
 #'   parameters, which happens if an attempt is made to profile over
-#'   \emph{all} non-fixed parameters, then thiis attribute is not present and
+#'   \emph{all} non-fixed parameters, then this attribute is not present and
 #'   the value returned is calculated using the function \code{object}.
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelihood function.

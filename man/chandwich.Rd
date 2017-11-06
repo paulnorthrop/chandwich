@@ -21,7 +21,7 @@ The main function in the chandwich package is \code{adjust_loglik}.  It finds th
 maximum likelihood estimate (MLE) of model parameters based on an
 independence loglikelihood in which cluster dependence in the data is
 ignored.  The independence loglikelihood is adjusted in a way that ensures
-that the Hessian of the adjusted loglikelihood conicides with a robust
+that the Hessian of the adjusted loglikelihood coincides with a robust
 sandwich estimate of the parameter covariance at the MLE.  Three
 adjustments are available: one in which the independence loglikelihood
 itself is scaled (vertical scaling) and two others where the scaling

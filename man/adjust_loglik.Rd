@@ -118,9 +118,9 @@ A function of class \code{"chandwich"} to evaluate an adjusted
   \item{p_full, p_current}{The number of parameters in the full model and
     current models, respectively.}
   \item{free_pars}{A numeric vector giving the indices of the free
-    parameters in the current model, with names infered from
+    parameters in the current model, with names inferred from
     \code{par_names} if this was supplied.}
-  \item{MLE, res_MLE}{Numeric vectors, with names infered from
+  \item{MLE, res_MLE}{Numeric vectors, with names inferred from
     \code{par_names} if this was supplied.  Maximum likelihood estimates
     of free parameters under the current model (\code{mle}) and all
     parameters in the full model, including any parameters with fixed
@@ -143,9 +143,9 @@ A function of class \code{"chandwich"} to evaluate an adjusted
   \item{name}{The argument \code{name}, or the name of the function
     \code{loglik} if \code{name} isn't supplied.}
   If \code{fixed_pars} is not \code{NULL} then there are further attributes
-  \item{fixed_pars}{The argument \code{fixed_pars}, with names infered from
+  \item{fixed_pars}{The argument \code{fixed_pars}, with names inferred from
     \code{par_names} if this was supplied.}
-  \item{fixed_at}{The argument \code{fixed_at}, with names infered from
+  \item{fixed_at}{The argument \code{fixed_at}, with names inferred from
     \code{par_names} if this was supplied.}
   If \code{alg_deriv} and/or \code{alg_hess} were supplied then these are
   returned as further attributes.
@@ -154,7 +154,7 @@ A function of class \code{"chandwich"} to evaluate an adjusted
 Performs adjustments of a user-supplied independence loglikelihood for the
 presence of cluster dependence, following
 \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
-The user provides a function that returns a vector of observation-specifc
+The user provides a function that returns a vector of observation-specific
 loglikelihood contributions and a vector that indicates cluster membership.
 The loglikelihood of a sub-model can be adjusted by fixing a set of
 parameters at particular values.

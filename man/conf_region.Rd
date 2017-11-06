@@ -69,7 +69,7 @@ An object of class "confreg", a list with components
       \code{which_pars[1]} and \code{which_pars[2]} in the grid over which
       the (profile) loglikelihood is evaluated. }
     \item{max_loglik}{A numeric scalar.  The value value of
-      the loglikelihood at its maxium.}
+      the loglikelihood at its maximum.}
     \item{prof_loglik}{An 2 \code{num} + 1 by 2 \code{num} + 1
       numeric matrix containing the values of the (profile) loglikelihood.}
     \item{type}{A character scalar. The input \code{type}.}

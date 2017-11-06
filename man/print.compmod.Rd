@@ -25,7 +25,7 @@ The argument \code{x}, invisibly, as for all \code{\link{print}}
 }
 \details{
 Prints the name of the model, the null (H0) and alternative
-hypotheses (HA), the test statistic, degress of freedom and the p-value.
+hypotheses (HA), the test statistic, degrees of freedom and the p-value.
 If the test is based on the approximation detailed by equations (18)-(20)
 of Chandler and Bate (2007), rather than equation (17), then this stated.
 }
