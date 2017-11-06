@@ -85,11 +85,7 @@
 #'   data using the independence loglikelihood. \emph{Biometrika},
 #'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
-#'   loglikelhood function.
-#' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
-#'   and unadjusted and adjusted standard errors.
-#' @seealso \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
-#'   loglikelihoods.
+#'   loglikelihood function.
 #' @seealso \code{\link{conf_intervals}} for confidence intervals for
 #'   individual parameters.
 #' @seealso \code{\link{conf_region}} for a confidence region for
@@ -222,8 +218,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
       stop("smaller is not nested in larger: ",
            "parameter(s) fixed at different values")
     }
-    qq <- length(fixed_pars)
-    p <- attr(larger, "p_current")
+    qq <- p - p_s
     s_mle <- attr(smaller, "MLE")
     l_mle <- attr(larger, "MLE")
     pars <- numeric(p)
@@ -267,7 +262,9 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   if (is.null(fixed_pars)) {
     stop("'fixed_pars' must be supplied")
   } else {
-    fixed_at <- rep_len(fixed_at, length(fixed_pars))
+    # The number of parameters that are fixed
+    len_fixed_pars <- length(fixed_pars)
+    fixed_at <- rep_len(fixed_at, len_fixed_pars)
     # If fixed_pars is a character vector then
     # (a) check that full_par_names is not NULL
     # (b) check that fixed_pars is a subset of full_par_names
@@ -301,17 +298,15 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     stop("smaller is not nested in larger: ",
          "parameter(s) fixed at different values")
   }
-  # The number of parameters that are fixed
-  qq <- length(fixed_pars)
-  if (qq >= p) {
+  if (len_fixed_pars >= p) {
     stop("length(fixed_pars) must be smaller than attr(larger, ''MLE'')")
   }
-  if (!(length(fixed_at) %in% c(1, qq))) {
+  if (!(length(fixed_at) %in% c(1, len_fixed_pars))) {
     stop("the lengths of 'fixed_pars' and 'fixed_at' are not compatible")
   }
-  fixed_at <- rep_len(fixed_at, qq)
   free_pars <- (1:p)[-fixed_pars]
   p_s <- length(free_pars)
+  qq <- p - p_s
   #
   # Extract arguments to be passed to optim()
   optim_args <- list(...)
