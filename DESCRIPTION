@@ -9,7 +9,7 @@ Authors@R: c(
     )
 Description: Performs adjustments of a user-supplied independence loglikelihood 
     function using a robust sandwich estimator of the parameter covariance 
-    matrix, based on the methodology in Chandler and Beta (2007) 
+    matrix, based on the methodology in Chandler and Bate (2007) 
     <doi:10.1093/biomet/asm015>.  This can be used for cluster correlated data 
     when interest lies in the parameters of the marginal distributions or for 
     performing inferences that are robust to certain types of model 
