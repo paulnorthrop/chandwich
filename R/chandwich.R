@@ -3,7 +3,7 @@
 #' Performs adjustments of an independence loglikelihood using
 #' a robust sandwich estimator of the parameter covariance matrix, based on
 #' the methodology in
-#' \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Beta (2007)}.
+#' \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
 #' This can be used for cluster correlated data when interest lies in the
 #' parameters of the marginal distributions.
 #' Functions for profiling the adjusted loglikelihoods are also provided, as
