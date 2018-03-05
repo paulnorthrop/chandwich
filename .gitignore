@@ -2,4 +2,3 @@
 .Rhistory
 .RData
 R/adjust_object.R
-inst/doc
