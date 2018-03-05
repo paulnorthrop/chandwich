@@ -95,7 +95,7 @@
 #'
 #'   The adjustments involve first and second derviatives of the loglikelihood
 #'   with respect to the model parameters.  These are estimated using
-#'   \code{\link[numDeriv]{jacobian}} and \code{\link[stats]{optimHess}}
+#'   \code{\link[numDeriv]{jacobian}} and \code{\link[stats:optim]{optimHess}}
 #'   unless \code{alg_deriv} and/or \code{alg_hess} are supplied.
 #' @return A function of class \code{"chandwich"} to evaluate an adjusted
 #'   loglikelihood, or the independence loglikelihood, at one or more sets
