@@ -12,9 +12,9 @@ os:
 #  - osx
 
 r:
-  - release
-#  - devel
-  - oldrel
+#  - release
+  - devel
+#  - oldrel
 
 r_packages:
   - covr
