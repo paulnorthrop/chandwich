@@ -31,11 +31,10 @@ plot(rat_res, type = 1:4, legend_pos = "bottom", lwd = 2, col = 1:4)
 
 ### Installation
 
-To install this development version from Github use:
+To get the current released version from CRAN:
 
 ``` r
-install.packages("devtools")
-devtools::install_github("paulnorthrop/chandwich")
+install.packages("chandwich")
 ```
 
 ### Vignette
