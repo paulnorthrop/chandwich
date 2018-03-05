@@ -167,7 +167,7 @@ Three adjustments to the independence loglikelihood described in
   horizontal adjustments, the descriptions of \code{C_cholesky} and
   \code{C_spectral}, in \strong{Value}.
 
-  The adjustments involve first and second derviatives of the loglikelihood
+  The adjustments involve first and second derivatives of the loglikelihood
   with respect to the model parameters.  These are estimated using
   \code{\link[numDeriv]{jacobian}} and \code{\link[stats:optim]{optimHess}}
   unless \code{alg_deriv} and/or \code{alg_hess} are supplied.
