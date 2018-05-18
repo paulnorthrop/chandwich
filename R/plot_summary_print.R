@@ -151,7 +151,7 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
 #' \code{summary} method for class "chandwich"
 #'
 #' @param object an object of class "chandwich", a result of a call to
-#'   \code{adjust_loglik}.
+#'   \code{\link{adjust_loglik}}.
 #' @param digits An integer. Used for number formatting with
 #'   \code{\link{signif}}.
 #' @param ... Additional optional arguments. At present no optional

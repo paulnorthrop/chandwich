@@ -9,7 +9,7 @@
 }
 \arguments{
 \item{object}{an object of class "chandwich", a result of a call to
-\code{adjust_loglik}.}
+\code{\link{adjust_loglik}}.}
 
 \item{digits}{An integer. Used for number formatting with
 \code{\link{signif}}.}
