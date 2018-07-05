@@ -30,7 +30,7 @@ my_adj_ses <- round(attr(pois_res, "adjSE"), 4)
 
 pois_res_2 <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
                             mle = fm_pois$coefficients,
-                            hess_at_mle = solve(vcov(fm_pois)))
+                            hess_at_mle = solve(stats::vcov(fm_pois)))
 my_ests_2 <- round(attr(pois_res_2, "MLE"), 4)
 my_ses_2 <- round(attr(pois_res_2, "SE"), 4)
 my_adj_ses_2 <- round(attr(pois_res_2, "adjSE"), 4)
