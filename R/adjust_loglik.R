@@ -547,7 +547,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
     max_loglik <- -neg_loglik(mle)
     temp <- list()
     if (is.null(hess_at_mle)) {
-      temp$hessian <- optimHess(mle, neg_loglik)
+      temp$hessian <- stats::optimHess(mle, neg_loglik)
     } else {
       temp$hessian <- hess_at_mle
     }
