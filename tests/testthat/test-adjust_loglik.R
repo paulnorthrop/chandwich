@@ -25,20 +25,29 @@ rat_res_3 <- adjust_loglik(loglik = binom_loglik, data = rats, p = 1)
 rat_res_4 <- adjust_loglik(loglik = binom_loglik, data = rats, p = 1,
                            cluster = 1:dim(rats)[1])
 
+# Check that providing the MLE and Hessian of the negated loglikelihood
+# evaluated at the MLE works correctly
+rat_res_5 <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p",
+                           mle = attr(rat_res_1, "MLE"),
+                           hess_at_mle = -attr(rat_res_1, "HI"))
+
 my_tol <- 1e-5
 
 mle_1 <- as.numeric(attr(rat_res_1, "MLE"))
 mle_2 <- attr(rat_res_2, "MLE")
 mle_3 <- attr(rat_res_3, "MLE")
 mle_4 <- attr(rat_res_4, "MLE")
+mle_5 <- as.numeric(attr(rat_res_5, "MLE"))
 se_1 <- as.numeric(attr(rat_res_1, "SE"))
 se_2 <- attr(rat_res_2, "SE")
 se_3 <- attr(rat_res_3, "SE")
 se_4 <- attr(rat_res_4, "SE")
+se_5 <- as.numeric(attr(rat_res_5, "SE"))
 adjse_1 <- as.numeric(attr(rat_res_1, "adjSE"))
 adjse_2 <- attr(rat_res_2, "adjSE")
 adjse_3 <- attr(rat_res_3, "adjSE")
 adjse_4 <- attr(rat_res_4, "adjSE")
+adjse_5 <- as.numeric(attr(rat_res_5, "adjSE"))
 
 test_that("MLEs: par_names and init agree", {
   testthat::expect_equal(mle_1, mle_2, tolerance = my_tol)
@@ -49,6 +58,9 @@ test_that("MLEs: par_names and p agree", {
 test_that("MLEs: cluster and default agree", {
   testthat::expect_equal(mle_3, mle_4, tolerance = my_tol)
 })
+test_that("MLEs: providing mle and Hessian works", {
+  testthat::expect_equal(mle_1, mle_5, tolerance = my_tol)
+})
 test_that("SEs: par_names and init agree", {
   testthat::expect_equal(se_1, se_2, tolerance = my_tol)
 })
@@ -58,6 +70,9 @@ test_that("SEs: par_names and p agree", {
 test_that("SEs: cluster and default agree", {
   testthat::expect_equal(se_3, se_4, tolerance = my_tol)
 })
+test_that("SEs: providing mle and Hessian works", {
+  testthat::expect_equal(se_1, se_5, tolerance = my_tol)
+})
 test_that("Adj. SEs: par_names and init agree", {
   testthat::expect_equal(adjse_1, adjse_2, tolerance = my_tol)
 })
@@ -66,6 +81,9 @@ test_that("Adj. SEs: par_names and p agree", {
 })
 test_that("Adj. SEs: cluster and default agree", {
   testthat::expect_equal(adjse_3, adjse_4, tolerance = my_tol)
+})
+test_that("Adj. SEs: providing mle and Hessian works", {
+  testthat::expect_equal(adjse_1, adjse_5, tolerance = my_tol)
 })
 
 # Repeat 1 and 2 when using method = "L-BFGS-B"

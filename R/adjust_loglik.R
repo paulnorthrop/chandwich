@@ -44,6 +44,18 @@
 #'   If \code{fixed_pars} is not \code{NULL} then \code{init[-fixed_pars]}
 #'   is used in the search for the MLE.
 #'   If \code{init} is not supplied then \code{rep(0.1, p)} is used.
+#' @param mle A numeric vector.  Can only be used if \code{fixed_pars = NULL}.
+#'   Provides the maximum likelihood estimate of the model parameters,
+#'   that is, the value of the parameter vector
+#'   at which the independence loglikelihood \code{loglik} is maximized.
+#'   Must have length equal to the number of parameters in the
+#'   \strong{full} model.  If \code{mle} is supplied then \code{p} is set
+#'   to \code{length(mle)}, provided that this is consistent with the the
+#'   value given by \code{p} or implied by \code{length(par_names)}.
+#'   If \code{mle} is supplied then it overrides \code{init}.
+#' @param hess_at_mle A numeric matrix.  Only used if \code{mle} is supplied.
+#'   Provides an estimate of the Hessian of the \strong{negated}
+#'   independence loglikelihood, evaluated at the MLE \code{mle}.
 #' @param par_names A character vector.  Names of the \code{p} parameters
 #'   in the \strong{full} model.  Must be consistent with the lengths of
 #'   \code{init} and \code{p}, if these are also supplied.
@@ -209,7 +221,7 @@
 #' # Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)
 #' t(summary(large))
 #'
-#' # Log-likelihood adjustment of some smaller models: xi[1] = 0 etc
+#' # Loglikelihood adjustment of some smaller models: xi[1] = 0 etc
 #'
 #' # Starting from a larger model
 #' medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
@@ -263,10 +275,22 @@
 #' summary(pois_quad)
 #' @export
 adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
-                          init = NULL, par_names = NULL,
-                          fixed_pars = NULL, fixed_at = 0, name = NULL,
-                          larger = NULL, alg_deriv = NULL, alg_hess = NULL) {
-  #
+                          init = NULL, mle = NULL, hess_at_mle = NULL,
+                          par_names = NULL, fixed_pars = NULL, fixed_at = 0,
+                          name = NULL, larger = NULL, alg_deriv = NULL,
+                          alg_hess = NULL) {
+  # If mle has been supplied then replace init by mle
+  # (and later on don't search for the MLE because we have it already)
+  if (!is.null(mle)) {
+    if (!is.null(fixed_pars)) {
+      stop("'mle' cannot be supplied when 'fixed_pars' is also supplied")
+    } else {
+      init <- mle
+    }
+  }
+  if (!is.null(hess_at_mle) & is.null(mle)) {
+    stop("'hess_at_mle' can only be supplied if 'mle' is also supplied")
+  }
   # Setup and checks -----------------------------------------------------------
   #
   if (is.null(loglik) & is.null(larger)) {
@@ -513,18 +537,29 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   for_optim <- c(list(par = init, fn = neg_loglik, hessian = TRUE), optim_args)
   #
   # Find the MLE and Hessian of the (negated) loglikelihood at the MLE -------
-  #
-  temp <- do.call(stats::optim, for_optim)
+  # If mle has been supplied then just use the MLE and calculate the values
+  # of the independence loglikelihood and its Hessian at the MLE
+  if (is.null(mle)) {
+    temp <- do.call(stats::optim, for_optim)
+    mle <- temp$par
+    max_loglik <- -temp$value
+  } else {
+    max_loglik <- -neg_loglik(mle)
+    temp <- list()
+    if (is.null(hess_at_mle)) {
+      temp$hessian <- optimHess(mle, neg_loglik)
+    } else {
+      temp$hessian <- hess_at_mle
+    }
+  }
   # Extract the MLE and the Hessian of independence loglikelihood at the MLE
   # Note the negation to change from Hessian of negated loglikelihood
   # to Hessian HI of loglikelihood
-  mle <- temp$par
   if (!is.null(fixed_pars)) {
     res_mle <- numeric(p)
     res_mle[fixed_pars] <- fixed_at
     res_mle[free_pars] <- mle
   }
-  max_loglik <- -temp$value
   if (is.null(alg_hess)) {
     HI <- -temp$hessian
   } else {
