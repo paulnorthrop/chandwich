@@ -21,10 +21,19 @@ pois_glm_loglik <- function(pars, y, x) {
   return(stats::dpois(y, lambda = exp(log_mu), log = TRUE))
 }
 pois_res <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3)
-
 my_ests <- round(attr(pois_res, "MLE"), 4)
 my_ses <- round(attr(pois_res, "SE"), 4)
 my_adj_ses <- round(attr(pois_res, "adjSE"), 4)
+
+# Repeat when supplying the MLE and the Hessian of the negated loglikelihood
+# evaluated at the MLE
+
+pois_res_2 <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
+                            mle = fm_pois$coefficients,
+                            hess_at_mle = solve(vcov(fm_pois)))
+my_ests_2 <- round(attr(pois_res_2, "MLE"), 4)
+my_ses_2 <- round(attr(pois_res_2, "SE"), 4)
+my_adj_ses_2 <- round(attr(pois_res_2, "adjSE"), 4)
 
 my_tol <- 1e-5
 
@@ -36,6 +45,16 @@ test_that("SEs agree", {
 })
 test_that("adjusted SEs agree", {
   testthat::expect_equal(adj_ses, my_adj_ses, tolerance = my_tol)
+})
+
+test_that("MLEs agree, mle and hess_at_mle supplied", {
+  testthat::expect_equal(my_ests, my_ests_2, tolerance = my_tol)
+})
+test_that("SEs agree, mle and hess_at_mle supplied", {
+  testthat::expect_equal(my_ses, my_ses_2, tolerance = my_tol)
+})
+test_that("adjusted SEs agree, mle and hess_at_mle supplied", {
+  testthat::expect_equal(my_adj_ses, my_adj_ses_2, tolerance = my_tol)
 })
 
 # Repeat using algebraic derivatives and Hessian
