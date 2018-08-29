@@ -4,8 +4,8 @@
 \alias{plot.confreg}
 \title{Plot diagnostics a confreg object}
 \usage{
-\method{plot}{confreg}(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
-  legend = any(c(!is.null(y), !is.null(y2), !is.null(y3))),
+\method{plot}{confreg}(x, y = NULL, y2 = NULL, y3 = NULL,
+  conf = 95, legend = any(c(!is.null(y), !is.null(y2), !is.null(y3))),
   legend_pos = "topleft", ...)
 }
 \arguments{

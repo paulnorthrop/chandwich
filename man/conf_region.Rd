@@ -4,9 +4,9 @@
 \alias{conf_region}
 \title{Two-dimensional confidence regions}
 \usage{
-conf_region(object, which_pars = NULL, range1 = c(NA, NA), range2 = c(NA,
-  NA), conf = 95, mult = 2, num = c(10, 10), type = c("vertical",
-  "cholesky", "spectral", "none"), ...)
+conf_region(object, which_pars = NULL, range1 = c(NA, NA),
+  range2 = c(NA, NA), conf = 95, mult = 2, num = c(10, 10),
+  type = c("vertical", "cholesky", "spectral", "none"), ...)
 }
 \arguments{
 \item{object}{An object of class \code{"chandwich"} returned by
