@@ -61,7 +61,7 @@ test_that("adjusted SEs agree, mle and hess_at_mle supplied", {
 
 pois_alg_deriv <- function(pars, y, x) {
   mu <- exp(pars[1] + pars[2] * x + pars[3] * x ^ 2)
-  return(cbind(y - mu, x * (y - mu), x ^2 * (y - mu)))
+  return(cbind(y - mu, x * (y - mu), x ^ 2 * (y - mu)))
 }
 
 pois_alg_hess <- function(pars, y, x) {
