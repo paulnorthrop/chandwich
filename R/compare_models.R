@@ -18,7 +18,8 @@
 #' @param approx A logical scalar.  If \code{approx = TRUE} then the
 #'   approximation detailed by equations (18)-(20) of Chandler and Bate (2007)
 #'   is used.  This option is available only if \code{smaller} is supplied.
-#'   If \code{smaller} is not supplied then \code{approx = TRUE} is used.
+#'   If \code{smaller} is not supplied then \code{approx = TRUE} is used,
+#'   with no warning.
 #'
 #'   The approximation doesn't make sense if \code{type = "none"}.  If
 #'   \code{type = "none"} and \code{approx = TRUE} then \code{approx} is
