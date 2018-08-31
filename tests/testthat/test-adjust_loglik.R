@@ -29,7 +29,7 @@ rat_res_4 <- adjust_loglik(loglik = binom_loglik, data = rats, p = 1,
 # evaluated at the MLE works correctly
 rat_res_5 <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p",
                            mle = attr(rat_res_1, "MLE"),
-                           hess_at_mle = -attr(rat_res_1, "HI"))
+                           H = attr(rat_res_1, "HI"))
 
 my_tol <- 1e-5
 
