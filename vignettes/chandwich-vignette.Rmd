@@ -22,7 +22,7 @@ Suppose that we have $k$ clusters of observations $\{y_j, j = 1, \ldots, k\}$, w
 $$\ell_I(\theta) = \sum_{j=1}^{k} \ell_j(\theta; y_j),$$
 where $\ell_j(\theta; y_j)$ is the contribution from the $j$th cluster.  Suppose that the independence maximum likelihood estimator (MLE) $\hat{\theta}$ is the unique root of $$\frac{\partial \ell_I(\theta)}{\partial \theta} = \sum_{j=1}^{k} \frac{\partial \ell_j(\theta; y_j)}{\partial \theta} = \sum_{j=1}^{k} U_j(\theta) = 0.$$ 
 The adjustments scale $\ell_I(\theta)$ about $\hat{\theta}$ so that the Hessian $\hat{H}_A$ of the adjusted loglikelihood is consistent with the sandwich estimator [@Davison2003] of the covariance matrix of $\hat{\theta}$.  Specifically, 
-$\hat{H}_A = -\hat{H}^{-1} \hat{V} \hat{H}^{-1},$
+$\hat{H}_A^{-1} = -\hat{H}^{-1} \hat{V} \hat{H}^{-1},$
 where $\hat{H}$ is the Hessian of $l_I(\theta)$ at $\hat{\theta}$ and $\hat{V} =\sum_{j=1}^{k} U_j(\hat{\theta}) U^{T}_j(\hat{\theta})$.
 
 There are two types of adjustment.  A horizontal adjustment 
