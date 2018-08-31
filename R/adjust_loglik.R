@@ -44,18 +44,6 @@
 #'   If \code{fixed_pars} is not \code{NULL} then \code{init[-fixed_pars]}
 #'   is used in the search for the MLE.
 #'   If \code{init} is not supplied then \code{rep(0.1, p)} is used.
-#' @param mle A numeric vector.  Can only be used if \code{fixed_pars = NULL}.
-#'   Provides the maximum likelihood estimate of the model parameters,
-#'   that is, the value of the parameter vector
-#'   at which the independence loglikelihood \code{loglik} is maximized.
-#'   Must have length equal to the number of parameters in the
-#'   \strong{full} model.  If \code{mle} is supplied then \code{p} is set
-#'   to \code{length(mle)}, provided that this is consistent with the the
-#'   value given by \code{p} or implied by \code{length(par_names)}.
-#'   If \code{mle} is supplied then it overrides \code{init}.
-#' @param hess_at_mle A numeric matrix.  Only used if \code{mle} is supplied.
-#'   Provides an estimate of the Hessian of the \strong{negated}
-#'   independence loglikelihood, evaluated at the MLE \code{mle}.
 #' @param par_names A character vector.  Names of the \code{p} parameters
 #'   in the \strong{full} model.  Must be consistent with the lengths of
 #'   \code{init} and \code{p}, if these are also supplied.
@@ -98,6 +86,28 @@
 #'   first argument.  Returns a \code{p} by \code{p} numeric matrix equal to
 #'   the Hessian of \code{loglik}, i.e. the matrix of second derivatives of
 #'   the function \code{loglik}.
+#'
+#'   Supplying both \code{V} and \code{alg_deriv} or both \code{H} and
+#'   \code{alg_hess} will produce an error.
+#' @param mle A numeric vector.  Can only be used if \code{fixed_pars = NULL}.
+#'   Provides the maximum likelihood estimate of the model parameters,
+#'   that is, the value of the parameter vector
+#'   at which the independence loglikelihood \code{loglik} is maximized.
+#'   Must have length equal to the number of parameters in the
+#'   \strong{full} model.  If \code{mle} is supplied then \code{p} is set
+#'   to \code{length(mle)}, provided that this is consistent with the the
+#'   value given by \code{p} or implied by \code{length(par_names)}.
+#'   If \code{mle} is supplied then it overrides \code{init}.
+#' @param H,V p by p numeric matrices.  Only used if \code{mle} is supplied.
+#'   Provide estimates of the Hessian of the \strong{negated}
+#'   independence loglikelihood (H) and the variance of the vector
+#'   of cluster-specific contributions to the score vector (first
+#'   derivatives with respect to the parameters) of the independence
+#'   loglikelihood, each evaluated at the MLE \code{mle}.  See the
+#'   \emph{Introducing chandwich} vignette and/or Chandler and Bate (2007).
+#'
+#'   Supplying both \code{V} and \code{alg_deriv} or both \code{H} and
+#'   \code{alg_hess} will produce an error.
 #' @details Three adjustments to the independence loglikelihood described in
 #'   Chandler and Bate (2007) are available.  The vertical adjustment is
 #'   described in Section 6 and two horizontal adjustments are described
@@ -275,10 +285,10 @@
 #' summary(pois_quad)
 #' @export
 adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
-                          init = NULL, mle = NULL, hess_at_mle = NULL,
-                          par_names = NULL, fixed_pars = NULL, fixed_at = 0,
-                          name = NULL, larger = NULL, alg_deriv = NULL,
-                          alg_hess = NULL) {
+                          init = NULL, par_names = NULL, fixed_pars = NULL,
+                          fixed_at = 0, name = NULL, larger = NULL,
+                          alg_deriv = NULL, alg_hess = NULL, mle = NULL,
+                          H = NULL, V = NULL) {
   # If mle has been supplied then replace init by mle
   # (and later on don't search for the MLE because we have it already)
   if (!is.null(mle)) {
@@ -288,8 +298,17 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
       init <- mle
     }
   }
-  if (!is.null(hess_at_mle) & is.null(mle)) {
-    stop("'hess_at_mle' can only be supplied if 'mle' is also supplied")
+  if (!is.null(V) & is.null(mle)) {
+    stop("'V' can only be supplied if 'mle' is also supplied")
+  }
+  if (!is.null(H) & is.null(mle)) {
+    stop("'H' can only be supplied if 'mle' is also supplied")
+  }
+  if (!is.null(V) & !is.null(alg_deriv)) {
+    stop("Only one of 'V' and 'alg_deriv' can be supplied")
+  }
+  if (!is.null(H) & !is.null(alg_hess)) {
+    stop("Only one of 'H' and 'alg_hess' can be supplied")
   }
   # Setup and checks -----------------------------------------------------------
   #
@@ -546,10 +565,10 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   } else {
     max_loglik <- -neg_loglik(mle)
     temp <- list()
-    if (is.null(hess_at_mle)) {
+    if (is.null(H)) {
       temp$hessian <- stats::optimHess(mle, neg_loglik)
     } else {
-      temp$hessian <- hess_at_mle
+      temp$hessian <- H
     }
   }
   # Extract the MLE and the Hessian of independence loglikelihood at the MLE
