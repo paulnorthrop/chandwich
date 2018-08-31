@@ -99,7 +99,7 @@
 #'   value given by \code{p} or implied by \code{length(par_names)}.
 #'   If \code{mle} is supplied then it overrides \code{init}.
 #' @param H,V p by p numeric matrices.  Only used if \code{mle} is supplied.
-#'   Provide estimates of the Hessian of the \strong{negated}
+#'   Provide estimates of the Hessian of the
 #'   independence loglikelihood (H) and the variance of the vector
 #'   of cluster-specific contributions to the score vector (first
 #'   derivatives with respect to the parameters) of the independence
@@ -283,6 +283,14 @@
 #' pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
 #'                            alg_deriv = pois_alg_deriv, alg_hess = pois_alg_hess)
 #' summary(pois_quad)
+#'
+#' # Providing MLE, H and V
+#' # H and V calculated using bread() and meat() from sandwich package
+#' n_obs <- stats::nobs(fm_pois)
+#' pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
+#'                           mle = fm_pois$coefficients,
+#'                           H = -solve(sandwich::bread(fm_pois) / n_obs),
+#'                           V = sandwich::meat(fm_pois) * n_obs)
 #' @export
 adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
                           init = NULL, par_names = NULL, fixed_pars = NULL,
@@ -568,7 +576,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
     if (is.null(H)) {
       temp$hessian <- stats::optimHess(mle, neg_loglik)
     } else {
-      temp$hessian <- H
+      temp$hessian <- -H
     }
   }
   # Extract the MLE and the Hessian of independence loglikelihood at the MLE
@@ -595,7 +603,10 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   #
   # Find the estimated covariance matrix of the score vector ------------------
   #
-  if (is.null(alg_deriv)) {
+  # If necessary (if V isn't supplied) then first calculate U.
+  # If neither alg_deriv or V are supplied then use numerical derivatives.
+  # If alg_deriv is supplied (V isn't) then aggregate alg_deriv over clusters.
+  if (is.null(alg_deriv) & is.null(V)) {
     # Function to aggregate the loglikelihood contributions within each cluster
     # [, 2] ensures that the correct *vector* is returned
     if (is.null(fixed_pars)) {
@@ -617,7 +628,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
     #
     for_jacobian <- list(func = clus_loglik, x = mle, cluster = cluster)
     U <- do.call(numDeriv::jacobian, for_jacobian)
-  } else {
+  } else if (!is.null(alg_deriv)) {
     if (is.null(fixed_pars)) {
       U <- do.call(alg_deriv, c(list(mle), loglik_args))
       U <- as.matrix(stats::aggregate(U, list(cluster), sum)[, 2:(p + 1)])
@@ -634,8 +645,12 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   HIinv <- -chol2inv(chol_minus_HI)
   SE <- sqrt(diag(-HIinv))
   # Adjusted Hessian and standard errors
-  UHIinv <- U %*% HIinv
-  HAinv <- -t(UHIinv) %*% UHIinv
+  if (is.null(V)) {
+    UHIinv <- U %*% HIinv
+    HAinv <- -t(UHIinv) %*% UHIinv
+  } else {
+    HAinv <- -HIinv %*% V %*% HIinv
+  }
   chol_minus_HAinv <- chol(-HAinv)
   HA <- -chol2inv(chol_minus_HAinv)
   adjSE <- sqrt(diag(-HAinv))
