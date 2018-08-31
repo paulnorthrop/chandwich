@@ -7,3 +7,5 @@
 ## Bug fixes and minor improvements
 
 The documentation of the argument `approx` to `compare_models()` has been edited to make it clearer that if `smaller` is not supplied then `approx = FALSE` will be used regardless of any value supplied for `approx` in the call to `compare_models()`.
+
+In the Introducing chandwich vignette a typo in the definition of HA has been corrected.  The expression given is for the inverse of HA, not for HA.
