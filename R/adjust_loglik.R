@@ -402,6 +402,10 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
         temp <- fixed_pars
         fixed_pars <- which(full_par_names %in% fixed_pars)
         names(fixed_pars) <- temp
+      } else {
+        if (!is.null(full_par_names)) {
+          names(fixed_pars) <- full_par_names[fixed_pars]
+        }
       }
       init <- init[-fixed_pars]
       par_names <- par_names[-fixed_pars]
