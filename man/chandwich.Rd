@@ -37,7 +37,7 @@ Chandler, R. E. and Bate, S. (2007). Inference for clustered
   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
 }
 \seealso{
-\code{\link{adjust_loglik}} to adjust the independence
+\code{\link{adjust_loglik}} to adjust a user-supplied
   loglikelihood.
 
 \code{\link{compare_models}} to compare nested models using an

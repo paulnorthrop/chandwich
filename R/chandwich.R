@@ -27,7 +27,7 @@
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
 #'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
-#' @seealso \code{\link{adjust_loglik}} to adjust the independence
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelihood.
 #' @seealso \code{\link{compare_models}} to compare nested models using an
 #'   adjusted loglikelihood ratio test.
