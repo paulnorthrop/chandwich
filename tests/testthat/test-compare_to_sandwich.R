@@ -37,6 +37,24 @@ test_that("adjusted SEs agree", {
   testthat::expect_equal(adj_ses, my_adj_ses, tolerance = my_tol)
 })
 
+# Repeat when supplying the MLE
+
+pois_res_2 <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
+                            mle = fm_pois$coefficients)
+my_ests_2a <- round(attr(pois_res_2, "MLE"), 4)
+my_ses_2a <- round(attr(pois_res_2, "SE"), 4)
+my_adj_ses_2a <- round(attr(pois_res_2, "adjSE"), 4)
+
+test_that("MLEs agree, mle and H supplied", {
+  testthat::expect_equal(my_ests, my_ests_2a, tolerance = my_tol)
+})
+test_that("SEs agree, mle and H supplied", {
+  testthat::expect_equal(my_ses, my_ses_2a, tolerance = my_tol)
+})
+test_that("adjusted SEs agree, mle and H supplied", {
+  testthat::expect_equal(my_adj_ses, my_adj_ses_2a, tolerance = my_tol)
+})
+
 # Repeat when supplying the MLE and the Hessian H of the loglikelihood
 # evaluated at the MLE
 

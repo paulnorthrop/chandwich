@@ -149,14 +149,16 @@ test_that("Values fixed in larger but not in smaller", {
   testthat::expect_identical(class(check_error), "try-error")
 })
 
-
 # Print
 
-check_same <- try(print(res1), silent = TRUE)
-test_that("Printing gives no error for type = vertical", {
-  testthat::expect_identical(check_same, res1)
+check_same <- utils::capture.output(print(res1))
+check_res1 <- utils::capture.output(res1)
+test_that("gev: print OK for character fixed_pars", {
+  testthat::expect_identical(check_same, check_res1)
 })
-check_same <- try(print(res2), silent = TRUE)
-test_that("Printing gives no error for type = none", {
-  testthat::expect_identical(check_same, res2)
+
+check_same <- utils::capture.output(print(res2))
+check_res2 <- utils::capture.output(res2)
+test_that("gev: print OK for numeric fixed_pars", {
+  testthat::expect_identical(check_same, check_res2)
 })
