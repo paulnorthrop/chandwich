@@ -403,6 +403,8 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
         fixed_pars <- which(full_par_names %in% fixed_pars)
         names(fixed_pars) <- temp
       } else {
+        # If fixed_pars is numeric then infer the names of the fixed
+        # parameters, if these are available
         if (!is.null(full_par_names)) {
           names(fixed_pars) <- full_par_names[fixed_pars]
         }
