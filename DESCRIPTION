@@ -21,7 +21,8 @@ Imports: graphics,
     methods,
     numDeriv,
     sandwich,
-    stats
+    stats,
+    utils
 License: GPL (>= 2)
 LazyData: TRUE
 Encoding: UTF-8
