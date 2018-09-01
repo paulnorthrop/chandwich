@@ -201,4 +201,6 @@ Chandler, R. E. and Bate, S. (2007). Inference for clustered
 
 \code{\link{conf_region}} for a confidence region for
   pairs of parameters.
+
+\code{\link{print.compmod}}.
 }

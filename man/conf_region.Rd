@@ -171,4 +171,6 @@ plot(pois_none, pois_vertical, conf = c(50, 75, 95, 99), col = 2:1, lwd = 2,
 
 \code{\link{compare_models}} to compare nested models using an
   (adjusted) likelihood ratio test.
+
+\code{\link{plot.confreg}}.
 }

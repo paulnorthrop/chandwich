@@ -180,4 +180,6 @@ conf_intervals(pois_quad)
 
 \code{\link{compare_models}} to compare nested models using an
   (adjusted) likelihood ratio test.
+
+\code{\link{plot.confint}}, \code{\link{print.confint}}.
 }

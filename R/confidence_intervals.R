@@ -73,6 +73,7 @@
 #'   individual parameters.
 #' @seealso \code{\link{compare_models}} to compare nested models using an
 #'   (adjusted) likelihood ratio test.
+#' @seealso \code{\link{plot.confreg}}.
 #' @examples
 #' # -------------------------- GEV model, owtemps data -----------------------
 #' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
@@ -388,6 +389,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'   a pair of parameters.
 #' @seealso \code{\link{compare_models}} to compare nested models using an
 #'   (adjusted) likelihood ratio test.
+#' @seealso \code{\link{plot.confint}}, \code{\link{print.confint}}.
 #' @examples
 #' # ------------------------- Binomial model, rats data ----------------------
 #'

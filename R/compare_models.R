@@ -93,6 +93,7 @@
 #'   individual parameters.
 #' @seealso \code{\link{conf_region}} for a confidence region for
 #'   pairs of parameters.
+#' @seealso \code{\link{print.compmod}}.
 #' @examples
 #' # -------------------------- GEV model, owtemps data -----------------------
 #' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
