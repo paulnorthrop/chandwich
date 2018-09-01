@@ -262,6 +262,12 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
         init <- attr(smaller, "MLE")
       }
     }
+  } else {
+    # If smaller is supplied and fixed_pars is numeric then infer the names
+    # of the fixed parameters, if these are available in larger
+    if (!is.null(attr(larger, "full_par_names"))) {
+      names(fixed_pars) <- attr(larger, "full_par_names")[fixed_pars]
+    }
   }
   if (is.null(fixed_pars)) {
     stop("'fixed_pars' must be supplied")
