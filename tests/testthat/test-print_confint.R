@@ -16,7 +16,7 @@ conf_n <- conf_intervals(rat_res, type = "none")
 
 check_same <- utils::capture.output(print(conf_v))
 check_conf_v <- utils::capture.output(conf_v)
-test_that("binom: print Ok for type = vertical", {
+test_that("binom: print OK for type = vertical", {
   testthat::expect_identical(check_same, check_conf_v)
 })
 check_same <- utils::capture.output(print(conf_n))
