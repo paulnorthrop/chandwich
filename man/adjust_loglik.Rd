@@ -174,6 +174,9 @@ A function of class \code{"chandwich"} to evaluate an adjusted
     \code{par_names} if this was supplied.}
   If \code{alg_deriv} and/or \code{alg_hess} were supplied then these are
   returned as further attributes.
+
+  To view an individual attribute use \code{attr(x, "name")}
+  or \code{attributes(x)$name}.
 }
 \description{
 Performs adjustments of a user-supplied independence loglikelihood for the

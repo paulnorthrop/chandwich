@@ -170,6 +170,9 @@
 #'     \code{par_names} if this was supplied.}
 #'   If \code{alg_deriv} and/or \code{alg_hess} were supplied then these are
 #'   returned as further attributes.
+#'
+#'   To view an individual attribute use \code{attr(x, "name")}
+#'   or \code{attributes(x)$name}.
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
 #'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
@@ -783,6 +786,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   attr(adjust_loglik_fn, "max_loglik") <- max_loglik
   attr(adjust_loglik_fn, "loglik_args") <- loglik_args
   attr(adjust_loglik_fn, "name") <- name
+  attr(adjust_loglik_fn, "call") <- match.call()
   class(adjust_loglik_fn) <- "chandwich"
   return(adjust_loglik_fn)
 }
