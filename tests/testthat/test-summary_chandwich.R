@@ -25,19 +25,3 @@ test_that("par_names and p are equivalent", {
 test_that("p and init are equivalent", {
   testthat::expect_identical(res2, res3)
 })
-
-rat_sum <- summary(rat_res_1)
-check_p <- utils::capture.output(print(rat_sum))
-check_no_p <- utils::capture.output(rat_sum)
-test_that("rats data: print summary OK", {
-  testthat::expect_identical(check_p, check_no_p)
-})
-
-# Check print
-
-check_p <- utils::capture.output(print(rat_res_1))
-check_no_p <- utils::capture.output(rat_res_1)
-test_that("rats data: print OK", {
-  testthat::expect_identical(check_p, check_no_p)
-})
-
