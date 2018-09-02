@@ -464,7 +464,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   user_args <- list(...)
   optim_cond <- names(user_args) %in% methods::formalArgs(stats::optim)
   optim_args <- user_args[optim_cond]
-  # The remaining arguments are to be passed loglik
+  # The remaining arguments are to be passed to loglik
   # Only extract these if they were not extracted from larger earlier
   if (!got_loglik_args) {
     loglik_args <- user_args[!optim_cond]
