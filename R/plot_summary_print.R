@@ -181,7 +181,37 @@ summary.chandwich <- function(object,
   if (is.null(attr(object, "par_names"))) {
     rownames(res) <- 1:length(mle)
   }
+  class(res) <- "summary.chandwich"
   return(res)
+}
+
+# ======================== print.summary.chandwich ============================
+
+#' Print method for objects of class "summary.chandwich"
+#'
+#' \code{print} method for an object \code{object} of class "summary.chandwich".
+#'
+#' @param x An object of class "summary.chandwich", a result of a call to
+#'   \code{\link{summary.chandwich}}.
+#' @param ... Additional arguments passed on to \code{print}.
+#' @return Prints a numeric matrix with 3 columns and the number of rows
+#'   equal to the number of parameters in the current model, i.e.
+#'   \code{attr(object, "p_current")}.
+#'   The columns contain: the maximum likelihood estimates (MLE), unadjusted
+#'   standard errors (SE) and adjusted standard errors (adjSE).
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelihood.
+#' @seealso \code{\link{summary.chandwich}} for a diagnostic plot.
+#' @section Examples:
+#' See the examples in \code{\link{adjust_loglik}}.
+#' @export
+print.summary.chandwich <- function(x, ...) {
+  if (!inherits(x, "summary.chandwich")) {
+    stop("use only with \"summary.chandwich\" objects")
+  }
+  class(x) <- "matrix"
+  print(x, ...)
+  invisible(x)
 }
 
 # ============================== plot.confreg =================================
