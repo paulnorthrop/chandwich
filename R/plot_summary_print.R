@@ -214,6 +214,37 @@ print.summary.chandwich <- function(x, ...) {
   invisible(x)
 }
 
+# ============================== print.chandwich ==============================
+
+#' Print method for objects of class "chandwich"
+#'
+#' \code{print} method for class "chandwich".
+#'
+#' @param x an object of class "chandwich", a result of a call to
+#'   \code{\link{adjust_loglik}}.
+#' @param ... Additional optional arguments. At present no optional
+#'   arguments are used.
+#' @details Just prints the original call to \code{\link{adjust_loglik}}.
+#'   To view a list of the attributes to the function returned from
+#'   \code{\link{adjust_loglik}} use \code{ls(attributes(x))}.
+#'   To view an individual attribute use \code{attr(x, "name")}
+#'   or \code{attributes(x)$name}.
+#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
+#'   methods.
+#' @seealso \code{\link{summary.chandwich}}: \code{summary} method for
+#'   class "chandwich".
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelihood.
+#' @export
+print.chandwich <- function(x, ...) {
+  if (!inherits(x, "chandwich")) {
+    stop("use only with \"chandwich\" objects")
+  }
+  cat("\n", "Call:", paste(deparse(attr(x, "call"))), "\n")
+  cat("\n")
+  return(invisible(x))
+}
+
 # ============================== plot.confreg =================================
 
 #' Plot diagnostics a confreg object
