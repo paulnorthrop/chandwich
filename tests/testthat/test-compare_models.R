@@ -171,9 +171,13 @@ test_that("gev: print OK for numeric fixed_pars", {
 
 # Check that compare_models() and anova.chandwich() give the same results
 
+tiny <- adjust_loglik(larger = small,
+                      fixed_pars = c("mu1", "sigma1", "xi1"))
+small_tiny <- compare_models(small, tiny)
+
 # approx = FALSE
 
-anova_res <- anova(large, medium, small)
+anova_res <- anova(large, medium, small, tiny)
 
 test_that("anova ALRTS: large vs. medium", {
   testthat::expect_equal(save_large_medium$alrts, anova_res$ALRTS[2])
@@ -187,12 +191,19 @@ test_that("anova ALRTS: medium vs. small", {
 test_that("anova p-value: medium vs. small", {
   testthat::expect_equal(save_medium_small$p_value, anova_res$"Pr(>ALRTS)"[3])
 })
+test_that("anova ALRTS: small vs. tiny", {
+  testthat::expect_equal(small_tiny$alrts, anova_res$ALRTS[4])
+})
+test_that("anova p-value: small vs. tiny", {
+  testthat::expect_equal(small_tiny$p_value, anova_res$"Pr(>ALRTS)"[4])
+})
 
 # approx = TRUE
 
-anova_res_approx <- anova(large, medium, small, approx = TRUE)
+anova_res_approx <- anova(large, medium, small, tiny, approx = TRUE)
 save_medium_small_approx <- compare_models(medium, small, approx = TRUE,
                                            method = "L-BFGS-B")
+small_tiny_approx <- compare_models(small, tiny, approx = TRUE)
 
 test_that("anova ALRTS: large vs. medium, approx", {
   testthat::expect_equal(save_large_medium_approx$alrts,
@@ -210,5 +221,12 @@ test_that("anova p-value: medium vs. small, approx", {
   testthat::expect_equal(save_medium_small_approx$p_value,
                          anova_res_approx$"Pr(>ALRTS)"[3])
 })
-
+test_that("anova ALRTS: medium vs. small, approx", {
+  testthat::expect_equal(small_tiny_approx$alrts,
+                         anova_res_approx$ALRTS[4])
+})
+test_that("anova p-value: medium vs. small, approx", {
+  testthat::expect_equal(small_tiny_approx$p_value,
+                         anova_res_approx$"Pr(>ALRTS)"[4])
+})
 
