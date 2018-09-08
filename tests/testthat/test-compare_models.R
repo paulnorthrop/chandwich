@@ -38,6 +38,8 @@ medium_2 <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 # Different ways to make the same comparison
 res1 <- compare_models(large, medium_2)
 res2 <- compare_models(large, medium)
+# Save for use later in anova.chandwich() tests
+save_large_medium <- res2
 res3 <- compare_models(large, fixed_pars = 6)
 res4 <- compare_models(large, fixed_pars = "xi1")
 
@@ -61,6 +63,8 @@ test_that("approaches 2 and 4 agree", {
 medium_3 <- adjust_loglik(larger = large, fixed_pars = 6)
 
 res1 <- compare_models(large, medium, approx = TRUE, method = "L-BFGS-B")
+# Save for use later in anova.chandwich() tests
+save_large_medium_approx <- res1
 res2 <- compare_models(large, medium_3, approx = TRUE, method = "L-BFGS-B")
 
 test_that("approx = TRUE, numeric and character which_pars agree", {
@@ -95,6 +99,8 @@ small <- adjust_loglik(larger = medium, fixed_pars = c("sigma1", "xi1"))
 small_2 <- adjust_loglik(larger = medium, fixed_pars = c(4, 6))
 
 res1 <- compare_models(medium, small)
+# Save for use later in anova.chandwich() tests
+save_medium_small <- res1
 res2 <- compare_models(medium, small_2)
 
 test_that("Larger model not full, numeric vs. character fixed_pars", {
@@ -162,3 +168,47 @@ check_res2 <- utils::capture.output(res2)
 test_that("gev: print OK for numeric fixed_pars", {
   testthat::expect_identical(check_same, check_res2)
 })
+
+# Check that compare_models() and anova.chandwich() give the same results
+
+# approx = FALSE
+
+anova_res <- anova(large, medium, small)
+
+test_that("anova ALRTS: large vs. medium", {
+  testthat::expect_equal(save_large_medium$alrts, anova_res$ALRTS[2])
+})
+test_that("anova p-value: large vs. medium", {
+  testthat::expect_equal(save_large_medium$p_value, anova_res$"Pr(>ALRTS)"[2])
+})
+test_that("anova ALRTS: medium vs. small", {
+  testthat::expect_equal(save_medium_small$alrts, anova_res$ALRTS[3])
+})
+test_that("anova p-value: medium vs. small", {
+  testthat::expect_equal(save_medium_small$p_value, anova_res$"Pr(>ALRTS)"[3])
+})
+
+# approx = TRUE
+
+anova_res_approx <- anova(large, medium, small, approx = TRUE)
+save_medium_small_approx <- compare_models(medium, small, approx = TRUE,
+                                           method = "L-BFGS-B")
+
+test_that("anova ALRTS: large vs. medium, approx", {
+  testthat::expect_equal(save_large_medium_approx$alrts,
+                         anova_res_approx$ALRTS[2])
+})
+test_that("anova p-value: large vs. medium, approx", {
+  testthat::expect_equal(save_large_medium_approx$p_value,
+                         anova_res_approx$"Pr(>ALRTS)"[2])
+})
+test_that("anova ALRTS: medium vs. small, approx", {
+  testthat::expect_equal(save_medium_small_approx$alrts,
+                         anova_res_approx$ALRTS[3])
+})
+test_that("anova p-value: medium vs. small, approx", {
+  testthat::expect_equal(save_medium_small_approx$p_value,
+                         anova_res_approx$"Pr(>ALRTS)"[3])
+})
+
+
