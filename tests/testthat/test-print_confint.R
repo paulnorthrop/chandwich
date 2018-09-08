@@ -49,7 +49,8 @@ pois_lin <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars,
                           fixed_pars = "gamma")
 
 conf_1 <- conf_intervals(pois_lin, which_par = "alpha")
-conf_2 <- conf_intervals(pois_lin, which_par = 1, type = "none")
+conf_2 <- conf_intervals(pois_lin, which_par = 1, type = "none",
+                         method = "Nelder-Mead")
 
 check_same <- utils::capture.output(print(conf_1))
 check_conf_1 <- utils::capture.output(conf_1)

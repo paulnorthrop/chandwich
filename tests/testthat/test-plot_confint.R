@@ -87,7 +87,7 @@ medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
 # Profile loglikelihood for xi0, evaluated at xi0 = -0.1
 res3 <- profile_loglik(medium, prof_pars = "xi[0]", prof_vals = -0.1)
 res4 <- profile_loglik(medium, prof_pars = 5, prof_vals = -0.1,
-                       method = "Nelder-Mead")
+                       method = "L-BFGS-B")
 
 test_that("medium GEV model: numeric vs character which_pars", {
   testthat::expect_equal(res3, res4, tolerance = my_tol)
@@ -107,7 +107,7 @@ rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
 conf_v <- conf_intervals(rat_res)
 conf_none <- conf_intervals(rat_res, type = "none")
 conf_s <- conf_intervals(rat_res, type = "spectral")
-conf_c <- conf_intervals(rat_res, type = "cholesky", method = "Brent")
+conf_c <- conf_intervals(rat_res, type = "cholesky")
 
 check_NULL <- try(plot(conf_v, conf_none, conf_s, conf_c), silent = TRUE)
 test_that("Plotting 4 intervals gives no error", {
