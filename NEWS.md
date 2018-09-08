@@ -4,6 +4,8 @@
 
 * `adjust_loglik` has an additional arguments `mle`, `H` and  `V` that allow the user the option to supply the MLE, the Hessian of the independence loglikelihood (H) and the variance of the vector of cluster-specific contributions to the score vector (V), each evaluated at the MLE, rather than estimating these within `adjust_loglik`.
 
+* An S3 method for class "chandwich" has been added.  This compares two or more nested models using adjusted likelihood ratio tests of successive pairs of models, using `compare_models()`.
+
 ## Bug fixes and minor improvements
 
 * The documentation of the argument `approx` to `compare_models()` has been edited to make it clearer that if `smaller` is not supplied then `approx = FALSE` will be used regardless of any value supplied for `approx` in the call to `compare_models()`.

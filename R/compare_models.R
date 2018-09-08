@@ -2,16 +2,16 @@
 
 #' Comparison of nested models
 #'
-#' Compares nested models using the adjusted likelihood ratio statistic (ALRS)
-#' described in Section 3.5 of
+#' Compares nested models using the adjusted likelihood ratio test statistic
+#' (ALRTS) described in Section 3.5 of
 #' \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
 #' The nesting must result from the simple constraint that a subset of the
 #' parameters of the larger model is held fixed.
 #'
 #' @param larger An object of class \code{"chandwich"} returned by
-#'   \code{adjust_loglik}.  The larger of the two models.
+#'   \code{\link{adjust_loglik}}.  The larger of the two models.
 #' @param smaller An object of class \code{"chandwich"} returned by
-#'   \code{adjust_loglik}.  The smaller of the two models.
+#'   \code{\link{adjust_loglik}}.  The smaller of the two models.
 #'
 #'   If \code{smaller} is supplied then the arguments \code{fixed_pars} and
 #'   \code{fixed_at} described below are ignored.
@@ -379,4 +379,158 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
                     smaller_fixed_at = s_fixed_at, approx = approx)
   class(comp_list) <- "compmod"
   return(comp_list)
+}
+
+# ============================= anova.chandwich ===============================
+
+#' Comparison of nested models
+#'
+#' \code{anova} method for objects of class \code{"chandwich"}.
+#' Compares two or more nested models using the adjusted likelihood ratio
+#' test statistic (ALRTS) described in Section 3.5 of
+#' \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
+#' The nesting must result from the simple constraint that a subset of the
+#' parameters of the larger model is held fixed.
+#'
+#' @param object An object of class \code{"chandwich"}, returned by
+#'   \code{\link{adjust_loglik}}.
+#' @param object2 An object of class \code{"chandwich"}, returned by
+#'   \code{\link{adjust_loglik}}.
+#' @param ... Further objects of class \code{"chandwich"} and/or arguments
+#'   to be passed to \code{\link{compare_models}}.  The name of any object
+#'   of class \code{"chandwich"} passed via ... must not match any argument of
+#'   \code{\link{compare_models}} or any argument of
+#'   \code{\link[stats]{optim}}.
+#' @details For details the adjusted likelihood ratio test see
+#' \code{\link{compare_models}} and Chandler and Bate (2007).
+#'
+#'   The objects of class \code{"chandwich"} need not be provided in nested
+#'   order: they will be ordered inside \code{anova.chandwich} based on the
+#'   values of \code{\link{attr(., "p_current")}}.
+#' @return An object of class \code{"anova"} inheriting from class
+#'  \code{"data.frame"}, with four columns:
+#'     \item{Model.Df}{The number of parameters in the model}
+#'     \item{Df}{The decrease in the number of parameter compared the model
+#'       in the previous row}
+#'     \item{ALRTS}{The adjusted likelihood ratio test statistic}
+#'     \item{Pr(>ALRTS)}{The p-value associated with the test that the
+#'       model is a valid simplication of the model in the previous row.}
+#'  The row names are the names of the model objects.
+#' @seealso \code{\link{compare_models}} for an adjusted likelihood ratio test
+#'   of two models.
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelihood function.
+#' @seealso \code{\link{conf_intervals}} for confidence intervals for
+#'   individual parameters.
+#' @seealso \code{\link{conf_region}} for a confidence region for
+#'   pairs of parameters.
+#' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
+#'   data using the independence loglikelihood. \emph{Biometrika},
+#'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
+#' @examples
+#' # -------------------------- GEV model, owtemps data -----------------------
+#' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
+#'
+#' gev_loglik <- function(pars, data) {
+#'   o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
+#'   w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
+#'   if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
+#'   o_data <- data[, "Oxford"]
+#'   w_data <- data[, "Worthing"]
+#'   check <- 1 + o_pars[3] * (o_data - o_pars[1]) / o_pars[2]
+#'   if (any(check <= 0)) return(-Inf)
+#'   check <- 1 + w_pars[3] * (w_data - w_pars[1]) / w_pars[2]
+#'   if (any(check <= 0)) return(-Inf)
+#'   o_loglik <- log_gev(o_data, o_pars[1], o_pars[2], o_pars[3])
+#'   w_loglik <- log_gev(w_data, w_pars[1], w_pars[2], w_pars[3])
+#'   return(o_loglik + w_loglik)
+#' }
+#'
+#' # Initial estimates (method of moments for the Gumbel case)
+#' sigma <- as.numeric(sqrt(6 * diag(var(owtemps))) / pi)
+#' mu <- as.numeric(colMeans(owtemps) - 0.57722 * sigma)
+#' init <- c(mean(mu), -diff(mu) / 2, mean(sigma), -diff(sigma) / 2, 0, 0)
+#'
+#' # Log-likelihood adjustment of the full model
+#' par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
+#' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
+#'          par_names = par_names)
+#'
+#' # Log-likelihood adjustment of some smaller models: xi[1] = 0 etc
+#'
+#' medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
+#' small <- adjust_loglik(larger = medium, fixed_pars = c("sigma[1]", "xi[1]"))
+#'
+#' anova(large, medium, small)
+#' @export
+anova.chandwich <- function (object, object2, ...) {
+  if (missing(object)) {
+    stop("model one must be specified")
+  }
+  if (missing(object2)) {
+    stop("model two must be specified")
+  }
+  # Extract the names of object and object2
+  model1 <- deparse(substitute(object))
+  model2 <- deparse(substitute(object2))
+  # Look for further models supplied via ...
+  dots <- as.list(substitute(list(...)))[-1]
+  user_args <- list(...)
+  user_args <- c(user_args, list(bullshit = TRUE))
+  # Extract the arguments intended for compare_models() or stats::optim()
+  which_c <- which(names(user_args) %in% methods::formalArgs(compare_models))
+  which_o <- which(names(user_args) %in% methods::formalArgs(stats::optim))
+  # Put these arguments in a list to send to compare_models()
+  for_compare_models <- c(user_args[which_c], user_args[which_o])
+  # Remove these arguments (if any) from dots to leave only models
+  if (length(which_c) > 0 || length(which_o) > 0) {
+    dots <- dots[-c(which_c, which_o)]
+  }
+  # Extract the name(s) of the extra model object(s)
+  dots <- sapply(dots, function(x) deparse(x))
+  # If there are no such objects set dots to NULL
+  if (!length(dots)) {
+    dots <- NULL
+  }
+  # Put all the models together
+  models <- c(model1, model2, dots)
+  is.chandwich <- vapply(models, function(x) inherits(x, "chandwich"), NA)
+  check_chandwich <- function(x) {
+    inherits(get(x, envir = parent.frame()), "chandwich")
+  }
+  is_chand <- vapply(models, check_chandwich, NA)
+  if (any(!is_chand)) {
+    stop("The following are not 'chandwich' objects: ",
+         paste(models[!is_chand], collapse = ", "))
+  }
+  # Check for duplicate names
+  if (anyDuplicated(models)) {
+    stop("A model name has been supplied more than once")
+  }
+  # Order the models in order of the number of parameters
+  n_pars <- vapply(models, function(x) attr(get(x, envir = parent.frame()),
+                                            "p_current"), 0)
+  # Check for models with the same number of parameters
+  if (anyDuplicated(n_pars)) {
+    stop("At least two models have the same number of parameters")
+  }
+  m_order <- order(n_pars, decreasing = TRUE)
+  models <- models[m_order]
+  n_pars <- n_pars[m_order]
+  n_models <- length(models)
+  # Do the testing
+  alrts <- p_value <- numeric(n_models - 1)
+  for (i in 2:n_models) {
+    larger <- get(models[i - 1], envir = parent.frame())
+    smaller <- get(models[i], envir = parent.frame())
+    res <- do.call(compare_models, c(list(larger = larger, smaller = smaller),
+                                     for_compare_models))
+    alrts[i - 1] <- res$alrts
+    p_value[i - 1] <- res$p_value
+  }
+  df <- -diff(n_pars)
+  my_table <- data.frame(n_pars, c(NA, df), c(NA, alrts), c(NA, p_value))
+  dimnames(my_table) <- list(models, c("Model.Df", "Df", "ALRTS", "Pr(>ALRTS)"))
+  structure(my_table, heading = c("Analysis of (Adjusted) Deviance Table\n"),
+            class = c("anova", "data.frame"))
 }

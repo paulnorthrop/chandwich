@@ -11,10 +11,10 @@ compare_models(larger, smaller = NULL, approx = FALSE,
 }
 \arguments{
 \item{larger}{An object of class \code{"chandwich"} returned by
-\code{adjust_loglik}.  The larger of the two models.}
+\code{\link{adjust_loglik}}.  The larger of the two models.}
 
 \item{smaller}{An object of class \code{"chandwich"} returned by
-  \code{adjust_loglik}.  The smaller of the two models.
+  \code{\link{adjust_loglik}}.  The smaller of the two models.
 
   If \code{smaller} is supplied then the arguments \code{fixed_pars} and
   \code{fixed_at} described below are ignored.}
@@ -79,8 +79,8 @@ An object of class "compmod", a list with components
  \item{approx}{the argument \code{approx}.}
 }
 \description{
-Compares nested models using the adjusted likelihood ratio statistic (ALRS)
-described in Section 3.5 of
+Compares nested models using the adjusted likelihood ratio test statistic
+(ALRTS) described in Section 3.5 of
 \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
 The nesting must result from the simple constraint that a subset of the
 parameters of the larger model is held fixed.
