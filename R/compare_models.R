@@ -406,7 +406,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
 #'
 #'   The objects of class \code{"chandwich"} need not be provided in nested
 #'   order: they will be ordered inside \code{anova.chandwich} based on the
-#'   values of \code{\link{attr(., "p_current")}}.
+#'   values of \code{attr(., "p_current")}.
 #' @return An object of class \code{"anova"} inheriting from class
 #'  \code{"data.frame"}, with four columns:
 #'     \item{Model.Df}{The number of parameters in the model}

@@ -44,7 +44,7 @@ For details the adjusted likelihood ratio test see
 
   The objects of class \code{"chandwich"} need not be provided in nested
   order: they will be ordered inside \code{anova.chandwich} based on the
-  values of \code{\link{attr(., "p_current")}}.
+  values of \code{attr(., "p_current")}.
 }
 \examples{
 # -------------------------- GEV model, owtemps data -----------------------
