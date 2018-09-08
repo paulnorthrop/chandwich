@@ -12,7 +12,7 @@
 
 <meta name="author" content="Paul Northrop and Richard Chandler" />
 
-<meta name="date" content="2018-09-01" />
+<meta name="date" content="2018-09-08" />
 
 <title>Introducing chandwich: Chandler-Bate Loglikelihood Adjustment</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introducing chandwich: Chandler-Bate Loglikelihood Adjustment</h1>
 <h4 class="author"><em>Paul Northrop and Richard Chandler</em></h4>
-<h4 class="date"><em>2018-09-01</em></h4>
+<h4 class="date"><em>2018-09-08</em></h4>
 
 
 <div id="TOC">
@@ -256,15 +256,31 @@ gev_spectral &lt;-<span class="st"> </span><span class="kw">conf_region</span>(l
 <span class="co">#&gt; H0: &quot;xi[1]&quot; = 0 </span>
 <span class="co">#&gt; HA: unrestricted model </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; test statistic = 6.356, df = 1, p-value = 0.0117</span>
-<span class="kw">compare_models</span>(large, <span class="dt">fixed_pars =</span> <span class="st">&quot;xi[1]&quot;</span>, <span class="dt">approx =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; Model: gev_loglik </span>
-<span class="co">#&gt; H0: &quot;xi[1]&quot; = 0 </span>
-<span class="co">#&gt; HA: unrestricted model </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Using using approximation (18) of Chandler and Bate (2007): </span>
 <span class="co">#&gt; test statistic = 6.356, df = 1, p-value = 0.0117</span></code></pre></div>
 <p>In this case whether or not we use the approximate approach has a non-negligible effect on the <span class="math inline">\(p\)</span>-value but we would probably reject the null in either case.</p>
+<p><em>chandwich</em> also has an <code>anova</code> S3 method to compare nested models of class <code>&quot;chandwich&quot;</code>. We perform loglikelihood adjustment of the models in which Oxford and Worthing share common GEV scale and shape parameters (<code>small</code>) and share all GEV parameters (<code>tiny</code>). Then we perform pairwise comparisons of neighbouring nest models using <code>anova()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">small &lt;-<span class="st"> </span><span class="kw">adjust_loglik</span>(<span class="dt">larger =</span> large, <span class="dt">fixed_pars =</span> <span class="kw">c</span>(<span class="st">&quot;sigma[1]&quot;</span>, <span class="st">&quot;xi[1]&quot;</span>))
+tiny &lt;-<span class="st"> </span><span class="kw">adjust_loglik</span>(<span class="dt">larger =</span> large, <span class="dt">fixed_pars =</span> <span class="kw">c</span>(<span class="st">&quot;mu[1]&quot;</span>, <span class="st">&quot;sigma[1]&quot;</span>, <span class="st">&quot;xi[1]&quot;</span>))
+<span class="kw">anova</span>(large, medium, small, tiny)
+<span class="co">#&gt; Analysis of (Adjusted) Deviance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;        Model.Df Df  ALRTS Pr(&gt;ALRTS)    </span>
+<span class="co">#&gt; large         6                         </span>
+<span class="co">#&gt; medium        5  1  6.356    0.01170 *  </span>
+<span class="co">#&gt; small         4  1  4.251    0.03924 *  </span>
+<span class="co">#&gt; tiny          3  1 81.714    &lt; 2e-16 ***</span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="kw">anova</span>(large, medium, small, tiny, <span class="dt">approx =</span> <span class="ot">TRUE</span>)
+<span class="co">#&gt; Analysis of (Adjusted) Deviance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;        Model.Df Df   ALRTS Pr(&gt;ALRTS)    </span>
+<span class="co">#&gt; large         6                          </span>
+<span class="co">#&gt; medium        5  1   5.245    0.02200 *  </span>
+<span class="co">#&gt; small         4  1   4.184    0.04081 *  </span>
+<span class="co">#&gt; tiny          3  1 112.822    &lt; 2e-16 ***</span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
 </div>
 </div>
 <div id="misspecified-poisson-model" class="section level2">

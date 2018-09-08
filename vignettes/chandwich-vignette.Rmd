@@ -151,11 +151,18 @@ Alternatively, we can call `compare_models` directly without first creating `med
 
 ```{r}
 compare_models(large, fixed_pars = "xi[1]")
-compare_models(large, fixed_pars = "xi[1]", approx = TRUE)
 ```
 
 In this case whether or not we use the approximate approach has a non-negligible effect on the $p$-value but we would probably reject the null in either case.
 
+*chandwich* also has an `anova` S3 method to compare nested models of class `"chandwich"`.  We perform loglikelihood adjustment of the models in which Oxford and Worthing share common GEV scale and shape parameters (`small`) and share all GEV parameters (`tiny`).  Then we perform pairwise comparisons of neighbouring nest models using `anova()`.
+
+```{r}
+small <- adjust_loglik(larger = large, fixed_pars = c("sigma[1]", "xi[1]"))
+tiny <- adjust_loglik(larger = large, fixed_pars = c("mu[1]", "sigma[1]", "xi[1]"))
+anova(large, medium, small, tiny)
+anova(large, medium, small, tiny, approx = TRUE)
+```
 ## Misspecified Poisson model
 
 We repeat part of an example from Section 5.1 of the 
