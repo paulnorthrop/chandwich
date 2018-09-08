@@ -532,6 +532,3 @@ anova.chandwich <- function (object, object2, ...) {
   structure(my_table, heading = c("Analysis of (Adjusted) Deviance Table\n"),
             class = c("anova", "data.frame"))
 }
-
-# Just extract the unnamed objects and check that are "chandwich"
-# Pass all the named objects to compare_models()
