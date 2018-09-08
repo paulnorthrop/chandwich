@@ -79,6 +79,7 @@ large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 
 medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
 small <- adjust_loglik(larger = medium, fixed_pars = c("sigma[1]", "xi[1]"))
+smallest <- adjust_loglik(larger = small, fixed_pars = c("mu[1]", "sigma[1]", "xi[1]"))
 
 anova(large, medium, small)
 }

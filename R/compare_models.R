@@ -189,7 +189,9 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   # Setup and checks -----------------------------------------------------------
   #
   # The number of parameters in the larger model
-  p <- attr(larger, "p_current")
+  p_l <- attr(larger, "p_current")
+  # The number of parameters in the full model
+  p_full <- attr(larger, "p_full")
   # Extract the fixed parameters (if any) from the larger model
   l_fixed_pars <- attr(larger, "fixed_pars")
   l_fixed_at <- attr(larger, "fixed_at")
@@ -207,7 +209,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     #     attr(smaller, "fixed_pars") must have the same corresponding values
     #     in attr(larger, "fixed_at") and attr(smaller, "fixed_at")
     p_s <- attr(smaller, "p_current")
-    nest_1 <- p > p_s
+    nest_1 <- p_l > p_s
     fixed_pars <- attr(smaller, "fixed_pars")
     fixed_at <- attr(smaller, "fixed_at")
     s_fixed_pars <- fixed_pars
@@ -222,18 +224,22 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
       stop("smaller is not nested in larger: ",
            "parameter(s) fixed at different values")
     }
-    qq <- p - p_s
+    qq <- p_l - p_s
     s_mle <- attr(smaller, "MLE")
     l_mle <- attr(larger, "MLE")
-    pars <- numeric(p)
+    # To ensure that the parameter vectors passed to the models have the
+    # correct parameter values in the correct places first set up a
+    # parameter vector with length equal to the number of parameters in the
+    # full model, allocate values, and then prune if necessary
+    pars <- numeric(p_full)
     pars[fixed_pars] <- fixed_at
-    free_pars <- (1:p)[-fixed_pars]
+    free_pars <- (1:p_full)[-fixed_pars]
     pars[free_pars] <- s_mle
     if (!is.null(attr(larger, "fixed_pars"))) {
       pars <- pars[-attr(larger, "fixed_pars")]
     }
-    max_loglik_smaller <- do.call(larger, list(pars, type = type))
     if (approx) {
+      max_loglik_smaller <- do.call(larger, list(pars, type = type))
       HA <- attr(larger, "HA")
       R <- solve(-HA)
       # We want only the parameters that are fixed in smaller but not in larger
@@ -263,7 +269,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
       }
     }
   } else {
-    # If smaller is supplied and fixed_pars is numeric then infer the names
+    # If smaller is not supplied and fixed_pars is numeric then infer the names
     # of the fixed parameters, if these are available in larger
     if (!is.null(attr(larger, "full_par_names"))) {
       names(fixed_pars) <- attr(larger, "full_par_names")[fixed_pars]
@@ -308,15 +314,15 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     stop("smaller is not nested in larger: ",
          "parameter(s) fixed at different values")
   }
-  if (len_fixed_pars >= p) {
+  if (len_fixed_pars >= p_l) {
     stop("length(fixed_pars) must be smaller than attr(larger, ''MLE'')")
   }
   if (!(length(fixed_at) %in% c(1, len_fixed_pars))) {
     stop("the lengths of 'fixed_pars' and 'fixed_at' are not compatible")
   }
-  free_pars <- (1:p)[-fixed_pars]
+  free_pars <- (1:p_full)[-fixed_pars]
   p_s <- length(free_pars)
-  qq <- p - p_s
+  qq <- p_l - p_s
   #
   # Extract arguments to be passed to optim()
   optim_args <- list(...)
@@ -334,7 +340,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   # under the constraint that certain parameter(s) are fixed.
   # Function to minimise to find restricted MLE of adjusted loglikelihood
   neg_adj_loglik <- function(x) {
-    pars <- numeric(p)
+    pars <- numeric(p_full)
     pars[fixed_pars] <- fixed_at
     pars[free_pars] <- x
     if (!is.null(attr(larger, "fixed_pars"))) {
@@ -347,7 +353,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
   if (optim_args$method == "L-BFGS-B" || optim_args$method == "Brent") {
     big_finite_val <- 10 ^ 10
     neg_adj_loglik <- function(x) {
-      pars <- numeric(p)
+      pars <- numeric(p_full)
       pars[fixed_pars] <- fixed_at
       pars[free_pars] <- x
       if (!is.null(attr(larger, "fixed_pars"))) {
@@ -460,69 +466,60 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
 #'
 #' medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
 #' small <- adjust_loglik(larger = medium, fixed_pars = c("sigma[1]", "xi[1]"))
+#' tiny <- adjust_loglik(larger = small,
+#'                       fixed_pars = c("mu[1]", "sigma[1]", "xi[1]"))
 #'
-#' anova(large, medium, small)
+#' anova(large, medium, small, tiny)
 #' @export
 anova.chandwich <- function (object, object2, ...) {
   if (missing(object)) {
-    stop("model one must be specified")
+    stop("model one must be supplied, using object")
   }
   if (missing(object2)) {
-    stop("model two must be specified")
+    stop("model two must be supplied, using object2")
   }
   # Extract the names of object and object2
   model1 <- deparse(substitute(object))
   model2 <- deparse(substitute(object2))
-  # Look for further models supplied via ...
-  dots <- as.list(substitute(list(...)))[-1]
-  user_args <- list(...)
-  user_args <- c(user_args, list(bullshit = TRUE))
-  # Extract the arguments intended for compare_models() or stats::optim()
-  which_c <- which(names(user_args) %in% methods::formalArgs(compare_models))
-  which_o <- which(names(user_args) %in% methods::formalArgs(stats::optim))
-  # Put these arguments in a list to send to compare_models()
-  for_compare_models <- c(user_args[which_c], user_args[which_o])
-  # Remove these arguments (if any) from dots to leave only models
-  if (length(which_c) > 0 || length(which_o) > 0) {
-    dots <- dots[-c(which_c, which_o)]
-  }
-  # Extract the name(s) of the extra model object(s)
-  dots <- sapply(dots, function(x) deparse(x))
-  # If there are no such objects set dots to NULL
-  if (!length(dots)) {
-    dots <- NULL
-  }
-  # Put all the models together
-  models <- c(model1, model2, dots)
-  is.chandwich <- vapply(models, function(x) inherits(x, "chandwich"), NA)
-  check_chandwich <- function(x) {
-    inherits(get(x, envir = parent.frame()), "chandwich")
-  }
-  is_chand <- vapply(models, check_chandwich, NA)
+  # Extract arguments supplied in ... and determine which are named
+  dotargs <- list(...)
+  named <- if (is.null(names(dotargs)))
+    rep_len(FALSE, length(dotargs))
+  else (names(dotargs) != "")
+  which_named <- which(named)
+  which_not_named <- which(!named)
+  # Named objects are intended for compare_models()
+  for_compare_models <- dotargs[named]
+  # Create list of model objects:  unnamed arguments may be model objects
+  model_list <- c(list(object, object2), dotargs[!named])
+  # Check for objects that do not have class "chandwich"
+  is_chand <- vapply(model_list, function(x) inherits(x, "chandwich"), NA)
   if (any(!is_chand)) {
     stop("The following are not 'chandwich' objects: ",
-         paste(models[!is_chand], collapse = ", "))
+         paste(names(model_list)[!is_chand], collapse = ", "))
   }
+  extra_names <- as.list(substitute(list(...)))[-1][which_not_named]
+  extra_names <- sapply(extra_names, function(x) deparse(x))
+  model_names <- c(model1, model2, extra_names)
   # Check for duplicate names
-  if (anyDuplicated(models)) {
+  if (anyDuplicated(model_names)) {
     stop("A model name has been supplied more than once")
   }
   # Order the models in order of the number of parameters
-  n_pars <- vapply(models, function(x) attr(get(x, envir = parent.frame()),
-                                            "p_current"), 0)
+  n_pars <- vapply(model_list, function(x) attr(x, "p_current"), 0)
   # Check for models with the same number of parameters
   if (anyDuplicated(n_pars)) {
     stop("At least two models have the same number of parameters")
   }
   m_order <- order(n_pars, decreasing = TRUE)
-  models <- models[m_order]
+  model_list <- model_list[m_order]
   n_pars <- n_pars[m_order]
-  n_models <- length(models)
+  n_models <- length(model_list)
   # Do the testing
   alrts <- p_value <- numeric(n_models - 1)
   for (i in 2:n_models) {
-    larger <- get(models[i - 1], envir = parent.frame())
-    smaller <- get(models[i], envir = parent.frame())
+    larger <- model_list[[i - 1]]
+    smaller <- model_list[[i]]
     res <- do.call(compare_models, c(list(larger = larger, smaller = smaller),
                                      for_compare_models))
     alrts[i - 1] <- res$alrts
@@ -530,7 +527,11 @@ anova.chandwich <- function (object, object2, ...) {
   }
   df <- -diff(n_pars)
   my_table <- data.frame(n_pars, c(NA, df), c(NA, alrts), c(NA, p_value))
-  dimnames(my_table) <- list(models, c("Model.Df", "Df", "ALRTS", "Pr(>ALRTS)"))
+  dimnames(my_table) <- list(model_names,
+                             c("Model.Df", "Df", "ALRTS", "Pr(>ALRTS)"))
   structure(my_table, heading = c("Analysis of (Adjusted) Deviance Table\n"),
             class = c("anova", "data.frame"))
 }
+
+# Just extract the unnamed objects and check that are "chandwich"
+# Pass all the named objects to compare_models()

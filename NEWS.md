@@ -8,6 +8,8 @@
 
 ## Bug fixes and minor improvements
 
+* A bug in `compare_models()` has been fixed.  The bug resulted an error in cases where the argument `larger` corresponded to a simplication of the full model in which element i of the parameter was fixed but some element i+n, for n > 0, was not fixed.
+
 * The documentation of the argument `approx` to `compare_models()` has been edited to make it clearer that if `smaller` is not supplied then `approx = FALSE` will be used regardless of any value supplied for `approx` in the call to `compare_models()`.
 
 * If parameter names are supplied to `adjust_loglik()` (via `par_names`) but `fixed_pars` is numeric then the names of the parameters in `fixed_pars` are now also inferred in the case where a larger model is not supplied via `larger`.  This means that the output from `compare_models()` will now use the parameter name, rather than the parameter number.
