@@ -22,6 +22,7 @@ plot(rat_res, type = 1:4, legend_pos = "bottom", lwd = 2, col = 1:4,
 # 95% confidence intervals, unadjusted and vertically adjusted
 conf_intervals(rat_res, type = "none")
 conf_intervals(rat_res)
+confint(rat_res)
 
 ## ------------------------------------------------------------------------
 gev_loglik <- function(pars, data) {
@@ -52,7 +53,7 @@ round(attr(large, "MLE"), 4)
 round(attr(large, "SE"), 4)
 round(attr(large, "adjSE"), 4)
 
-## ------------------------------------------------------------------------
+## --------------------------------------------------------------------------------
 # 95% confidence intervals, vertically adjusted
 conf_intervals(large)
 
