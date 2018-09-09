@@ -281,6 +281,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
   eval_order2 <- c(rev(1:(mle_idx2 - 1)), mle_idx2:(2 * num[2] + 1))
   start_array <- array(dim = c(length(theta_start), leng1, leng2))
   start_array[, mle_idx1, mle_idx2] <- theta_start
+  message("Waiting for profiling to be done...")
+  utils::flush.console()
   for (i in eval_order1) {
     i_nbr <- max(i - 1, 1):(i + 1)
     i_nbr <- i_nbr[i_nbr <= leng1]
@@ -563,6 +565,8 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
   prof_loglik_vals[num + 1, ] <- rep(max_loglik, n_which_pars)
   # 100% confidence interval: where the profile loglikelihood lies above cutoff
   cutoff <- max_loglik - stats::qchisq(conf  / 100, 1) / 2
+  message("Waiting for profiling to be done...")
+  utils::flush.console()
   for (i in 1:length(which_pars)) {
     # MLE not including parameter being profiled and fixed parameters
     sol <- res_mle[-c(which_pars[i], fixed_pars)]
@@ -868,8 +872,6 @@ confint.chandwich <- function (object, parm, level = 0.95,
     stop("use only with \"chandwich\" objects")
   }
   type <- match.arg(type)
-  message("Waiting for profiling to be done...")
-  utils::flush.console()
   if (missing(parm)) {
     temp <- conf_intervals(object = object, conf = 100 * level, type = type,
                            ...)
