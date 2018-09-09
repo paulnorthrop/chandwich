@@ -241,8 +241,8 @@ print.chandwich <- function(x, ...) {
   if (!inherits(x, "chandwich")) {
     stop("use only with \"chandwich\" objects")
   }
-  cat("\n", "Call:", paste(deparse(attr(x, "call"))), "\n")
-  cat("\n", "Attributes:", "\n")
+  cat("\n", "Call:", paste(deparse(attr(x, "call"))), "\n", "\n")
+  cat("Attributes, access using attr(., \"name\") or attributes(.)$name", "\n")
   print(ls(attributes(x)))
   return(invisible(x))
 }
