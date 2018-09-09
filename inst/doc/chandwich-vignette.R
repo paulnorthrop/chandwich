@@ -53,11 +53,11 @@ round(attr(large, "MLE"), 4)
 round(attr(large, "SE"), 4)
 round(attr(large, "adjSE"), 4)
 
-## --------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 # 95% confidence intervals, vertically adjusted
 conf_intervals(large)
 
-## ---- fig.align='center', fig.width=7, fig.height=7------------------------------
+## ---- fig.align='center', fig.width=7, fig.height=7----------------------
 which_pars <- c("sigma[0]", "sigma[1]")
 gev_none <- conf_region(large, which_pars = which_pars, type = "none")
 gev_vertical <- conf_region(large, which_pars = which_pars)
@@ -66,28 +66,28 @@ gev_spectral <- conf_region(large, which_pars = which_pars, type = "spectral")
 plot(gev_none, gev_cholesky, gev_vertical, gev_spectral, lwd = 2,
      xlim = c(3.0, 4.5), ylim = c(-0.1, 1.25))
 
-## --------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 medium <- adjust_loglik(larger = large, fixed_pars = "xi[1]")
 compare_models(large, medium)
 compare_models(large, medium, approx = TRUE)
 
-## --------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 compare_models(large, fixed_pars = "xi[1]")
 
-## --------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 small <- adjust_loglik(larger = large, fixed_pars = c("sigma[1]", "xi[1]"))
 tiny <- adjust_loglik(larger = large, fixed_pars = c("mu[1]", "sigma[1]", "xi[1]"))
 anova(large, medium, small, tiny)
 anova(large, medium, small, tiny, approx = TRUE)
 
-## --------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 set.seed(123)
 x <- rnorm(250)
 y <- rnbinom(250, mu = exp(1 + x), size = 1)
 fm_pois <- glm(y ~ x + I(x^2), family = poisson)
 round(summary(fm_pois)$coefficients, 3)
 
-## --------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 pois_glm_loglik <- function(pars, y, x) {
   log_mu <- pars[1] + pars[2] * x + pars[3] * x ^ 2
   return(dpois(y, lambda = exp(log_mu), log = TRUE))
@@ -96,17 +96,17 @@ pars <- c("alpha", "beta", "gamma")
 pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars)
 summary(pois_quad)
 
-## --------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 # 95% confidence intervals, vertically adjusted
 conf_intervals(pois_quad)
 
-## ---- fig.align='center', fig.width=7, fig.height=5------------------------------
+## ---- fig.align='center', fig.width=7, fig.height=5----------------------
 pois_lin <- adjust_loglik(larger = pois_quad, fixed_pars = "gamma")
 pois_vertical <- conf_region(pois_lin)
 pois_none <- conf_region(pois_lin, type = "none")
 plot(pois_none, pois_vertical, conf = c(50, 75, 95, 99), col = 2:1, lwd = 2, lty = 1)
 
-## --------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 compare_models(pois_quad, pois_lin)
 compare_models(pois_quad, pois_lin, approx = TRUE)
 
