@@ -21,16 +21,16 @@
   The default is \code{complete = FALSE}, which is in sync with
   \code{\link{coef.chandwich}}.}
 
-\item{...}{Additional optional arguments. At present no optional
-arguments are used.}
-
-\item{A}{logical scalar.  If \code{adjusted = TRUE} then the
+\item{adjusted}{A logical scalar.  If \code{adjusted = TRUE} then the
 variance-covariance matrix is estimated using a sandwich estimator.
 Otherwise, the inverse of the observed information at the MLE is used.}
+
+\item{...}{Additional optional arguments. At present no optional
+arguments are used.}
 }
 \value{
-The argument \code{x}, invisibly, as for all \code{\link{print}}
-  methods.
+A numeric matrix.  The dimensions wil be named if names were
+  provided in the call to \code{\link{adjust_loglik}}.
 }
 \description{
 \code{vcov} method for class "chandwich".

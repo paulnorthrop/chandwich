@@ -19,8 +19,9 @@
 #' @details The full vector of estimates is taken from
 #' \code{attributes(object)$res_MLE} and the reduced vector from
 #' \code{attributes(object)$MLE}.
-#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
-#'   methods.
+#' @return A numeric vector of estimated parameters, which will be
+#'  named if names were provided in the call to
+#'  \code{\link{adjust_loglik}}.
 #' @seealso \code{\link{vcov.chandwich}}: \code{vcov} method for
 #'   class "chandwich".
 #' @seealso \code{\link{summary.chandwich}}: \code{summary} method for
@@ -57,7 +58,7 @@ coef.chandwich <- function(object, complete = FALSE, ...) {
 #'
 #'   The default is \code{complete = FALSE}, which is in sync with
 #'   \code{\link{coef.chandwich}}.
-#' @param  A logical scalar.  If \code{adjusted = TRUE} then the
+#' @param adjusted A logical scalar.  If \code{adjusted = TRUE} then the
 #'   variance-covariance matrix is estimated using a sandwich estimator.
 #'   Otherwise, the inverse of the observed information at the MLE is used.
 #' @param ... Additional optional arguments. At present no optional
@@ -67,8 +68,8 @@ coef.chandwich <- function(object, complete = FALSE, ...) {
 #' \code{attributes(object)$VC} for \code{adjusted = FALSE}.
 #' These return the estimate variance-covariance matrix of only the
 #' free parameters.
-#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
-#'   methods.
+#' @return A numeric matrix.  The dimensions wil be named if names were
+#'   provided in the call to \code{\link{adjust_loglik}}.
 #' @seealso \code{\link{coef.chandwich}}: \code{coef} method for
 #'   class "chandwich".
 #' @seealso \code{\link{summary.chandwich}}: \code{summary} method for

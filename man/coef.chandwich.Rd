@@ -23,8 +23,9 @@
 arguments are used.}
 }
 \value{
-The argument \code{x}, invisibly, as for all \code{\link{print}}
-  methods.
+A numeric vector of estimated parameters, which will be
+ named if names were provided in the call to
+ \code{\link{adjust_loglik}}.
 }
 \description{
 \code{coef} method for class "chandwich".
