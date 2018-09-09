@@ -35,7 +35,27 @@ test_that("coef.chandwich: complete = TRUE", {
 })
 test_that("coef.chandwich: complete = FALSE", {
   testthat::expect_identical(attributes(pois_lin)$MLE,
-                         coef(pois_lin, complete = FALSE))
+                         coef(pois_lin))
 })
 
+# ==================================== vcov ===================================
+
+context("vcov.chandwich")
+
+test_that("vcov.chandwich: adjusted = TRUE", {
+  testthat::expect_identical(attributes(pois_lin)$adjVC,
+                             vcov(pois_lin))
+})
+test_that("vcov.chandwich: adjusted = FALSE", {
+  testthat::expect_identical(attributes(pois_lin)$VC,
+                             vcov(pois_lin, adjusted = FALSE))
+})
+test_that("vcov.chandwich: complete = TRUE, column", {
+  testthat::expect_equivalent(vcov(pois_lin, complete = TRUE)[, "gamma"],
+                              as.numeric(rep(NA, 3)))
+})
+test_that("vcov.chandwich: complete = TRUE, row", {
+  testthat::expect_equivalent(vcov(pois_lin, complete = TRUE)["gamma", ],
+                              as.numeric(rep(NA, 3)))
+})
 

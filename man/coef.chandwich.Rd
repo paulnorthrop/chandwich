@@ -4,17 +4,20 @@
 \alias{coef.chandwich}
 \title{Extract model coefficients method for objects of class "chandwich"}
 \usage{
-\method{coef}{chandwich}(object, complete = TRUE, ...)
+\method{coef}{chandwich}(object, complete = FALSE, ...)
 }
 \arguments{
 \item{object}{an object of class "chandwich", a result of a call to
 \code{\link{adjust_loglik}}.}
 
 \item{complete}{A logical scalar.  If \code{complete = TRUE} then the
-full vector of parameter estimates is returned, including any fixed
-using \code{fixed_pars} and \code{fixed_at} in the call to
-\code{\link{adjust_loglik}}.  Otherwise, only the vector of estimates
-of free parameters is returned.}
+  full vector of parameter estimates is returned, including any fixed
+  using \code{fixed_pars} and \code{fixed_at} in the call to
+  \code{\link{adjust_loglik}}.  Otherwise, only the vector of estimates
+  of free parameters is returned.
+
+  The default is \code{complete = FALSE}, which is in sync with
+  \code{\link{vcov.chandwich}}.}
 
 \item{...}{Additional optional arguments. At present no optional
 arguments are used.}
@@ -27,11 +30,14 @@ The argument \code{x}, invisibly, as for all \code{\link{print}}
 \code{coef} method for class "chandwich".
 }
 \details{
-The full vector of estimate is taken from
+The full vector of estimates is taken from
 \code{attributes(object)$res_MLE} and the reduced vector from
 \code{attributes(object)$MLE}.
 }
 \seealso{
+\code{\link{vcov.chandwich}}: \code{vcov} method for
+  class "chandwich".
+
 \code{\link{summary.chandwich}}: \code{summary} method for
   class "chandwich".
 

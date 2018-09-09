@@ -8,9 +8,13 @@
 
 * A confint S3 method for class "chandwich" has been added.  This is based on a fairly trivial call to `conf_inetrvals()`.
 
+* S3 methods `coef` and `vcov` for class "chandwich" have been added.
+
 ## Bug fixes and minor improvements
 
 * A bug in `compare_models()` has been fixed.  The bug resulted an error in cases where the argument `larger` corresponded to a simplication of the full model in which element i of the parameter was fixed but some element i+n, for n > 0, was not fixed.
+
+* Estimated unadjusted (VC) and adjusted (adjVC) variance-covariance matrices of the free model parameters are now available in the object returned by `adjust_loglik()`.
 
 * The documentation of the argument `approx` to `compare_models()` has been edited to make it clearer that if `smaller` is not supplied then `approx = FALSE` will be used regardless of any value supplied for `approx` in the call to `compare_models()`.
 
