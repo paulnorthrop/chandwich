@@ -1,4 +1,4 @@
-context("plot_chandwich")
+context("plot.chandwich")
 
 # ------------------------- Binomial model, rats data ----------------------
 

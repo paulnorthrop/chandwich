@@ -1,4 +1,4 @@
-context("summary_chandwich")
+context("summary.chandwich")
 
 # ------------------------- Binomial model, rats data ----------------------
 
