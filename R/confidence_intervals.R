@@ -864,6 +864,9 @@ profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
 confint.chandwich <- function (object, parm, level = 0.95,
                                type = c("vertical", "cholesky", "spectral",
                                         "none"), ...) {
+  if (!inherits(object, "chandwich")) {
+    stop("use only with \"chandwich\" objects")
+  }
   type <- match.arg(type)
   message("Waiting for profiling to be done...")
   utils::flush.console()
