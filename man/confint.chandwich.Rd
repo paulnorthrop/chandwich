@@ -12,7 +12,10 @@
 \code{\link{adjust_loglik}}.}
 
 \item{parm}{A vector specifying the (unfixed) parameters for which
-  confidence intervals are required.  Can be either a numeric vector,
+  confidence intervals are required.
+  If missing, all parameters are included.
+
+  Can be either a numeric vector,
   specifying indices of the components of the \strong{full} parameter
   vector, or a character vector of parameter names, which must be a subset
   of those supplied in \code{par_names} in the call to
@@ -21,9 +24,7 @@
   \code{which_pars} must not have any parameters in common with
   \code{attr(object, "fixed_pars")}.  \code{which_pars} must not contain
   all of the unfixed parameters, i.e. there is no point in profiling over
-  all the unfixed parameters.
-
-  If missing, all parameters are included.}
+  all the unfixed parameters.}
 
 \item{level}{The confidence level required.}
 

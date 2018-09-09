@@ -37,7 +37,8 @@
 #' @param mult A numeric vector of length 1 or the same length as
 #'   \code{which_pars}.
 #'   The search for the profile loglikelihood-based confidence limits is
-#'   conducted over the corresponding symmetric confidence intervals, extended
+#'   conducted over the corresponding symmetric confidence intervals
+#'   (based on approximate normal theory), extended
 #'   by a factor of the corresponding component of \code{mult}.
 #' @param num A numeric vector of length 1 or 2.  The numbers of values at which
 #'   to evaluate the profile loglikelihood either side of the MLE.
@@ -345,7 +346,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' @param mult A numeric vector of length 1 or the same length as
 #'   \code{which_pars}.
 #'   The search for the profile loglikelihood-based confidence limits is
-#'   conducted over the corresponding symmetric confidence intervals, extended
+#'   conducted over the corresponding symmetric confidence intervals
+#'   (based on approximate normal theory), extended
 #'   by a factor of the corresponding component of \code{mult}.
 #' @param num A numeric scalar.  The number of values at which to evaluate the
 #'   profile loglikelihood either side of the MLE.
@@ -797,7 +799,10 @@ profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
 #' @param object An object of class \code{"chandwich"}, returned by
 #'   \code{\link{adjust_loglik}}.
 #' @param parm A vector specifying the (unfixed) parameters for which
-#'   confidence intervals are required.  Can be either a numeric vector,
+#'   confidence intervals are required.
+#'   If missing, all parameters are included.
+#'
+#'   Can be either a numeric vector,
 #'   specifying indices of the components of the \strong{full} parameter
 #'   vector, or a character vector of parameter names, which must be a subset
 #'   of those supplied in \code{par_names} in the call to
@@ -807,8 +812,6 @@ profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
 #'   \code{attr(object, "fixed_pars")}.  \code{which_pars} must not contain
 #'   all of the unfixed parameters, i.e. there is no point in profiling over
 #'   all the unfixed parameters.
-#'
-#'   If missing, all parameters are included.
 #' @param level The confidence level required.
 #' @param type A character scalar.  The argument \code{type} to the function
 #'   returned by \code{\link{adjust_loglik}}, that is, the type of adjustment

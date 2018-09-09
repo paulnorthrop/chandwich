@@ -44,7 +44,8 @@ the largest confidence region of interest.}
 \item{mult}{A numeric vector of length 1 or the same length as
 \code{which_pars}.
 The search for the profile loglikelihood-based confidence limits is
-conducted over the corresponding symmetric confidence intervals, extended
+conducted over the corresponding symmetric confidence intervals
+(based on approximate normal theory), extended
 by a factor of the corresponding component of \code{mult}.}
 
 \item{num}{A numeric vector of length 1 or 2.  The numbers of values at which
