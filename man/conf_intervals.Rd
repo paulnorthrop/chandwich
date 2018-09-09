@@ -22,7 +22,9 @@ conf_intervals(object, which_pars = NULL, init = NULL, conf = 95,
   \code{which_pars} must not have any parameters in common with
   \code{attr(object, "fixed_pars")}.  \code{which_pars} must not contain
   all of the unfixed parameters, i.e. there is no point in profiling over
-  all the unfixed parameters.}
+  all the unfixed parameters.
+
+  If missing, all parameters are included.}
 
 \item{init}{A numeric vector of initial estimates of the values of the
 parameters that are not fixed and are not in \code{which_pars}.

@@ -1,4 +1,4 @@
-context("conf_intervals and profile_loglik")
+context("conf_intervals and profile_loglik and confint S3 method")
 
 # -------------------------- GEV model, owtemps data -----------------------
 # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
@@ -47,6 +47,14 @@ test_that("which_par = xi[1], gives no error", {
 check_error <- try(plot(large_v, which_par = 1), silent = TRUE)
 test_that("Inappropriate which_par gives an error", {
   testthat::expect_identical(class(check_error), "try-error")
+})
+
+# confint S3 method
+
+S3a <- confint(large)
+S3b <- confint(large, parm = 1:6)
+test_that("confint S3: parm works", {
+  testthat::expect_equal(S3a, S3b)
 })
 
 # Check a restricted model, i.e. one with non-NULL fixed_pars

@@ -4,7 +4,9 @@
 
 * `adjust_loglik` has an additional arguments `mle`, `H` and  `V` that allow the user the option to supply the MLE, the Hessian of the independence loglikelihood (H) and the variance of the vector of cluster-specific contributions to the score vector (V), each evaluated at the MLE, rather than estimating these within `adjust_loglik`.
 
-* An S3 method for class "chandwich" has been added.  This compares two or more nested models using adjusted likelihood ratio tests of successive pairs of models, using `compare_models()`.
+* An anova S3 method for class "chandwich" has been added.  This compares two or more nested models using adjusted likelihood ratio tests of successive pairs of models, using `compare_models()`.
+
+* A confint S3 method for class "chandwich" has been added.  This is based on a fairly trivial call to `conf_inetrvals()`.
 
 ## Bug fixes and minor improvements
 

@@ -1,4 +1,4 @@
-context("compare_models")
+context("compare_models and anova S3 method")
 
 # GEV independence loglikelihood for the Oxford-Worthing annual maximum
 # temperature dataset owtemps
