@@ -28,9 +28,9 @@ coef.chandwich <- function(object, complete = TRUE, ...) {
     stop("use only with \"chandwich\" objects")
   }
   if (complete) {
-    cf <- attributes(small)$res_MLE
+    cf <- attributes(object)$res_MLE
   } else {
-    cf <- attributes(small)$MLE
+    cf <- attributes(object)$MLE
   }
   return(cf)
 }
