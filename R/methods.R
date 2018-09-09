@@ -97,3 +97,39 @@ vcov.chandwich <- function(object, complete = FALSE, adjusted = TRUE, ...) {
   }
   return(vc)
 }
+
+# ============================= logLik.chandwich ==============================
+
+#' Extract log-likelihood for objects of class "chandwich"
+#'
+#' \code{logLik} method for class "chandwich".
+#'
+#' @param object an object of class "chandwich", a result of a call to
+#'   \code{\link{adjust_loglik}}.
+#' @param ... Additional optional arguments. At present no optional
+#'   arguments are used.
+#' @details The value of the maximised (independence) loglikelihood
+#' is extracted from \code{attr(object, "max_loglik")}.  It is also equal
+#' to \code{object(attr(object, "MLE"))}.
+#' @return An object of class \code{"logLik"}: a numeric scalar with
+#' value equal to the maximised (independence) loglikelihood, that is,
+#' the value of the independence loglikelihood at the MLE, and the
+#' attribute \code{"df"}, which gives the number of free parameters estimated.
+#' @seealso \code{\link{coef.chandwich}}: \code{coef} method for
+#'   class "chandwich".
+#' @seealso \code{\link{vcov.chandwich}}: \code{vcov} method for
+#'   class "chandwich".
+#' @seealso \code{\link{summary.chandwich}}: \code{summary} method for
+#'   class "chandwich".
+#' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
+#'   loglikelihood.
+#' @export
+logLik.chandwich <- function(object, ...) {
+  if (!inherits(object, "chandwich")) {
+    stop("use only with \"chandwich\" objects")
+  }
+  val <- attr(object, "max_loglik")
+  attr(val, "df") <- attr(object, "p_current")
+  class(val) <- "logLik"
+  return(val)
+}

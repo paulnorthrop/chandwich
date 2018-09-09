@@ -59,3 +59,22 @@ test_that("vcov.chandwich: complete = TRUE, row", {
                               as.numeric(rep(NA, 3)))
 })
 
+# =================================== logLik ==================================
+
+context("logLik.chandwich")
+
+test_that("logLik.chandwich: logLik and loglik at MLE agree", {
+  testthat::expect_identical(as.numeric(logLik(pois_lin)),
+                             pois_lin(attr(pois_lin, "MLE")))
+})
+test_that("logLik.chandwich: quadratic logLik > linear logLik", {
+  testthat::expect_gte(logLik(pois_quad), logLik(pois_lin))
+})
+test_that("logLik.chandwich: quadratic df", {
+  testthat::expect_equal(attr(logLik(pois_quad), "df"), 3)
+})
+test_that("logLik.chandwich: linear df", {
+  testthat::expect_equal(attr(logLik(pois_lin), "df"), 2)
+})
+
+

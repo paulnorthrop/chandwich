@@ -3,6 +3,7 @@
 S3method(anova,chandwich)
 S3method(coef,chandwich)
 S3method(confint,chandwich)
+S3method(logLik,chandwich)
 S3method(plot,chandwich)
 S3method(plot,confint)
 S3method(plot,confreg)
