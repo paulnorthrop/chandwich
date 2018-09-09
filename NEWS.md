@@ -1,4 +1,4 @@
-# chandwich 1.0.0.9000
+# chandwich 1.1.0
 
 ## New features
 
@@ -8,7 +8,7 @@
 
 * A confint S3 method for class "chandwich" has been added.  This is based on a fairly trivial call to `conf_inetrvals()`.
 
-* S3 methods `coef` and `vcov` for class "chandwich" have been added.
+* S3 methods `coef`, `vcov` and `logLik` for class "chandwich" have been added.
 
 ## Bug fixes and minor improvements
 
