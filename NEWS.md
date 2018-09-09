@@ -6,7 +6,7 @@
 
 * An anova S3 method for class "chandwich" has been added.  This compares two or more nested models using adjusted likelihood ratio tests of successive pairs of models, using `compare_models()`.
 
-* A confint S3 method for class "chandwich" has been added.  This is based on a fairly trivial call to `conf_inetrvals()`.
+* A confint S3 method for class "chandwich" has been added.  This is based on a fairly trivial call to `conf_intervals()`.
 
 * S3 methods `coef`, `vcov` and `logLik` for class "chandwich" have been added.
 
