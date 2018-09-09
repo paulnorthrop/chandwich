@@ -29,7 +29,7 @@ Otherwise, the inverse of the observed information at the MLE is used.}
 arguments are used.}
 }
 \value{
-A numeric matrix.  The dimensions wil be named if names were
+A numeric matrix.  The dimensions will be named if names were
   provided in the call to \code{\link{adjust_loglik}}.
 }
 \description{

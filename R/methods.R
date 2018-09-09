@@ -68,7 +68,7 @@ coef.chandwich <- function(object, complete = FALSE, ...) {
 #' \code{attributes(object)$VC} for \code{adjusted = FALSE}.
 #' These return the estimate variance-covariance matrix of only the
 #' free parameters.
-#' @return A numeric matrix.  The dimensions wil be named if names were
+#' @return A numeric matrix.  The dimensions will be named if names were
 #'   provided in the call to \code{\link{adjust_loglik}}.
 #' @seealso \code{\link{coef.chandwich}}: \code{coef} method for
 #'   class "chandwich".
