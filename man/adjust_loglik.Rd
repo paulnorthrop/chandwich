@@ -150,7 +150,10 @@ A function of class \code{"chandwich"} to evaluate an adjusted
     of free parameters under the current model (\code{mle}) and all
     parameters in the full model, including any parameters with fixed
     values (\code{res_MLE}).}
-  \item{SE, adjSE}{The unadjusted and adjusted standard errors, respectively.}
+  \item{SE, adjSE}{The unadjusted and adjusted estimated standard errors,
+    of the free parameters, respectively.}
+  \item{VC, adjVC}{The unadjusted and adjusted estimated
+    variance-covariance matrix of the free parameters, respectively.}
   \item{HI, HA}{The Hessians of the independence and adjusted loglikelihood,
     respectively.}
   \item{C_cholesky, C_spectral}{The matrix C in equation (14) of Chandler and

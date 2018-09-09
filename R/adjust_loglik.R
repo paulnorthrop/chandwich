@@ -146,7 +146,10 @@
 #'     of free parameters under the current model (\code{mle}) and all
 #'     parameters in the full model, including any parameters with fixed
 #'     values (\code{res_MLE}).}
-#'   \item{SE, adjSE}{The unadjusted and adjusted standard errors, respectively.}
+#'   \item{SE, adjSE}{The unadjusted and adjusted estimated standard errors,
+#'     of the free parameters, respectively.}
+#'   \item{VC, adjVC}{The unadjusted and adjusted estimated
+#'     variance-covariance matrix of the free parameters, respectively.}
 #'   \item{HI, HA}{The Hessians of the independence and adjusted loglikelihood,
 #'     respectively.}
 #'   \item{C_cholesky, C_spectral}{The matrix C in equation (14) of Chandler and
@@ -652,6 +655,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   # [chol2inv(chol(X)) inverts X via its Cholesky decomposition]
   chol_minus_HI <- chol(-HI)
   HIinv <- -chol2inv(chol_minus_HI)
+  VC <- -HIinv
   SE <- sqrt(diag(-HIinv))
   # Adjusted Hessian and standard errors
   if (is.null(V)) {
@@ -662,6 +666,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   }
   chol_minus_HAinv <- chol(-HAinv)
   HA <- -chol2inv(chol_minus_HAinv)
+  adjVC <- -HAinv
   adjSE <- sqrt(diag(-HAinv))
   # The following alternatives give the same answer ...
   # Estimate covariance of score using equation (7) of Chandler and Bate (2007)
@@ -769,8 +774,12 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   attr(adjust_loglik_fn, "MLE") <- mle
   names(SE) <- par_names
   names(adjSE) <- par_names
+  dimnames(VC) <- list(par_names, par_names)
+  dimnames(adjVC) <- list(par_names, par_names)
   attr(adjust_loglik_fn, "SE") <- SE
   attr(adjust_loglik_fn, "adjSE") <- adjSE
+  attr(adjust_loglik_fn, "VC") <- VC
+  attr(adjust_loglik_fn, "adjVC") <- adjVC
   dimnames(HI) <- list(par_names, par_names)
   dimnames(HA) <- list(par_names, par_names)
   dimnames(C_cholesky) <- list(par_names, par_names)
