@@ -41,10 +41,12 @@ Chandler, R. E. and Bate, S. (2007). Inference for clustered
   loglikelihood.
 
 \code{\link{compare_models}} to compare nested models using an
-  adjusted loglikelihood ratio test.
+  adjusted loglikelihood ratio test.  See also the S3 method
+  \code{\link{anova.chandwich}}.
 
 \code{\link{conf_intervals}} to calculate confidence intervals
-  for individual model parameters.
+  for individual model parameters.  See also the S3 method
+  \code{\link{confint.chandwich}}.
 
 \code{\link{conf_region}} to calculate a confidence region
   for a pair of model parameters.
