@@ -16,7 +16,8 @@ Description: Performs adjustments of a user-supplied independence loglikelihood
     misspecification.  Functions for profiling the adjusted loglikelihoods are 
     also provided, as are functions for calculating and plotting confidence 
     intervals, for single model parameters, and confidence regions, for pairs 
-    of model parameters.
+    of model parameters.  Nested models can be compared using an adjusted 
+    likelihood ratio test.
 Imports: graphics,
     methods,
     numDeriv,
