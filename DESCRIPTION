@@ -21,7 +21,6 @@ Description: Performs adjustments of a user-supplied independence loglikelihood
 Imports: graphics,
     methods,
     numDeriv,
-    sandwich,
     stats,
     utils
 License: GPL (>= 2)
@@ -32,6 +31,7 @@ Depends:
 RoxygenNote: 6.1.0
 Suggests: knitr,
     rmarkdown,
+    sandwich,
     testthat
 VignetteBuilder: knitr
 URL: http://github.com/paulnorthrop/chandwich

@@ -290,13 +290,16 @@
 #'                            alg_deriv = pois_alg_deriv, alg_hess = pois_alg_hess)
 #' summary(pois_quad)
 #'
-#' # Providing MLE, H and V
-#' # H and V calculated using bread() and meat() from sandwich package
-#' n_obs <- stats::nobs(fm_pois)
-#' pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
-#'                           mle = fm_pois$coefficients,
-#'                           H = -solve(sandwich::bread(fm_pois) / n_obs),
-#'                           V = sandwich::meat(fm_pois) * n_obs)
+#' got_sandwich <- requireNamespace("sandwich", quietly = TRUE)
+#' if (got_sandwich) {
+#'   # Providing MLE, H and V
+#'   # H and V calculated using bread() and meat() from sandwich package
+#'   n_obs <- stats::nobs(fm_pois)
+#'   pois_quad <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
+#'                              mle = fm_pois$coefficients,
+#'                              H = -solve(sandwich::bread(fm_pois) / n_obs),
+#'                              V = sandwich::meat(fm_pois) * n_obs)
+#' }
 #' @export
 adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
                           init = NULL, par_names = NULL, fixed_pars = NULL,

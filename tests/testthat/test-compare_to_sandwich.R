@@ -81,24 +81,28 @@ test_that("adjusted SEs agree, mle and H supplied", {
 #
 # Use sandwich::bread() and sandwich::meat() to evaluate H and V respectively.
 
-n_obs <- stats::nobs(fm_pois)
-pois_res_2b <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
-                             mle = fm_pois$coefficients,
-                             H = -solve(sandwich::bread(fm_pois) / n_obs),
-                             V = sandwich::meat(fm_pois) * n_obs)
-my_ests_2b <- round(attr(pois_res_2b, "MLE"), 4)
-my_ses_2b <- round(attr(pois_res_2b, "SE"), 4)
-my_adj_ses_2b <- round(attr(pois_res_2b, "adjSE"), 4)
+got_sandwich <- requireNamespace("sandwich", quietly = TRUE)
+print(got_sandwich)
+if (got_sandwich) {
+  n_obs <- stats::nobs(fm_pois)
+  pois_res_2b <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
+                               mle = fm_pois$coefficients,
+                               H = -solve(sandwich::bread(fm_pois) / n_obs),
+                               V = sandwich::meat(fm_pois) * n_obs)
+  my_ests_2b <- round(attr(pois_res_2b, "MLE"), 4)
+  my_ses_2b <- round(attr(pois_res_2b, "SE"), 4)
+  my_adj_ses_2b <- round(attr(pois_res_2b, "adjSE"), 4)
 
-test_that("MLEs agree, mle and H supplied", {
-  testthat::expect_equal(my_ests, my_ests_2b, tolerance = my_tol)
-})
-test_that("SEs agree, mle and H supplied", {
-  testthat::expect_equal(my_ses, my_ses_2b, tolerance = my_tol)
-})
-test_that("adjusted SEs agree, mle and H supplied", {
-  testthat::expect_equal(my_adj_ses, my_adj_ses_2b, tolerance = my_tol)
-})
+  test_that("MLEs agree, mle and H supplied", {
+    testthat::expect_equal(my_ests, my_ests_2b, tolerance = my_tol)
+  })
+  test_that("SEs agree, mle and H supplied", {
+    testthat::expect_equal(my_ses, my_ses_2b, tolerance = my_tol)
+  })
+  test_that("adjusted SEs agree, mle and H supplied", {
+    testthat::expect_equal(my_adj_ses, my_adj_ses_2b, tolerance = my_tol)
+  })
+}
 
 # Repeat using algebraic derivatives and Hessian
 
