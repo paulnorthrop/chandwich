@@ -224,9 +224,10 @@ print.summary.chandwich <- function(x, ...) {
 #'   \code{\link{adjust_loglik}}.
 #' @param ... Additional optional arguments. At present no optional
 #'   arguments are used.
-#' @details Just prints the original call to \code{\link{adjust_loglik}}.
-#'   To view a list of the attributes to the function returned from
-#'   \code{\link{adjust_loglik}} use \code{ls(attributes(x))}.
+#' @details Just prints the original call to \code{\link{adjust_loglik}}
+#'   and a character vector giving the names of the attributes
+#'   (produced using \code{ls(attributes(x))}) to the function returned
+#'   from \code{\link{adjust_loglik}}.
 #'   To view an individual attribute use \code{attr(x, "name")}
 #'   or \code{attributes(x)$name}.
 #' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
@@ -241,7 +242,8 @@ print.chandwich <- function(x, ...) {
     stop("use only with \"chandwich\" objects")
   }
   cat("\n", "Call:", paste(deparse(attr(x, "call"))), "\n")
-  cat("\n")
+  cat("\n", "Attributes:", "\n")
+  print(ls(attributes(x)))
   return(invisible(x))
 }
 
