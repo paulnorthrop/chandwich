@@ -14,8 +14,8 @@
 arguments are used.}
 }
 \value{
-The argument \code{x}, invisibly, as for all \code{\link{print}}
-  methods.
+The argument \code{x}, invisibly, as for all
+  \code{\link[base]{print}} methods.
 }
 \description{
 \code{print} method for class "chandwich".

@@ -230,8 +230,8 @@ print.summary.chandwich <- function(x, ...) {
 #'   from \code{\link{adjust_loglik}}.
 #'   To view an individual attribute use \code{attr(x, "name")}
 #'   or \code{attributes(x)$name}.
-#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
-#'   methods.
+#' @return The argument \code{x}, invisibly, as for all
+#'   \code{\link[base]{print}} methods.
 #' @seealso \code{\link{summary.chandwich}}: \code{summary} method for
 #'   class "chandwich".
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
@@ -639,8 +639,8 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
 #'   the confidence level of the interval(s) and whether or not
 #'   the loglikelihood has been adjusted, and symmetric and (profile) likelihood
 #'   based intervals.
-#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
-#'   methods.
+#' @return The argument \code{x}, invisibly, as for all
+#'   \code{\link[base]{print}} methods.
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelihood function.
 #' @seealso \code{\link{conf_intervals}} for confidence intervals for
@@ -713,8 +713,8 @@ print.confint <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
 #' hypotheses (HA), the test statistic, degrees of freedom and the p-value.
 #' If the test is based on the approximation detailed by equations (18)-(20)
 #' of Chandler and Bate (2007), rather than equation (17), then this stated.
-#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
-#'   methods.
+#' @return The argument \code{x}, invisibly, as for all
+#'   \code{\link[base]{print}} methods.
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelihood function.
 #' @seealso \code{\link{compare_models}} to compare nested models using an
