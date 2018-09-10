@@ -12,7 +12,7 @@
 \code{\link{conf_intervals}}.}
 
 \item{digits}{An integer. The argument \code{digits} to
-\code{\link{print.default}}.}
+\code{\link[base]{print.default}}.}
 
 \item{...}{Additional optional arguments. At present no optional
 arguments are used.}

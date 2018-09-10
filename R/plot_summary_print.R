@@ -632,7 +632,7 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
 #' @param x an object of class "confint", a result of a call to
 #'   \code{\link{conf_intervals}}.
 #' @param digits An integer. The argument \code{digits} to
-#'   \code{\link{print.default}}.
+#'   \code{\link[base]{print.default}}.
 #' @param ... Additional optional arguments. At present no optional
 #'   arguments are used.
 #' @details Prints the name of the model, details of any fixed parameters,
