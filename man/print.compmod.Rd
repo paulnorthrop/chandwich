@@ -12,7 +12,7 @@
 \code{\link{compare_models}}.}
 
 \item{digits}{An integer. The argument \code{digits} to
-\code{\link{signif}}.}
+\code{\link[base:Round]{signif}}.}
 
 \item{...}{Additional optional arguments. At present no optional
 arguments are used.}

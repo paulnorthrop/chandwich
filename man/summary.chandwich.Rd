@@ -12,7 +12,7 @@
 \code{\link{adjust_loglik}}.}
 
 \item{digits}{An integer. Used for number formatting with
-\code{\link{signif}}.}
+\code{\link[base:Round]{signif}}.}
 
 \item{...}{Additional optional arguments. At present no optional
 arguments are used.}

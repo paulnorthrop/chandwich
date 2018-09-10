@@ -153,7 +153,7 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
 #' @param object an object of class "chandwich", a result of a call to
 #'   \code{\link{adjust_loglik}}.
 #' @param digits An integer. Used for number formatting with
-#'   \code{\link{signif}}.
+#'   \code{\link[base:Round]{signif}}.
 #' @param ... Additional optional arguments. At present no optional
 #'   arguments are used.
 #' @return Returns a numeric matrix with 3 columns and the number of rows
@@ -706,7 +706,7 @@ print.confint <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
 #' @param x an object of class "compmod", a result of a call to
 #'   \code{\link{compare_models}}.
 #' @param digits An integer. The argument \code{digits} to
-#'   \code{\link{signif}}.
+#'   \code{\link[base:Round]{signif}}.
 #' @param ... Additional optional arguments. At present no optional
 #'   arguments are used.
 #' @details Prints the name of the model, the null (H0) and alternative
