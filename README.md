@@ -3,7 +3,7 @@
 chandwich
 =========
 
-[![Travis-CI Build Status](https://travis-ci.org/paulnorthrop/chandwich.svg?branch=master)](https://travis-ci.org/paulnorthrop/chandwich) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/paulnorthrop/chandwich?branch=master&svg=true)](https://ci.appveyor.com/project/paulnorthrop/chandwich) [![Coverage Status](https://codecov.io/github/paulnorthrop/chandwich/coverage.svg?branch=master)](https://codecov.io/github/paulnorthrop/chandwich?branch=master)
+[![Travis-CI Build Status](https://travis-ci.org/paulnorthrop/chandwich.svg?branch=master)](https://travis-ci.org/paulnorthrop/chandwich) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/paulnorthrop/chandwich?branch=master&svg=true)](https://ci.appveyor.com/project/paulnorthrop/chandwich) [![Coverage Status](https://codecov.io/github/paulnorthrop/chandwich/coverage.svg?branch=master)](https://codecov.io/github/paulnorthrop/chandwich?branch=master) [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/chandwich)](https://cran.r-project.org/package=chandwich)
 
 Chandler-Bate Sandwich Loglikelihood Adjustment
 -----------------------------------------------
