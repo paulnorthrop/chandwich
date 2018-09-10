@@ -12,7 +12,7 @@
 
 <meta name="author" content="Paul Northrop and Richard Chandler" />
 
-<meta name="date" content="2018-09-09" />
+<meta name="date" content="2018-09-10" />
 
 <title>Introducing chandwich: Chandler-Bate Loglikelihood Adjustment</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introducing chandwich: Chandler-Bate Loglikelihood Adjustment</h1>
 <h4 class="author"><em>Paul Northrop and Richard Chandler</em></h4>
-<h4 class="date"><em>2018-09-09</em></h4>
+<h4 class="date"><em>2018-09-10</em></h4>
 
 
 <div id="TOC">
@@ -296,7 +296,7 @@ tiny &lt;-<span class="st"> </span><span class="kw">adjust_loglik</span>(<span c
 </div>
 <div id="misspecified-poisson-model" class="section level2">
 <h2>Misspecified Poisson model</h2>
-<p>We repeat part of an example from Section 5.1 of the <a href="https://cran.r-project.org/package=sandwich">Object-Oriented Computation of Sandwich Estimators</a> vignette of the <em>sandwich</em> package <span class="citation">(Zeileis 2006)</span>, using the same simulated dataset. This example illustrates that sandwich estimators may result in inferences that are robust against certain types model misspecification. We simulate data from a log-linear negative binomial regression model and fit a misspecified log-quadratic Poisson regression model.</p>
+<p>We repeat part of an example from Section 5.1 of the <a href="https://CRAN.R-project.org/package=sandwich">Object-Oriented Computation of Sandwich Estimators</a> vignette of the <em>sandwich</em> package <span class="citation">(Zeileis 2006)</span>, using the same simulated dataset. This example illustrates that sandwich estimators may result in inferences that are robust against certain types model misspecification. We simulate data from a log-linear negative binomial regression model and fit a misspecified log-quadratic Poisson regression model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
 x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">250</span>)
 y &lt;-<span class="st"> </span><span class="kw">rnbinom</span>(<span class="dv">250</span>, <span class="dt">mu =</span> <span class="kw">exp</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x), <span class="dt">size =</span> <span class="dv">1</span>)
