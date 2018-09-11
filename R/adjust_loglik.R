@@ -183,6 +183,9 @@
 #'   and unadjusted and adjusted standard errors.
 #' @seealso \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
 #'   loglikelihoods.
+#' @seealso \code{\link{confint.chandwich}}, \code{\link{anova.chandwich}},
+#'   \code{\link{coef.chandwich}}, \code{\link{vcov.chandwich}}
+#'   and \code{\link{logLik.chandwich}} for other \code{chandwich} methods.
 #' @seealso \code{\link{conf_intervals}} for confidence intervals for
 #'   individual parameters.
 #' @seealso \code{\link{conf_region}} for a confidence region for

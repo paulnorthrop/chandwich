@@ -327,6 +327,10 @@ Chandler, R. E. and Bate, S. (2007). Inference for clustered
 \code{\link{plot.chandwich}} for plots of one-dimensional adjusted
   loglikelihoods.
 
+\code{\link{confint.chandwich}}, \code{\link{anova.chandwich}},
+  \code{\link{coef.chandwich}}, \code{\link{vcov.chandwich}}
+  and \code{\link{logLik.chandwich}} for other \code{chandwich} methods.
+
 \code{\link{conf_intervals}} for confidence intervals for
   individual parameters.
 
