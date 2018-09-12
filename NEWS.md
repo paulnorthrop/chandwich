@@ -1,5 +1,9 @@
 # chandwich 1.1.0.9000
 
+## Bug fixes and minor improvements
+
+* The attribute `nobs` has been added to the object returned from `logLik.chandwich()`. 
+
 # chandwich 1.1.0
 
 ## New features

@@ -129,6 +129,7 @@ logLik.chandwich <- function(object, ...) {
     stop("use only with \"chandwich\" objects")
   }
   val <- attr(object, "max_loglik")
+  attr(val, "nobs") <- attr(object, "nobs")
   attr(val, "df") <- attr(object, "p_current")
   class(val) <- "logLik"
   return(val)

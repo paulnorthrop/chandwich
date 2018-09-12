@@ -166,6 +166,8 @@
 #'     \code{loglik} via ... in this call, or a previous call.}
 #'   \item{name}{The argument \code{name}, or the name of the function
 #'     \code{loglik} if \code{name} isn't supplied.}
+#'   \item{nobs}{The number of observations.}
+#'   \item{call}{The call to \code{adjust_loglik}.}
 #'   If \code{fixed_pars} is not \code{NULL} then there are further attributes
 #'   \item{fixed_pars}{The argument \code{fixed_pars}, with names inferred from
 #'     \code{par_names} if this was supplied.}
@@ -801,6 +803,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   attr(adjust_loglik_fn, "max_loglik") <- max_loglik
   attr(adjust_loglik_fn, "loglik_args") <- loglik_args
   attr(adjust_loglik_fn, "name") <- name
+  attr(adjust_loglik_fn, "nobs") <- n_loglik
   attr(adjust_loglik_fn, "call") <- match.call()
   class(adjust_loglik_fn) <- "chandwich"
   return(adjust_loglik_fn)
