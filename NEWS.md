@@ -2,7 +2,7 @@
 
 ## Bug fixes and minor improvements
 
-* The attribute `nobs` has been added to the object returned from `logLik.chandwich()`. 
+* The attribute `nobs` has been added to the object returned from `logLik.chandwich()` and as an attribute to the object returned from `logLik.chandwich()`. 
 
 # chandwich 1.1.0
 
