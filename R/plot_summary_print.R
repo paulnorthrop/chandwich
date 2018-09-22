@@ -228,8 +228,8 @@ print.summary.chandwich <- function(x, ...) {
 #'   and a character vector giving the names of the attributes
 #'   (produced using \code{ls(attributes(x))}) to the function returned
 #'   from \code{\link{adjust_loglik}}.
-#'   To view an individual attribute use \code{attr(x, "name")}
-#'   or \code{attributes(x)$name}.
+#'   To view an individual attribute called \code{att_name} use
+#'   \code{attr(x, "att_name")} or \code{attributes(x)$att_name}.
 #' @return The argument \code{x}, invisibly, as for all
 #'   \code{\link[base]{print}} methods.
 #' @seealso \code{\link{summary.chandwich}}: \code{summary} method for

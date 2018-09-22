@@ -180,8 +180,8 @@ A function of class \code{"chandwich"} to evaluate an adjusted
   If \code{alg_deriv} and/or \code{alg_hess} were supplied then these are
   returned as further attributes.
 
-  To view an individual attribute use \code{attr(x, "name")}
-  or \code{attributes(x)$name}.
+  To view an individual attribute called \code{att_name} use
+  \code{attr(x, "att_name")} or \code{attributes(x)$att_name}.
 }
 \description{
 Performs adjustments of a user-supplied independence loglikelihood for the
