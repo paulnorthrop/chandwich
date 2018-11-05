@@ -768,7 +768,7 @@ profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
   p <- attr(object, "p_current")
   neg_prof_loglik <- function(x) {
     pars <- numeric(p)
-    pars[rank(c(prof_pars, free_pars))]<- c(prof_vals, x)
+    pars[rank(c(prof_pars, free_pars))] <- c(prof_vals, x)
     return(-do.call(object, list(pars, type = type)))
   }
   # L-BFGS-B and Brent don't like Inf or NA or NaN
