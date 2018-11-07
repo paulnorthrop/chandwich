@@ -337,14 +337,14 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
   # If xlab or ylab are not supplied then use names(x$which_pars), if present
   if (is.null(user_args$xlab)) {
     if (is.null(names(x$which_pars))) {
-      user_args$xlab <- x$which_pars[1]
+      user_args$xlab <- paste("parameter", x$which_pars[1])
     } else {
       user_args$xlab <- parse(text = names(x$which_pars)[1])
     }
   }
   if (is.null(user_args$ylab)) {
     if (is.null(names(x$which_pars))) {
-      user_args$ylab <- x$which_pars[2]
+      user_args$ylab <- paste("parameter", x$which_pars[2])
     } else {
       user_args$ylab <- parse(text = names(x$which_pars)[2])
     }

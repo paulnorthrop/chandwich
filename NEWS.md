@@ -2,7 +2,9 @@
 
 ## Bug fixes and minor improvements
 
-* The attribute `nobs` has been added to the object returned from `logLik.chandwich()` and as an attribute to the object returned from `logLik.chandwich()`. 
+* The attribute `nobs` has been added to the object returned from `adjust_loglik()` and as an attribute to the object returned from `logLik.chandwich()`. 
+
+* There was a bug in the plot method for objects of class "confreg" returned from conf_region(): if the parameters had not been named by the user then ? appeared twice in the console, requiring the user to press return twice before the plot as produced.  This has been corrected. 
 
 # chandwich 1.1.0
 
