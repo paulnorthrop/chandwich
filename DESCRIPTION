@@ -5,7 +5,7 @@ Date: 2018-09-10
 Authors@R: c(
     person(c("Paul", "J."), "Northrop", email = "p.northrop@ucl.ac.uk", 
       role = c("aut", "cre", "cph")),
-    person("Richard", "Chandler", role = c("aut", "cph"))
+    person(c("Richard", "E."), "Chandler", role = c("aut", "cph"))
     )
 Description: Performs adjustments of a user-supplied independence loglikelihood 
     function using a robust sandwich estimator of the parameter covariance 
