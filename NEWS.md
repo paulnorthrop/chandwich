@@ -4,6 +4,8 @@
 
 * The attribute `nobs` has been added to the object returned from `adjust_loglik()` and as an attribute to the object returned from `logLik.chandwich()`. 
 
+* In `compare_models()` the parameter names (if any) are passed to the (adjusted) loglikelihod function, in case they are required inside the loglikelihood function.
+
 * There was a bug in the plot method for objects of class "confreg" returned from conf_region(): if the parameters had not been named by the user then ? appeared twice in the console, requiring the user to press return twice before the plot as produced.  This has been corrected. 
 
 # chandwich 1.1.0
