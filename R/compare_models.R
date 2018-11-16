@@ -238,7 +238,6 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
     if (!is.null(attr(larger, "fixed_pars"))) {
       pars <- pars[-attr(larger, "fixed_pars")]
     }
-#    names(pars) <- names(attr(larger, "free_pars"))
     names(pars) <- attr(larger, "par_names")
     if (approx) {
       max_loglik_smaller <- do.call(larger, list(pars, type = type))
