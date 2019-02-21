@@ -816,7 +816,7 @@ profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
 #'   \code{attr(object, "fixed_pars")}.  \code{which_pars} must not contain
 #'   all of the unfixed parameters, i.e. there is no point in profiling over
 #'   all the unfixed parameters.
-#' @param level The confidence level required.
+#' @param level The confidence level required.  A numeric scalar in (0, 1).
 #' @param type A character scalar.  The argument \code{type} to the function
 #'   returned by \code{\link{adjust_loglik}}, that is, the type of adjustment
 #'   made to the independence loglikelihood function.
@@ -825,7 +825,7 @@ profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
 #'   \code{\link{conf_intervals}}, on which \code{confint.chandwich} is based.
 #' @return A matrix with columns giving lower and upper confidence limits for
 #'   each parameter. These will be labelled as (1 - level)/2 and
-#'   1 - (1 - level)/2 in % (by default 2.5% and 97.5%).
+#'   1 - (1 - level)/2 in \% (by default 2.5\% and 97.5\%).
 #'   The row names are the names of the model parameters,
 #'   if these are available.
 #' @seealso \code{\link{conf_intervals}}.
