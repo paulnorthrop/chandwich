@@ -29,7 +29,7 @@ the argument \code{x} in \code{\link[graphics]{legend}}.}
 
 \item{...}{Additional arguments passed to \code{\link[graphics]{contour}}
 or \code{\link[graphics]{legend}}.  The arguments \code{col}, \code{lty}
-and \code{lwd} will (in a consistent way) by both
+and \code{lwd} will be used (in a consistent way) by both
 \code{\link[graphics]{contour}} and \code{\link[graphics]{legend}}.}
 }
 \value{
