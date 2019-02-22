@@ -128,10 +128,10 @@ plot.chandwich <- function(x, y, type = 1, legend = length(type) > 1,
   for_matplot <- c(list(x = x_vals, y = y_vals), user_args)
   do.call(graphics::matplot, for_matplot)
   # Add a legend?
-  if (legend | is.character(legend)) {
+  if (is.character(legend) || legend) {
     types <- c("vertical", "cholesky", "spectral", "none")
     legend_args$x <- legend_pos
-    if (legend) {
+    if (is.logical(legend) && legend) {
       legend_args$legend <- types[type]
     } else {
       legend_args$legend <- legend
@@ -430,9 +430,9 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
     types <- c(types, y3$type)
   }
   # Add a legend?
-  if (legend | is.character(legend)) {
+  if (is.character(legend) || legend) {
     legend_args$x <- legend_pos
-    if (legend) {
+    if (is.logical(legend) && legend) {
       legend_args$legend <- types
     } else {
       legend_args$legend <- legend
@@ -616,9 +616,9 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
     graphics::abline(h = cutoff)
   }
   # Add a legend?
-  if (legend | is.character(legend)) {
+  if (is.character(legend) || legend) {
     legend_args$x <- legend_pos
-    if (legend) {
+    if (is.logical(legend) && legend) {
       legend_args$legend <- types
     } else {
       legend_args$legend <- legend

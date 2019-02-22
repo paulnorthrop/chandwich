@@ -8,6 +8,8 @@
 
 * In the function returned from `adjust_loglik` the code to perform the horizontal adjustment of the loglikelihood has been changed to `x_star <- mle + as.vector(C %*% (x - mle))`: using `as.vector()` avoids a potential warning by ensuring vector + vector, not vector + matrix.
 
+* There were bugs in `plot.chandwich()`, `plot.confreg()` and `plot.confint()` that produced an error if the user tried to set their own legend using the `legend` argument.  These bugs have been corrected.
+
 # chandwich 1.1.1
 
 ## Bug fixes and minor improvements
