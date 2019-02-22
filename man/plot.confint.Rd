@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_summary_print.R
 \name{plot.confint}
 \alias{plot.confint}
-\title{Plot diagnostics a confint object}
+\title{Plot diagnostics for a confint object}
 \usage{
 \method{plot}{confint}(x, y = NULL, y2 = NULL, y3 = NULL,
   which_par = x$which_pars[1], conf = x$conf, add_lines = TRUE,

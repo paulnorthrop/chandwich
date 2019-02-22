@@ -1,6 +1,6 @@
 # ============================== plot.chandwich ===============================
 
-#' Plot diagnostics a chandwich object
+#' Plot diagnostics for a chandwich object
 #'
 #' \code{plot} method for class "chandwich".  Only applicable to an object
 #' \code{x} for which \code{attr(x, "p_current") = 1}, i.e. a model with
@@ -249,7 +249,7 @@ print.chandwich <- function(x, ...) {
 
 # ============================== plot.confreg =================================
 
-#' Plot diagnostics a confreg object
+#' Plot diagnostics for a confreg object
 #'
 #' \code{plot} method for class "confreg".
 #' Plots confidence regions for pairs of parameters using the profile
@@ -447,7 +447,7 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
 
 # ============================== plot.confint =================================
 
-#' Plot diagnostics a confint object
+#' Plot diagnostics for a confint object
 #'
 #' \code{plot} method for class "confint".
 #' Plots the (profile) loglikelihood for a parameter using the values

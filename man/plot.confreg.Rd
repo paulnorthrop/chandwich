@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_summary_print.R
 \name{plot.confreg}
 \alias{plot.confreg}
-\title{Plot diagnostics a confreg object}
+\title{Plot diagnostics for a confreg object}
 \usage{
 \method{plot}{confreg}(x, y = NULL, y2 = NULL, y3 = NULL,
   conf = 95, legend = any(c(!is.null(y), !is.null(y2), !is.null(y3))),

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_summary_print.R
 \name{plot.chandwich}
 \alias{plot.chandwich}
-\title{Plot diagnostics a chandwich object}
+\title{Plot diagnostics for a chandwich object}
 \usage{
 \method{plot}{chandwich}(x, y, type = 1, legend = length(type) > 1,
   legend_pos = "topleft", ...)
