@@ -6,6 +6,8 @@
 
 * In `adjust_loglik()` if `p = 1` and the user supplies a scalar `H` instead of a matrix then an error is thrown by `dimnames()` just before the results are returned.  The calculations are correct, so the code has been modified trivially to avoid the error.
 
+* In the function returned from `adjust_loglik` the code to perform the horizontal adjustment of the loglikelihood has been changed to `x_star <- mle + as.vector(C %*% (x - mle))`: using `as.vector()` avoids a potential warning by ensuring vector + vector, not vector + matrix.
+
 # chandwich 1.1.1
 
 ## Bug fixes and minor improvements

@@ -747,7 +747,8 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
         } else {
           C <- C_spectral
         }
-        x_star <- mle + (C %*% (x - mle))
+        # Ensure vector + vector, not vector + matrix
+        x_star <- mle + as.vector(C %*% (x - mle))
         loglik_vals <- do.call(ret_loglik, list(x_star))
         return(sum(loglik_vals))
       }
