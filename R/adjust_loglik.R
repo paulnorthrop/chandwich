@@ -788,6 +788,9 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   attr(adjust_loglik_fn, "adjSE") <- adjSE
   attr(adjust_loglik_fn, "VC") <- VC
   attr(adjust_loglik_fn, "adjVC") <- adjVC
+  # If p = 1 and the user supplied a scalar H then HI isn't a matrix
+  # and dimnames() throws an error
+  HI <- as.matrix(HI)
   dimnames(HI) <- list(par_names, par_names)
   dimnames(HA) <- list(par_names, par_names)
   dimnames(C_cholesky) <- list(par_names, par_names)

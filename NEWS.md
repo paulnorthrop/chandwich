@@ -10,6 +10,10 @@
 
 * There was a bug in the plot method for objects of class "confreg" returned from conf_region(): if the parameters had not been named by the user then ? appeared twice in the console, requiring the user to press return twice before the plot as produced.  This has been corrected. 
 
+* A typo meant that the text in the Value section of the description of `confint.chandwich()` was cut short.  This has been corrected.
+
+* In `adjust_loglik()` if `p = 1` and the user supplies a scalar `H` instead of a matrix then an error is thrown by `dimnames()` just before the results are returned.  The calculations are correct, so the code has been modified trivially to avoide the error.
+
 # chandwich 1.1.0
 
 ## New features
