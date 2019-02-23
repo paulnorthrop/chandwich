@@ -410,10 +410,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'
 #' # 95% likelihood-based confidence intervals, vertically adjusted
 #' conf_intervals(rat_res)
-#' \dontrun{
 #' # Unadjusted
 #' conf_intervals(rat_res, type = "none")
-#' }
 #'
 #' # -------------------------- GEV model, owtemps data -----------------------
 #' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------

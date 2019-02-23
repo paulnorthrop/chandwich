@@ -98,10 +98,8 @@ rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
 
 # 95\% likelihood-based confidence intervals, vertically adjusted
 conf_intervals(rat_res)
-\dontrun{
 # Unadjusted
 conf_intervals(rat_res, type = "none")
-}
 
 # -------------------------- GEV model, owtemps data -----------------------
 # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
