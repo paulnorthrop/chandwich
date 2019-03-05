@@ -3,7 +3,7 @@
 #' Performs adjustments of an independence loglikelihood using
 #' a robust sandwich estimator of the parameter covariance matrix, based on
 #' the methodology in
-#' \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
+#' \href{https://doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
 #' This can be used for cluster correlated data when interest lies in the
 #' parameters of the marginal distributions.
 #' Functions for profiling the adjusted loglikelihoods are also provided, as
@@ -26,7 +26,7 @@
 #' overview of the package.
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
-#'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
+#'   \strong{94}(1), 167-183. \url{https://doi.org/10.1093/biomet/asm015}
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelihood.
 #' @seealso \code{\link{compare_models}} to compare nested models using an
@@ -52,7 +52,7 @@ NULL
 #'  \emph{The Meteorological Magazine}, \strong{112}, 77-98.
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
-#'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
+#'   \strong{94}(1), 167-183. \url{https://doi.org/10.1093/biomet/asm015}
 "owtemps"
 
 #' Rat tumor data

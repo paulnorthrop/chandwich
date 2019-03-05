@@ -19,6 +19,6 @@ period 1901 to 1980.
 \references{
 Chandler, R. E. and Bate, S. (2007). Inference for clustered
   data using the independence loglikelihood. \emph{Biometrika},
-  \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
+  \strong{94}(1), 167-183. \url{https://doi.org/10.1093/biomet/asm015}
 }
 \keyword{datasets}

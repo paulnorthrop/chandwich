@@ -4,7 +4,7 @@
 #'
 #' Compares nested models using the adjusted likelihood ratio test statistic
 #' (ALRTS) described in Section 3.5 of
-#' \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
+#' \href{https://doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
 #' The nesting must result from the simple constraint that a subset of the
 #' parameters of the larger model is held fixed.
 #'
@@ -54,7 +54,7 @@
 #'   \code{smaller} takes precedence.
 #'
 #'   For full details see Section 3.5 of
-#'   \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
+#'   \href{https://doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
 #'   if \code{approx = FALSE} then the a likelihood ratio test of the null
 #'   hypothesis that the smaller model is a valid simplification of the larger
 #'   model is carried out directly using equation (17) of Chandler and Bate
@@ -86,7 +86,7 @@
 #'  \item{approx}{the argument \code{approx}.}
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
-#'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
+#'   \strong{94}(1), 167-183. \url{https://doi.org/10.1093/biomet/asm015}
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelihood function.
 #' @seealso \code{\link{conf_intervals}} for confidence intervals for
@@ -396,7 +396,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
 #' \code{anova} method for objects of class \code{"chandwich"}.
 #' Compares two or more nested models using the adjusted likelihood ratio
 #' test statistic (ALRTS) described in Section 3.5 of
-#' \href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
+#' \href{https://doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
 #' The nesting must result from the simple constraint that a subset of the
 #' parameters of the larger model is held fixed.
 #'
@@ -434,7 +434,7 @@ compare_models <- function(larger, smaller = NULL, approx = FALSE,
 #'   pairs of parameters.
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
-#'   \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
+#'   \strong{94}(1), 167-183. \url{https://doi.org/10.1093/biomet/asm015}
 #' @examples
 #' # -------------------------- GEV model, owtemps data -----------------------
 #' # ------------ following Section 5.2 of Chandler and Bate (2007) -----------
