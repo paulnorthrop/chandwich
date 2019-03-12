@@ -20,7 +20,7 @@ Prints a numeric matrix with 3 columns and the number of rows
   standard errors (SE) and adjusted standard errors (adjSE).
 }
 \description{
-\code{print} method for an object \code{object} of class "summary.chandwich".
+\code{print} method for an object \code{x} of class "summary.chandwich".
 }
 \section{Examples}{
 

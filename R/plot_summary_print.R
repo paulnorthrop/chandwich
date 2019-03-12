@@ -29,7 +29,7 @@
 #'   If the argument \code{xlim} to \code{\link[graphics]{matplot}} is not
 #'   supplied then the MLE minus (for \code{lower}) or plus (for \code{upper})
 #'   standard errors is used.  If \code{type} does not include 4 then adjusted
-#'   standard errors are used.  Otherwise, the larger of the adjust and
+#'   standard errors are used.  Otherwise, the larger of the adjusted and
 #'   unadjusted standard errors are used.
 #' @return Nothing is returned.
 #' @examples
@@ -189,7 +189,7 @@ summary.chandwich <- function(object,
 
 #' Print method for objects of class "summary.chandwich"
 #'
-#' \code{print} method for an object \code{object} of class "summary.chandwich".
+#' \code{print} method for an object \code{x} of class "summary.chandwich".
 #'
 #' @param x An object of class "summary.chandwich", a result of a call to
 #'   \code{\link{summary.chandwich}}.

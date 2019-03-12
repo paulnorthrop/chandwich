@@ -36,7 +36,7 @@ the argument \code{x} in \code{\link[graphics]{legend}}.}
   If the argument \code{xlim} to \code{\link[graphics]{matplot}} is not
   supplied then the MLE minus (for \code{lower}) or plus (for \code{upper})
   standard errors is used.  If \code{type} does not include 4 then adjusted
-  standard errors are used.  Otherwise, the larger of the adjust and
+  standard errors are used.  Otherwise, the larger of the adjusted and
   unadjusted standard errors are used.}
 }
 \value{
