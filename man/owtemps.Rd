@@ -13,8 +13,8 @@ Tabony, R. C. (1983) Extreme value analysis in meteorology.
 owtemps
 }
 \description{
-Annual maximum temperatures at Oxford and Worthing (England), for the
-period 1901 to 1980.
+Annual maximum temperatures, in degrees Fahrenheit, at Oxford and
+Worthing (England), for the period 1901 to 1980.
 }
 \references{
 Chandler, R. E. and Bate, S. (2007). Inference for clustered

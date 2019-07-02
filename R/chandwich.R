@@ -44,8 +44,8 @@ NULL
 
 #' Oxford and Worthing annual maximum temperatures
 #'
-#' Annual maximum temperatures at Oxford and Worthing (England), for the
-#' period 1901 to 1980.
+#' Annual maximum temperatures, in degrees Fahrenheit, at Oxford and
+#' Worthing (England), for the period 1901 to 1980.
 #'
 #' @format A dataframe with 80 rows and 2 columns, named Oxford and Worthing.
 #' @source Tabony, R. C. (1983) Extreme value analysis in meteorology.
