@@ -359,6 +359,11 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' @param ... Further arguments to be passed to \code{\link[stats]{optim}}.
 #'   These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
 #'   or \code{control}.
+#' @details Calculates (profile, if necessary) likelihood-based confidence
+#'   intervals for individual parameters, and also provides symmetric intervals
+#'   based on a normal approximation to the sampling distribution of the
+#'   estimator.  See also the S3 confint method
+#'   \code{\link{confint.chandwich}}.
 #' @return An object of class "confint", a list with components
 #'     \item{conf}{The argument \code{conf}.}
 #'     \item{cutoff}{A numeric scalar.  For values inside the
@@ -385,6 +390,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #'       \code{attr(object, "fixed_at")}, the arguments \code{fixed_pars} and
 #'       \code{fixed_at} to \code{\link{adjust_loglik}}, if these were
 #'       supplied.}
+#' @seealso \code{\link{confint.chandwich}} S3 confint method for objects
+#'   of class \code{"chandwich"} returned from \code{\link{adjust_loglik}}.
 #' @seealso \code{\link{adjust_loglik}} to adjust a user-supplied
 #'   loglikelihood function.
 #' @seealso \code{\link{summary.chandwich}} for maximum likelihood estimates
