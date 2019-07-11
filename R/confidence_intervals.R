@@ -321,7 +321,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 
 #' Confidence intervals
 #'
-#' Calculates confidence intervals for individual parameters
+#' Calculates confidence intervals for individual parameters.
 #'
 #' @param object An object of class \code{"chandwich"} returned by
 #'   \code{adjust_loglik}.

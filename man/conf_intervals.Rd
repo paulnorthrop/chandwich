@@ -82,7 +82,7 @@ An object of class "confint", a list with components
       supplied.}
 }
 \description{
-Calculates confidence intervals for individual parameters
+Calculates confidence intervals for individual parameters.
 }
 \examples{
 # ------------------------- Binomial model, rats data ----------------------
