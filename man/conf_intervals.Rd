@@ -141,7 +141,7 @@ large_v <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"))
 large_v
 plot(large_v)
 plot(large_v, which_par = "xi[1]")
-\dontrun{
+\donttest{
 # Unadjusted
 large_none <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"),
                              type = "none")

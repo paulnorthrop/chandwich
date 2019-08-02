@@ -104,7 +104,7 @@
 #' large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 #'                        par_names = par_names)
 #'
-#' \dontrun{
+#' \donttest{
 #' # Plots like those in Figure 4 of Chandler and Bate (2007)
 #' # (a)
 #' which_pars <- c("mu[0]", "mu[1]")
@@ -453,7 +453,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' large_v
 #' plot(large_v)
 #' plot(large_v, which_par = "xi[1]")
-#' \dontrun{
+#' \donttest{
 #' # Unadjusted
 #' large_none <- conf_intervals(large, which_pars = c("xi[0]", "xi[1]"),
 #'                              type = "none")
