@@ -1,0 +1,49 @@
+destination: docs
+
+development:
+  mode: release
+
+template:
+  params:
+    bootswatch: paper
+
+reference:
+  - title: Package
+    desc: ~
+    contents:
+      - "chandwich"
+  - title: Loglikelihood adjustment
+    desc: ~
+    contents:
+      - "adjust_loglik"
+  - title: Statistical inference
+    desc: ~
+    contents:
+      - "anova.chandwich"
+      - "compare_models"
+      - "print.compmod"
+      - "confint.chandwich"
+      - "plot.confint"
+      - "conf_intervals"
+      - "conf_region"
+      - "plot.confreg"
+      - "profile_loglik"
+  - title: Generics
+    desc: ~
+    contents:
+      - "coef.chandwich"
+      - "vcov.chandwich"
+      - "logLik.chandwich"
+      - "plot.chandwich"
+      - "print.chandwich"
+      - "summary.chandwich"
+      - "print.summary.chandwich"
+  - title: Example data
+    desc: ~
+    contents:
+      - "owtemps"
+      - "rats"
+  - title: GEV example
+    desc: ~
+    contents:
+      - "log_gev"
