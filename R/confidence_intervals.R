@@ -298,7 +298,7 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
                           prof_vals = prof_vals, init = theta, type = type),
                      optim_args)
       zz <- try(do.call(profile_loglik, prof_args), silent = TRUE)
-      if (class(zz) == "try-error") {
+      if (inherits(zz, "try-error")) {
         z[i, j] <- NA
       } else {
         z[i, j] <- zz
