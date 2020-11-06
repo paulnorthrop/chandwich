@@ -6,7 +6,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Introducing chandwich: Chandler-Bate Sandwich Loglikelihood Adjustment}
+  %\VignetteIndexEntry{Introducing chandwich: Chandler-Bate Loglikelihood Adjustment}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: chandwich.bib
