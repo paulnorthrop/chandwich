@@ -6,13 +6,13 @@ context("conf_intervals and profile_loglik and confint S3 method")
 gev_loglik <- function(pars, data) {
   o_pars <- pars[c(1, 3, 5)] + pars[c(2, 4, 6)]
   w_pars <- pars[c(1, 3, 5)] - pars[c(2, 4, 6)]
-  if (o_pars[2] <= 0 | w_pars[2] <= 0) return(-Inf)
+  if (isTRUE(o_pars[2] <= 0 | w_pars[2] <= 0)) return(-Inf)
   o_data <- data[, "Oxford"]
   w_data <- data[, "Worthing"]
   check <- 1 + o_pars[3] * (o_data - o_pars[1]) / o_pars[2]
-  if (any(check <= 0)) return(-Inf)
+  if (isTRUE(any(check <= 0))) return(-Inf)
   check <- 1 + w_pars[3] * (w_data - w_pars[1]) / w_pars[2]
-  if (any(check <= 0)) return(-Inf)
+  if (isTRUE(any(check <= 0))) return(-Inf)
   o_loglik <- log_gev(o_data, o_pars[1], o_pars[2], o_pars[3])
   w_loglik <- log_gev(w_data, w_pars[1], w_pars[2], w_pars[3])
   return(o_loglik + w_loglik)
