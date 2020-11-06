@@ -34,5 +34,5 @@ Suggests: knitr,
     sandwich,
     testthat
 VignetteBuilder: knitr
-URL: http://github.com/paulnorthrop/chandwich
-BugReports: http://github.com/paulnorthrop/chandwich/issues
+URL: https://github.com/paulnorthrop/chandwich
+BugReports: https://github.com/paulnorthrop/chandwich/issues
