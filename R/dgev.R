@@ -44,7 +44,7 @@
 log_gev <- function(x, loc = 0, scale = 1, shape = 0) {
   x <- (x - loc) / scale
   xx <- 1 + shape * x
-  if (abs(shape) > 1e-6) {
+  if (isTRUE(abs(shape) > 1e-6)) {
     logd <- -(1 + 1 / shape) * log(xx) - xx ^ (-1 / shape)
   } else {
     logd <- -x + shape * x * (x - 2) / 2 - exp(-x + shape * x ^ 2 / 2)
