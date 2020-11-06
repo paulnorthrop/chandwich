@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Introducing chandwich: Chandler-Bate Loglikelihood Adjustment • chandwich</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Introducing chandwich: Chandler-Bate Loglikelihood Adjustment">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="chandwich">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -64,7 +64,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/paulnorthrop/chandwich">
+  <a href="https://github.com/paulnorthrop/chandwich/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -79,13 +79,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="chandwich-vignette_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Introducing chandwich: Chandler-Bate Loglikelihood Adjustment</h1>
+      <h1 data-toc-skip>Introducing chandwich: Chandler-Bate Loglikelihood Adjustment</h1>
                         <h4 class="author">Paul Northrop and Richard Chandler</h4>
             
-            <h4 class="date">2019-11-09</h4>
+            <h4 class="date">2020-11-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/paulnorthrop/chandwich/blob/master/vignettes/chandwich-vignette.Rmd"><code>vignettes/chandwich-vignette.Rmd</code></a></small>
       <div class="hidden name"><code>chandwich-vignette.Rmd</code></div>
@@ -110,30 +110,30 @@
 <a href="#binomial-model" class="anchor"></a>Binomial model</h2>
 <p>The <code>rats</code> data <span class="citation">(Tarone 1982)</span> contain information about an experiment in which, for each of 71 groups of rats, the total number of rats in the group and the numbers of rats who develop a tumor is recorded. We model these data using a binomial distribution, treating each groups of rats as a separate cluster. A Bayesian analysis of these data based on a hierarchical binomial-beta model is presented in Section 5.3 of <span class="citation">Gelman et al. (2014)</span>.</p>
 <p>The following code creates a function that returns a vector of the loglikelihood contributions from individual groups of rats, calls <code>adjust_loglik</code> to make the adjustments, produces a basic summary of the MLE and the unadjusted and adjusted standard errors and plots the adjusted and unadjusted loglikelihood. There is no need to supply the argument <code>cluster</code> in this example because the default, that each observation (group of rats) forms its own cluster applies here.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(chandwich)
-binom_loglik &lt;-<span class="st"> </span><span class="cf">function</span>(prob, data) {
-  <span class="cf">if</span> (prob <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">||</span><span class="st"> </span>prob <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>) {
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="op">-</span><span class="ot">Inf</span>)
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">chandwich</span>)
+<span class="no">binom_loglik</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">prob</span>, <span class="no">data</span>) {
+  <span class="kw">if</span> (<span class="no">prob</span> <span class="kw">&lt;</span> <span class="fl">0</span> <span class="kw">||</span> <span class="no">prob</span> <span class="kw">&gt;</span> <span class="fl">1</span>) {
+    <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(-<span class="fl">Inf</span>)
    }
-   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/Binomial.html">dbinom</a></span>(data[, <span class="st">"y"</span>], data[, <span class="st">"n"</span>], prob, <span class="dt">log =</span> <span class="ot">TRUE</span>))
+   <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">dbinom</a></span>(<span class="no">data</span>[, <span class="st">"y"</span>], <span class="no">data</span>[, <span class="st">"n"</span>], <span class="no">prob</span>, <span class="kw">log</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
 }
 <span class="co"># Make the adjustments</span>
-rat_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(<span class="dt">loglik =</span> binom_loglik, <span class="dt">data =</span> rats, <span class="dt">par_names =</span> <span class="st">"p"</span>)
-<span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(rat_res)
+<span class="no">rat_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(<span class="kw">loglik</span> <span class="kw">=</span> <span class="no">binom_loglik</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">rats</span>, <span class="kw">par_names</span> <span class="kw">=</span> <span class="st">"p"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">rat_res</span>)
 <span class="co">#&gt;      MLE       SE adj. SE</span>
 <span class="co">#&gt; p 0.1535 0.008645 0.01305</span>
-<span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(rat_res, <span class="dt">type =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">legend_pos =</span> <span class="st">"bottom"</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)</code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">rat_res</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">4</span>, <span class="kw">legend_pos</span> <span class="kw">=</span> <span class="st">"bottom"</span>, <span class="kw">lwd</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">4</span>)</pre></body></html></div>
 <p><img src="chandwich-vignette_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>In the one-dimensional case the (horizontal) Cholesky and spectral adjustments are identical and, over the range in the plot, the vertical adjustment is very similar to the horizontal adjustments. Appreciable differences only becomes apparent towards the edges of the parameter space, where the behaviour of the vertical adjustment, which approaches <span class="math inline">\(-\infty\)</span> as <span class="math inline">\(p\)</span> approaches 0 and 1, may be preferable to the behaviour of the horizonal adjustments. As we expect in this example the adjusted standard error is slightly greater than the unadjusted standard error.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(rat_res, <span class="dt">type =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">legend_pos =</span> <span class="st">"bottom"</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, 
-     <span class="dt">xlim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">1</span>))</code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">rat_res</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">4</span>, <span class="kw">legend_pos</span> <span class="kw">=</span> <span class="st">"bottom"</span>, <span class="kw">lwd</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">4</span>,
+     <span class="kw">xlim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>))</pre></body></html></div>
 <p><img src="chandwich-vignette_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;"></p>
 <div id="confidence-intervals" class="section level3">
 <h3 class="hasAnchor">
 <a href="#confidence-intervals" class="anchor"></a>Confidence intervals</h3>
 <p>The function <code>conf_intervals</code> calculates (profile, if necessary) likelihood-based confidence intervals for individual parameters, and also provides symmetric intervals based on a normal approximation to the sampling distribution of the estimator. <em>chandwich</em> also has a <code>confint</code> S3 method, which produces only the likelihood-based intervals.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 95% confidence intervals, unadjusted and vertically adjusted</span>
-<span class="kw"><a href="../reference/conf_intervals.html">conf_intervals</a></span>(rat_res, <span class="dt">type =</span> <span class="st">"none"</span>)
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co"># 95% confidence intervals, unadjusted and vertically adjusted</span>
+<span class="fu"><a href="../reference/conf_intervals.html">conf_intervals</a></span>(<span class="no">rat_res</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"none"</span>)
 <span class="co">#&gt; Waiting for profiling to be done...</span>
 <span class="co">#&gt; Model: binom_loglik </span>
 <span class="co">#&gt; </span>
@@ -146,7 +146,7 @@ rat_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adj
 <span class="co">#&gt; Likelihood-based:</span>
 <span class="co">#&gt;    lower   upper </span>
 <span class="co">#&gt; p  0.1372  0.1710</span>
-<span class="kw"><a href="../reference/conf_intervals.html">conf_intervals</a></span>(rat_res)
+<span class="fu"><a href="../reference/conf_intervals.html">conf_intervals</a></span>(<span class="no">rat_res</span>)
 <span class="co">#&gt; Waiting for profiling to be done...</span>
 <span class="co">#&gt; Model: binom_loglik </span>
 <span class="co">#&gt; </span>
@@ -159,10 +159,10 @@ rat_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adj
 <span class="co">#&gt; Likelihood-based:</span>
 <span class="co">#&gt;    lower   upper </span>
 <span class="co">#&gt; p  0.1292  0.1802</span>
-<span class="kw"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span>(rat_res)
+<span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span>(<span class="no">rat_res</span>)
 <span class="co">#&gt; Waiting for profiling to be done...</span>
 <span class="co">#&gt;       2.5 %    97.5 %</span>
-<span class="co">#&gt; p 0.1292236 0.1802395</span></code></pre></div>
+<span class="co">#&gt; p 0.1292236 0.1802395</span></pre></body></html></div>
 </div>
 </div>
 <div id="extreme-value-modelling-of-maximum-temperatures" class="section level2">
@@ -170,45 +170,45 @@ rat_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adj
 <a href="#extreme-value-modelling-of-maximum-temperatures" class="anchor"></a>Extreme value modelling of maximum temperatures</h2>
 <p>We consider the example presented in Section 5.2 of <span class="citation">Chandler and Bate (2007)</span>. The <code>owtemps</code> data contain annual maximum temperatures in Oxford and Worthing in the U.K. from 1901 to 1980, which are viewed as 80 clusters of independent observations from a bivariate distribution. We construct an independence loglikelihood based on generalized extreme value (GEV) models for the marginal distributions at Oxford and Worthing. The model is parameterized so that the marginal distribution at Oxford is GEV(<span class="math inline">\(\mu_0 + \mu_1, \sigma_0 + \sigma_1, \xi_0 + \xi_1\)</span>) and at Worthing is GEV(<span class="math inline">\(\mu_0 - \mu_1, \sigma_0 - \sigma_1, \xi_0 - \xi_1\)</span>), where GEV(<span class="math inline">\(\mu, \sigma, \xi\)</span>) denotes a GEV distribution with location <span class="math inline">\(\mu\)</span>, scale <span class="math inline">\(\sigma\)</span> and shape <span class="math inline">\(\xi\)</span>.</p>
 <p>We perform loglikelihood adjustment for the full six-parameter model and reproduce the relevant rows of Table 2 in <span class="citation">Chandler and Bate (2007)</span>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gev_loglik &lt;-<span class="st"> </span><span class="cf">function</span>(pars, data) {
-  o_pars &lt;-<span class="st"> </span>pars[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)] <span class="op">+</span><span class="st"> </span>pars[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>)]
-  w_pars &lt;-<span class="st"> </span>pars[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)] <span class="op">-</span><span class="st"> </span>pars[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>)]
-  <span class="cf">if</span> (o_pars[<span class="dv">2</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span>w_pars[<span class="dv">2</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>) <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="op">-</span><span class="ot">Inf</span>)
-  o_data &lt;-<span class="st"> </span>data[, <span class="st">"Oxford"</span>]
-  w_data &lt;-<span class="st"> </span>data[, <span class="st">"Worthing"</span>]
-  check &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>o_pars[<span class="dv">3</span>] <span class="op">*</span><span class="st"> </span>(o_data <span class="op">-</span><span class="st"> </span>o_pars[<span class="dv">1</span>]) <span class="op">/</span><span class="st"> </span>o_pars[<span class="dv">2</span>]
-  <span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/any.html">any</a></span>(check <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>)) <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="op">-</span><span class="ot">Inf</span>)
-  check &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>w_pars[<span class="dv">3</span>] <span class="op">*</span><span class="st"> </span>(w_data <span class="op">-</span><span class="st"> </span>w_pars[<span class="dv">1</span>]) <span class="op">/</span><span class="st"> </span>w_pars[<span class="dv">2</span>]
-  <span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/any.html">any</a></span>(check <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>)) <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="op">-</span><span class="ot">Inf</span>)
-  o_loglik &lt;-<span class="st"> </span><span class="kw"><a href="../reference/log_gev.html">log_gev</a></span>(o_data, o_pars[<span class="dv">1</span>], o_pars[<span class="dv">2</span>], o_pars[<span class="dv">3</span>])
-  w_loglik &lt;-<span class="st"> </span><span class="kw"><a href="../reference/log_gev.html">log_gev</a></span>(w_data, w_pars[<span class="dv">1</span>], w_pars[<span class="dv">2</span>], w_pars[<span class="dv">3</span>])
-  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(o_loglik <span class="op">+</span><span class="st"> </span>w_loglik)
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">gev_loglik</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">pars</span>, <span class="no">data</span>) {
+  <span class="no">o_pars</span> <span class="kw">&lt;-</span> <span class="no">pars</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span>)] + <span class="no">pars</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">6</span>)]
+  <span class="no">w_pars</span> <span class="kw">&lt;-</span> <span class="no">pars</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span>)] - <span class="no">pars</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">6</span>)]
+  <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span>(<span class="no">o_pars</span>[<span class="fl">2</span>] <span class="kw">&lt;=</span> <span class="fl">0</span> <span class="kw">|</span> <span class="no">w_pars</span>[<span class="fl">2</span>] <span class="kw">&lt;=</span> <span class="fl">0</span>)) <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(-<span class="fl">Inf</span>)
+  <span class="no">o_data</span> <span class="kw">&lt;-</span> <span class="no">data</span>[, <span class="st">"Oxford"</span>]
+  <span class="no">w_data</span> <span class="kw">&lt;-</span> <span class="no">data</span>[, <span class="st">"Worthing"</span>]
+  <span class="no">check</span> <span class="kw">&lt;-</span> <span class="fl">1</span> + <span class="no">o_pars</span>[<span class="fl">3</span>] * (<span class="no">o_data</span> - <span class="no">o_pars</span>[<span class="fl">1</span>]) / <span class="no">o_pars</span>[<span class="fl">2</span>]
+  <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span>(<span class="no">check</span> <span class="kw">&lt;=</span> <span class="fl">0</span>))) <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(-<span class="fl">Inf</span>)
+  <span class="no">check</span> <span class="kw">&lt;-</span> <span class="fl">1</span> + <span class="no">w_pars</span>[<span class="fl">3</span>] * (<span class="no">w_data</span> - <span class="no">w_pars</span>[<span class="fl">1</span>]) / <span class="no">w_pars</span>[<span class="fl">2</span>]
+  <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span>(<span class="no">check</span> <span class="kw">&lt;=</span> <span class="fl">0</span>))) <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(-<span class="fl">Inf</span>)
+  <span class="no">o_loglik</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/log_gev.html">log_gev</a></span>(<span class="no">o_data</span>, <span class="no">o_pars</span>[<span class="fl">1</span>], <span class="no">o_pars</span>[<span class="fl">2</span>], <span class="no">o_pars</span>[<span class="fl">3</span>])
+  <span class="no">w_loglik</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/log_gev.html">log_gev</a></span>(<span class="no">w_data</span>, <span class="no">w_pars</span>[<span class="fl">1</span>], <span class="no">w_pars</span>[<span class="fl">2</span>], <span class="no">w_pars</span>[<span class="fl">3</span>])
+  <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="no">o_loglik</span> + <span class="no">w_loglik</span>)
 }
 <span class="co"># Initial estimates (method of moments for the Gumbel case)</span>
-sigma &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="dv">6</span> <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/diag.html">diag</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/cor.html">var</a></span>(owtemps))) <span class="op">/</span><span class="st"> </span>pi)
-mu &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/colSums.html">colMeans</a></span>(owtemps) <span class="op">-</span><span class="st"> </span><span class="fl">0.57722</span> <span class="op">*</span><span class="st"> </span>sigma)
-init &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(mu), <span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/diff.html">diff</a></span>(mu) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>, <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(sigma), <span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/diff.html">diff</a></span>(sigma) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+<span class="no">sigma</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="fl">6</span> * <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span>(<span class="no">owtemps</span>))) / <span class="no">pi</span>)
+<span class="no">mu</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colMeans</a></span>(<span class="no">owtemps</span>) - <span class="fl">0.57722</span> * <span class="no">sigma</span>)
+<span class="no">init</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">mu</span>), -<span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span>(<span class="no">mu</span>) / <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">sigma</span>), -<span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span>(<span class="no">sigma</span>) / <span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">0</span>)
 
 <span class="co"># Perform the log-likelihood adjustment of the full model </span>
-par_names &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"mu[0]"</span>, <span class="st">"mu[1]"</span>, <span class="st">"sigma[0]"</span>, <span class="st">"sigma[1]"</span>, <span class="st">"xi[0]"</span>, <span class="st">"xi[1]"</span>)
-large &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(gev_loglik, <span class="dt">data =</span> owtemps, <span class="dt">init =</span> init,
-                       <span class="dt">par_names =</span> par_names)
+<span class="no">par_names</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"mu[0]"</span>, <span class="st">"mu[1]"</span>, <span class="st">"sigma[0]"</span>, <span class="st">"sigma[1]"</span>, <span class="st">"xi[0]"</span>, <span class="st">"xi[1]"</span>)
+<span class="no">large</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(<span class="no">gev_loglik</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">owtemps</span>, <span class="kw">init</span> <span class="kw">=</span> <span class="no">init</span>,
+                       <span class="kw">par_names</span> <span class="kw">=</span> <span class="no">par_names</span>)
 <span class="co"># Rows 1, 3 and 4 of Table 2 of Chandler and Bate (2007)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(large, <span class="st">"MLE"</span>), <span class="dv">4</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(<span class="no">large</span>, <span class="st">"MLE"</span>), <span class="fl">4</span>)
 <span class="co">#&gt;    mu[0]    mu[1] sigma[0] sigma[1]    xi[0]    xi[1] </span>
 <span class="co">#&gt;  81.1702   2.6684   3.7291   0.5312  -0.1989  -0.0883</span>
-<span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(large, <span class="st">"SE"</span>), <span class="dv">4</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(<span class="no">large</span>, <span class="st">"SE"</span>), <span class="fl">4</span>)
 <span class="co">#&gt;    mu[0]    mu[1] sigma[0] sigma[1]    xi[0]    xi[1] </span>
 <span class="co">#&gt;   0.3282   0.3282   0.2293   0.2293   0.0494   0.0494</span>
-<span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(large, <span class="st">"adjSE"</span>), <span class="dv">4</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(<span class="no">large</span>, <span class="st">"adjSE"</span>), <span class="fl">4</span>)
 <span class="co">#&gt;    mu[0]    mu[1] sigma[0] sigma[1]    xi[0]    xi[1] </span>
-<span class="co">#&gt;   0.4036   0.2128   0.2426   0.1911   0.0394   0.0362</span></code></pre></div>
+<span class="co">#&gt;   0.4036   0.2128   0.2426   0.1911   0.0394   0.0362</span></pre></body></html></div>
 <div id="confidence-intervals-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#confidence-intervals-1" class="anchor"></a>Confidence intervals</h3>
 <p>We use <code>conf_intervals</code> to calculate profile likelihood-based confidence intervals for the parameters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 95% confidence intervals, vertically adjusted</span>
-<span class="kw"><a href="../reference/conf_intervals.html">conf_intervals</a></span>(large)
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># 95% confidence intervals, vertically adjusted</span>
+<span class="fu"><a href="../reference/conf_intervals.html">conf_intervals</a></span>(<span class="no">large</span>)
 <span class="co">#&gt; Waiting for profiling to be done...</span>
 <span class="co">#&gt; Model: gev_loglik </span>
 <span class="co">#&gt; </span>
@@ -230,23 +230,23 @@ large &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adjus
 <span class="co">#&gt; sigma[0]   3.29922   4.25998</span>
 <span class="co">#&gt; sigma[1]   0.16118   0.94338</span>
 <span class="co">#&gt; xi[0]     -0.27410  -0.11572</span>
-<span class="co">#&gt; xi[1]     -0.16519  -0.02002</span></code></pre></div>
+<span class="co">#&gt; xi[1]     -0.16519  -0.02002</span></pre></body></html></div>
 </div>
 <div id="confidence-regions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#confidence-regions" class="anchor"></a>Confidence regions</h3>
 <p>We reproduce Figure 4(b) of <span class="citation">Chandler and Bate (2007)</span>, adding a 95% confidence region for the vertical adjustment.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">which_pars &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"sigma[0]"</span>, <span class="st">"sigma[1]"</span>)
-gev_none &lt;-<span class="st"> </span><span class="kw"><a href="../reference/conf_region.html">conf_region</a></span>(large, <span class="dt">which_pars =</span> which_pars, <span class="dt">type =</span> <span class="st">"none"</span>)
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">which_pars</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"sigma[0]"</span>, <span class="st">"sigma[1]"</span>)
+<span class="no">gev_none</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/conf_region.html">conf_region</a></span>(<span class="no">large</span>, <span class="kw">which_pars</span> <span class="kw">=</span> <span class="no">which_pars</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"none"</span>)
 <span class="co">#&gt; Waiting for profiling to be done...</span>
-gev_vertical &lt;-<span class="st"> </span><span class="kw"><a href="../reference/conf_region.html">conf_region</a></span>(large, <span class="dt">which_pars =</span> which_pars)
+<span class="no">gev_vertical</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/conf_region.html">conf_region</a></span>(<span class="no">large</span>, <span class="kw">which_pars</span> <span class="kw">=</span> <span class="no">which_pars</span>)
 <span class="co">#&gt; Waiting for profiling to be done...</span>
-gev_cholesky &lt;-<span class="st"> </span><span class="kw"><a href="../reference/conf_region.html">conf_region</a></span>(large, <span class="dt">which_pars =</span> which_pars, <span class="dt">type =</span> <span class="st">"cholesky"</span>)
+<span class="no">gev_cholesky</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/conf_region.html">conf_region</a></span>(<span class="no">large</span>, <span class="kw">which_pars</span> <span class="kw">=</span> <span class="no">which_pars</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"cholesky"</span>)
 <span class="co">#&gt; Waiting for profiling to be done...</span>
-gev_spectral &lt;-<span class="st"> </span><span class="kw"><a href="../reference/conf_region.html">conf_region</a></span>(large, <span class="dt">which_pars =</span> which_pars, <span class="dt">type =</span> <span class="st">"spectral"</span>)
+<span class="no">gev_spectral</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/conf_region.html">conf_region</a></span>(<span class="no">large</span>, <span class="kw">which_pars</span> <span class="kw">=</span> <span class="no">which_pars</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"spectral"</span>)
 <span class="co">#&gt; Waiting for profiling to be done...</span>
-<span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(gev_none, gev_cholesky, gev_vertical, gev_spectral, <span class="dt">lwd =</span> <span class="dv">2</span>,
-     <span class="dt">xlim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3.0</span>, <span class="fl">4.5</span>), <span class="dt">ylim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">0.1</span>, <span class="fl">1.25</span>))</code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">gev_none</span>, <span class="no">gev_cholesky</span>, <span class="no">gev_vertical</span>, <span class="no">gev_spectral</span>, <span class="kw">lwd</span> <span class="kw">=</span> <span class="fl">2</span>,
+     <span class="kw">xlim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3.0</span>, <span class="fl">4.5</span>), <span class="kw">ylim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">0.1</span>, <span class="fl">1.25</span>))</pre></body></html></div>
 <p><img src="chandwich-vignette_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>The 95% contours of the profile adjusted loglikelihoods are similar.</p>
 </div>
@@ -254,32 +254,32 @@ gev_spectral &lt;-<span class="st"> </span><span class="kw"><a href="../referenc
 <h3 class="hasAnchor">
 <a href="#comparing-nested-models" class="anchor"></a>Comparing nested models</h3>
 <p>Suppose that we wish to test the null hypothesis that Oxford and Worthing share a common GEV shape parameter, that is, that <span class="math inline">\(\xi_1 = 0\)</span>. We call <code>adjust_loglik</code> again using the argument <code>fixed_pars</code> to fix <span class="math inline">\(\xi_1\)</span> to zero and perform loglikelihood adjustment under the reduced model. Then we use <code>compare_models</code> to carry out an adjusted likelihood ratio test. If <code>approx = FALSE</code> (the default) then equation (17) in Section 3.3 of <span class="citation">Chandler and Bate (2007)</span> is used. If <code>approx = TRUE</code> then the approximation detailed in equations (18)-(20) is used.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">medium &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(<span class="dt">larger =</span> large, <span class="dt">fixed_pars =</span> <span class="st">"xi[1]"</span>)
-<span class="kw"><a href="../reference/compare_models.html">compare_models</a></span>(large, medium)
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">medium</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(<span class="kw">larger</span> <span class="kw">=</span> <span class="no">large</span>, <span class="kw">fixed_pars</span> <span class="kw">=</span> <span class="st">"xi[1]"</span>)
+<span class="fu"><a href="../reference/compare_models.html">compare_models</a></span>(<span class="no">large</span>, <span class="no">medium</span>)
 <span class="co">#&gt; Model: gev_loglik </span>
 <span class="co">#&gt; H0: "xi[1]" = 0 </span>
 <span class="co">#&gt; HA: unrestricted model </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; test statistic = 6.356, df = 1, p-value = 0.0117</span>
-<span class="kw"><a href="../reference/compare_models.html">compare_models</a></span>(large, medium, <span class="dt">approx =</span> <span class="ot">TRUE</span>)
+<span class="fu"><a href="../reference/compare_models.html">compare_models</a></span>(<span class="no">large</span>, <span class="no">medium</span>, <span class="kw">approx</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="co">#&gt; Model: gev_loglik </span>
 <span class="co">#&gt; H0: "xi[1]" = 0 </span>
 <span class="co">#&gt; HA: unrestricted model </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Using using approximation (18) of Chandler and Bate (2007): </span>
-<span class="co">#&gt; test statistic = 5.245, df = 1, p-value = 0.022</span></code></pre></div>
+<span class="co">#&gt; test statistic = 5.245, df = 1, p-value = 0.022</span></pre></body></html></div>
 <p>Alternatively, we can call <code>compare_models</code> directly without first creating <code>medium</code>, using the argument <code>fixed_pars</code> to fix <span class="math inline">\(\xi_1\)</span> to zero.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/compare_models.html">compare_models</a></span>(large, <span class="dt">fixed_pars =</span> <span class="st">"xi[1]"</span>)
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/compare_models.html">compare_models</a></span>(<span class="no">large</span>, <span class="kw">fixed_pars</span> <span class="kw">=</span> <span class="st">"xi[1]"</span>)
 <span class="co">#&gt; Model: gev_loglik </span>
 <span class="co">#&gt; H0: "xi[1]" = 0 </span>
 <span class="co">#&gt; HA: unrestricted model </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; test statistic = 6.356, df = 1, p-value = 0.0117</span></code></pre></div>
+<span class="co">#&gt; test statistic = 6.356, df = 1, p-value = 0.0117</span></pre></body></html></div>
 <p>In this case whether or not we use the approximate approach has a non-negligible effect on the <span class="math inline">\(p\)</span>-value but we would probably reject the null in either case.</p>
 <p><em>chandwich</em> also has an <code>anova</code> S3 method to compare nested models of class <code>"chandwich"</code>. We perform loglikelihood adjustment of the models in which Oxford and Worthing share common GEV scale and shape parameters (<code>small</code>) and share all GEV parameters (<code>tiny</code>). Then we perform pairwise comparisons of neighbouring nest models using <code><a href="https://rdrr.io/r/stats/anova.html">anova()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">small &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(<span class="dt">larger =</span> large, <span class="dt">fixed_pars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"sigma[1]"</span>, <span class="st">"xi[1]"</span>))
-tiny &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(<span class="dt">larger =</span> large, <span class="dt">fixed_pars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"mu[1]"</span>, <span class="st">"sigma[1]"</span>, <span class="st">"xi[1]"</span>))
-<span class="kw"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span>(large, medium, small, tiny)
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">small</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(<span class="kw">larger</span> <span class="kw">=</span> <span class="no">large</span>, <span class="kw">fixed_pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"sigma[1]"</span>, <span class="st">"xi[1]"</span>))
+<span class="no">tiny</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(<span class="kw">larger</span> <span class="kw">=</span> <span class="no">large</span>, <span class="kw">fixed_pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"mu[1]"</span>, <span class="st">"sigma[1]"</span>, <span class="st">"xi[1]"</span>))
+<span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span>(<span class="no">large</span>, <span class="no">medium</span>, <span class="no">small</span>, <span class="no">tiny</span>)
 <span class="co">#&gt; Analysis of (Adjusted) Deviance Table</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;        Model.Df Df  ALRTS Pr(&gt;ALRTS)    </span>
@@ -289,7 +289,7 @@ tiny &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adjust
 <span class="co">#&gt; tiny          3  1 81.714    &lt; 2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
-<span class="kw"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span>(large, medium, small, tiny, <span class="dt">approx =</span> <span class="ot">TRUE</span>)
+<span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span>(<span class="no">large</span>, <span class="no">medium</span>, <span class="no">small</span>, <span class="no">tiny</span>, <span class="kw">approx</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="co">#&gt; Analysis of (Adjusted) Deviance Table</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;        Model.Df Df   ALRTS Pr(&gt;ALRTS)    </span>
@@ -298,41 +298,41 @@ tiny &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adjust
 <span class="co">#&gt; small         4  1   4.184    0.04081 *  </span>
 <span class="co">#&gt; tiny          3  1 112.822    &lt; 2e-16 ***</span>
 <span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
+<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></pre></body></html></div>
 </div>
 </div>
 <div id="misspecified-poisson-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#misspecified-poisson-model" class="anchor"></a>Misspecified Poisson model</h2>
 <p>We repeat part of an example from Section 5.1 of the <a href="https://CRAN.R-project.org/package=sandwich">Object-Oriented Computation of Sandwich Estimators</a> vignette of the <em>sandwich</em> package <span class="citation">(Zeileis 2006)</span>, using the same simulated dataset. This example illustrates that sandwich estimators may result in inferences that are robust against certain types model misspecification. We simulate data from a log-linear negative binomial regression model and fit a misspecified log-quadratic Poisson regression model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">123</span>)
-x &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">250</span>)
-y &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/NegBinomial.html">rnbinom</a></span>(<span class="dv">250</span>, <span class="dt">mu =</span> <span class="kw"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x), <span class="dt">size =</span> <span class="dv">1</span>)
-fm_pois &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span>(x<span class="op">^</span><span class="dv">2</span>), <span class="dt">family =</span> poisson)
-<span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(fm_pois)<span class="op">$</span>coefficients, <span class="dv">3</span>)
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
+<span class="no">x</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">250</span>)
+<span class="no">y</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/NegBinomial.html">rnbinom</a></span>(<span class="fl">250</span>, <span class="kw">mu</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fl">1</span> + <span class="no">x</span>), <span class="kw">size</span> <span class="kw">=</span> <span class="fl">1</span>)
+<span class="no">fm_pois</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span>(<span class="no">y</span> ~ <span class="no">x</span> + <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span>(<span class="no">x</span>^<span class="fl">2</span>), <span class="kw">family</span> <span class="kw">=</span> <span class="no">poisson</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">fm_pois</span>)$<span class="no">coefficients</span>, <span class="fl">3</span>)
 <span class="co">#&gt;             Estimate Std. Error z value Pr(&gt;|z|)</span>
 <span class="co">#&gt; (Intercept)    1.063      0.041  25.709    0.000</span>
 <span class="co">#&gt; x              0.996      0.054  18.606    0.000</span>
-<span class="co">#&gt; I(x^2)        -0.049      0.023  -2.122    0.034</span></code></pre></div>
+<span class="co">#&gt; I(x^2)        -0.049      0.023  -2.122    0.034</span></pre></body></html></div>
 <p>Although the conditional mean of <code>y</code> is linear in <code>x</code> overdispersion of the responses relative to the Poisson distribution contributes to the spurious significance of the quadratic term. We adjust the independence log-likelihood, with each observation forming its own cluster.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pois_glm_loglik &lt;-<span class="st"> </span><span class="cf">function</span>(pars, y, x) {
-  log_mu &lt;-<span class="st"> </span>pars[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>pars[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>pars[<span class="dv">3</span>] <span class="op">*</span><span class="st"> </span>x <span class="op">^</span><span class="st"> </span><span class="dv">2</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/Poisson.html">dpois</a></span>(y, <span class="dt">lambda =</span> <span class="kw"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(log_mu), <span class="dt">log =</span> <span class="ot">TRUE</span>))
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">pois_glm_loglik</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">pars</span>, <span class="no">y</span>, <span class="no">x</span>) {
+  <span class="no">log_mu</span> <span class="kw">&lt;-</span> <span class="no">pars</span>[<span class="fl">1</span>] + <span class="no">pars</span>[<span class="fl">2</span>] * <span class="no">x</span> + <span class="no">pars</span>[<span class="fl">3</span>] * <span class="no">x</span> ^ <span class="fl">2</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">dpois</a></span>(<span class="no">y</span>, <span class="kw">lambda</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">log_mu</span>), <span class="kw">log</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
 }
-pars &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"alpha"</span>, <span class="st">"beta"</span>, <span class="st">"gamma"</span>)
-pois_quad &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(pois_glm_loglik, <span class="dt">y =</span> y, <span class="dt">x =</span> x, <span class="dt">par_names =</span> pars)
-<span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(pois_quad)
+<span class="no">pars</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"alpha"</span>, <span class="st">"beta"</span>, <span class="st">"gamma"</span>)
+<span class="no">pois_quad</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(<span class="no">pois_glm_loglik</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="no">x</span>, <span class="kw">par_names</span> <span class="kw">=</span> <span class="no">pars</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">pois_quad</span>)
 <span class="co">#&gt;            MLE      SE adj. SE</span>
 <span class="co">#&gt; alpha  1.06300 0.04136 0.08378</span>
 <span class="co">#&gt; beta   0.99610 0.05354 0.10520</span>
-<span class="co">#&gt; gamma -0.04913 0.02315 0.03628</span></code></pre></div>
+<span class="co">#&gt; gamma -0.04913 0.02315 0.03628</span></pre></body></html></div>
 <p>The adjusted standard errors agree with those in the <em>sandwich</em> vignette and are sufficiently larger than the unadjusted standard errors to alleviate the spurious significance of the quadratic term: the <span class="math inline">\(p\)</span>-value changes from 0.034 to 0.18. For full details please see the <em>sandwich</em> vignette.</p>
 <div id="confidence-intervals-2" class="section level3">
 <h3 class="hasAnchor">
 <a href="#confidence-intervals-2" class="anchor"></a>Confidence intervals</h3>
 <p>We use <code>conf_intervals</code> to calculate profile likelihood-based confidence intervals for the parameters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 95% confidence intervals, vertically adjusted</span>
-<span class="kw"><a href="../reference/conf_intervals.html">conf_intervals</a></span>(pois_quad)
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="co"># 95% confidence intervals, vertically adjusted</span>
+<span class="fu"><a href="../reference/conf_intervals.html">conf_intervals</a></span>(<span class="no">pois_quad</span>)
 <span class="co">#&gt; Waiting for profiling to be done...</span>
 <span class="co">#&gt; Model: pois_glm_loglik </span>
 <span class="co">#&gt; </span>
@@ -348,37 +348,37 @@ pois_quad &lt;-<span class="st"> </span><span class="kw"><a href="../reference/a
 <span class="co">#&gt;        lower    upper  </span>
 <span class="co">#&gt; alpha   0.8954   1.2232</span>
 <span class="co">#&gt; beta    0.7877   1.1991</span>
-<span class="co">#&gt; gamma  -0.1198   0.0222</span></code></pre></div>
+<span class="co">#&gt; gamma  -0.1198   0.0222</span></pre></body></html></div>
 </div>
 <div id="confidence-regions-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#confidence-regions-1" class="anchor"></a>Confidence regions</h3>
 <p>We call <code>adjust_loglik</code> again to fix the quadratic coefficient at zero, producing a model with two free parameters, and use <code>conf_region</code> to calculate the vertically adjusted and unadjusted loglikelihoods over a grid for plotting. The plot below illustrates the way in which the independence loglikelihood for <span class="math inline">\((\alpha, \beta)\)</span> has been scaled.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pois_lin &lt;-<span class="st"> </span><span class="kw"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(<span class="dt">larger =</span> pois_quad, <span class="dt">fixed_pars =</span> <span class="st">"gamma"</span>)
-pois_vertical &lt;-<span class="st"> </span><span class="kw"><a href="../reference/conf_region.html">conf_region</a></span>(pois_lin)
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">pois_lin</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/adjust_loglik.html">adjust_loglik</a></span>(<span class="kw">larger</span> <span class="kw">=</span> <span class="no">pois_quad</span>, <span class="kw">fixed_pars</span> <span class="kw">=</span> <span class="st">"gamma"</span>)
+<span class="no">pois_vertical</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/conf_region.html">conf_region</a></span>(<span class="no">pois_lin</span>)
 <span class="co">#&gt; Waiting for profiling to be done...</span>
-pois_none &lt;-<span class="st"> </span><span class="kw"><a href="../reference/conf_region.html">conf_region</a></span>(pois_lin, <span class="dt">type =</span> <span class="st">"none"</span>)
+<span class="no">pois_none</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/conf_region.html">conf_region</a></span>(<span class="no">pois_lin</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"none"</span>)
 <span class="co">#&gt; Waiting for profiling to be done...</span>
-<span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(pois_none, pois_vertical, <span class="dt">conf =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">95</span>, <span class="dv">99</span>), <span class="dt">col =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">1</span>)</code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pois_none</span>, <span class="no">pois_vertical</span>, <span class="kw">conf</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">50</span>, <span class="fl">75</span>, <span class="fl">95</span>, <span class="fl">99</span>), <span class="kw">col</span> <span class="kw">=</span> <span class="fl">2</span>:<span class="fl">1</span>, <span class="kw">lwd</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">lty</span> <span class="kw">=</span> <span class="fl">1</span>)</pre></body></html></div>
 <p><img src="chandwich-vignette_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="comparing-nested-models-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#comparing-nested-models-1" class="anchor"></a>Comparing nested models</h3>
 <p>We could examine the significance of the quadratic term using an adjusted likelihood ratio test.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/compare_models.html">compare_models</a></span>(pois_quad, pois_lin)
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="../reference/compare_models.html">compare_models</a></span>(<span class="no">pois_quad</span>, <span class="no">pois_lin</span>)
 <span class="co">#&gt; Model: pois_glm_loglik </span>
 <span class="co">#&gt; H0: "gamma" = 0 </span>
 <span class="co">#&gt; HA: unrestricted model </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; test statistic = 1.82, df = 1, p-value = 0.1773</span>
-<span class="kw"><a href="../reference/compare_models.html">compare_models</a></span>(pois_quad, pois_lin, <span class="dt">approx =</span> <span class="ot">TRUE</span>)
+<span class="fu"><a href="../reference/compare_models.html">compare_models</a></span>(<span class="no">pois_quad</span>, <span class="no">pois_lin</span>, <span class="kw">approx</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="co">#&gt; Model: pois_glm_loglik </span>
 <span class="co">#&gt; H0: "gamma" = 0 </span>
 <span class="co">#&gt; HA: unrestricted model </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Using using approximation (18) of Chandler and Bate (2007): </span>
-<span class="co">#&gt; test statistic = 1.921, df = 1, p-value = 0.1658</span></code></pre></div>
+<span class="co">#&gt; test statistic = 1.921, df = 1, p-value = 0.1658</span></pre></body></html></div>
 <p>The <span class="math inline">\(p\)</span>-value based on equation (17) of <span class="citation">Chandler and Bate (2007)</span> agrees with the value in the <em>sandwich</em> vignette, which is based on a Wald test, and the <span class="math inline">\(p\)</span>-value based on equations (18)-(20) is only slightly different.</p>
 </div>
 </div>
@@ -389,37 +389,29 @@ pois_none &lt;-<span class="st"> </span><span class="kw"><a href="../reference/c
    MathJax.Hub.Config({  "HTML-CSS": { minScaleAdjust: 125, availableFonts: [] }  });
 </script><div id="refs" class="references">
 <div id="ref-CB2007">
-<p>Chandler, R. E., and S. Bate. 2007. “Inference for Clustered Data Using the Independence Loglikelihood.” <em>Biometrika</em> 94 (1): 167–83. doi:<a href="https://doi.org/10.1093/biomet/asm015">10.1093/biomet/asm015</a>.</p>
+<p>Chandler, R. E., and S. Bate. 2007. “Inference for Clustered Data Using the Independence Loglikelihood.” <em>Biometrika</em> 94 (1): 167–83. <a href="https://doi.org/10.1093/biomet/asm015">https://doi.org/10.1093/biomet/asm015</a>.</p>
 </div>
 <div id="ref-Davison2003">
-<p>Davison, A. C. 2003. <em>Statistical Models</em>. Cambridge Series in Statistical and Probabilistic Mathematics. Cambridge University Press. doi:<a href="https://doi.org/10.1017/CBO9780511815850">10.1017/CBO9780511815850</a>.</p>
+<p>Davison, A. C. 2003. <em>Statistical Models</em>. Cambridge Series in Statistical and Probabilistic Mathematics. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511815850">https://doi.org/10.1017/CBO9780511815850</a>.</p>
 </div>
 <div id="ref-BDA2014">
-<p>Gelman, A., J. B. Carlin, H. S. Stern, D. B. Dunson, A. Vehtari, and D. B. Rubin. 2014. <em>Bayesian Data Analysis</em>. Third. Florida, USA: Chapman &amp; Hall / CRC. <a href="http://www.stat.columbia.edu/~gelman/book/" class="uri">http://www.stat.columbia.edu/~gelman/book/</a>.</p>
+<p>Gelman, A., J. B. Carlin, H. S. Stern, D. B. Dunson, A. Vehtari, and D. B. Rubin. 2014. <em>Bayesian Data Analysis</em>. Third. Florida, USA: Chapman &amp; Hall / CRC. <a href="http://www.stat.columbia.edu/~gelman/book/">http://www.stat.columbia.edu/~gelman/book/</a>.</p>
 </div>
 <div id="ref-Tarone1982">
-<p>Tarone, Robert E. 1982. “The Use of Historical Control Information in Testing for a Trend in Proportions.” <em>Biometrics</em> 38 (1). [Wiley, International Biometric Society]: 215–20. <a href="https://www.jstor.org/stable/2530304" class="uri">https://www.jstor.org/stable/2530304</a>.</p>
+<p>Tarone, Robert E. 1982. “The Use of Historical Control Information in Testing for a Trend in Proportions.” <em>Biometrics</em> 38 (1): 215–20.</p>
 </div>
 <div id="ref-sandwich">
-<p>Zeileis, Achim. 2006. “Object-Oriented Computation of Sandwich Estimators.” <em>Journal of Statistical Software</em> 16 (9): 1–16. <a href="http://www.jstatsoft.org/v16/i09/." class="uri">http://www.jstatsoft.org/v16/i09/.</a></p>
+<p>Zeileis, Achim. 2006. “Object-Oriented Computation of Sandwich Estimators.” <em>Journal of Statistical Software</em> 16 (9): 1–16. <a href="https://www.jstatsoft.org/v16/i09/.">https://www.jstatsoft.org/v16/i09/.</a></p>
 </div>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#loglikelihood-adjustment-using-the-adjust_loglik-function">Loglikelihood adjustment using the adjust_loglik function</a></li>
-      <li><a href="#binomial-model">Binomial model</a></li>
-      <li><a href="#extreme-value-modelling-of-maximum-temperatures">Extreme value modelling of maximum temperatures</a></li>
-      <li><a href="#misspecified-poisson-model">Misspecified Poisson model</a></li>
-      <li><a href="#references">References</a></li>
-      </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -430,7 +422,7 @@ pois_none &lt;-<span class="st"> </span><span class="kw"><a href="../reference/c
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

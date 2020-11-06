@@ -8,23 +8,29 @@
 
 <title>Loglikelihood adjustment using the sandwich estimator — adjust_loglik • chandwich</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,8 +38,8 @@
 
 
 
-<meta property="og:title" content="Loglikelihood adjustment using the sandwich estimator — adjust_loglik" />
 
+<meta property="og:title" content="Loglikelihood adjustment using the sandwich estimator — adjust_loglik" />
 <meta property="og:description" content="Performs adjustments of a user-supplied independence loglikelihood for the
 presence of cluster dependence, following
 Chandler and Bate (2007).
@@ -41,7 +47,7 @@ The user provides a function that returns a vector of observation-specific
 loglikelihood contributions and a vector that indicates cluster membership.
 The loglikelihood of a sub-model can be adjusted by fixing a set of
 parameters at particular values." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -58,7 +64,7 @@ parameters at particular values." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -103,10 +109,9 @@ parameters at particular values." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/paulnorthrop/chandwich">
+  <a href="https://github.com/paulnorthrop/chandwich/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -130,7 +135,6 @@ parameters at particular values." />
     </div>
 
     <div class="ref-description">
-    
     <p>Performs adjustments of a user-supplied independence loglikelihood for the
 presence of cluster dependence, following
 <a href='http://dx.doi.org/10.1093/biomet/asm015'>Chandler and Bate (2007)</a>.
@@ -138,14 +142,26 @@ The user provides a function that returns a vector of observation-specific
 loglikelihood contributions and a vector that indicates cluster membership.
 The loglikelihood of a sub-model can be adjusted by fixing a set of
 parameters at particular values.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>adjust_loglik</span>(<span class='kw'>loglik</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>cluster</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>init</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>par_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fixed_pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fixed_at</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>larger</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alg_deriv</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alg_hess</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>mle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>H</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>V</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>adjust_loglik</span>(
+  <span class='kw'>loglik</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>cluster</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>p</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>init</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>par_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fixed_pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fixed_at</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>larger</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>alg_deriv</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>alg_hess</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>mle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>H</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>V</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -287,7 +303,7 @@ If <code>mle</code> is supplied then it overrides <code>init</code>.</p></td>
   <code>alg_hess</code> will produce an error.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A function of class <code>"chandwich"</code> to evaluate an adjusted
@@ -350,7 +366,6 @@ If <code>mle</code> is supplied then it overrides <code>init</code>.</p></td>
   To view an individual attribute called att_name use
   attr(x, "att_name") or attributes(x)$att_name.
 
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Three adjustments to the independence loglikelihood described in
@@ -363,13 +378,11 @@ If <code>mle</code> is supplied then it overrides <code>init</code>.</p></td>
   with respect to the model parameters.  These are estimated using
   <code><a href='https://rdrr.io/pkg/numDeriv/man/jacobian.html'>jacobian</a></code> and <code><a href='https://rdrr.io/r/stats/optim.html'>optimHess</a></code>
   unless <code>alg_deriv</code> and/or <code>alg_hess</code> are supplied.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Chandler, R. E. and Bate, S. (2007). Inference for clustered
   data using the independence loglikelihood. <em>Biometrika</em>,
   <strong>94</strong>(1), 167-183. <a href='http://dx.doi.org/10.1093/biomet/asm015'>http://dx.doi.org/10.1093/biomet/asm015</a></p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='summary.chandwich.html'>summary.chandwich</a></code> for maximum likelihood estimates
@@ -385,7 +398,6 @@ If <code>mle</code> is supplied then it overrides <code>init</code>.</p></td>
   a pair of parameters.</p>
 <p><code><a href='compare_models.html'>compare_models</a></code> to compare nested models using an
   (adjusted) likelihood ratio test.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># ------------------------- Binomial model, rats data ----------------------</span>
@@ -400,7 +412,7 @@ If <code>mle</code> is supplied then it overrides <code>init</code>.</p></td>
 <span class='no'>rat_res</span> <span class='kw'>&lt;-</span> <span class='fu'>adjust_loglik</span>(<span class='kw'>loglik</span> <span class='kw'>=</span> <span class='no'>binom_loglik</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>rats</span>, <span class='kw'>par_names</span> <span class='kw'>=</span> <span class='st'>"p"</span>)
 
 <span class='co'># Plot the loglikelihoods</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>rat_res</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>legend_pos</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>)</div><div class='input'><span class='co'># MLE, SEs and adjusted SEs</span>
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>rat_res</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>legend_pos</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>)</div><div class='input'><span class='co'># MLE, SEs and adjusted SEs</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>rat_res</span>)</div><div class='output co'>#&gt;      MLE       SE adj. SE
 #&gt; p 0.1535 0.008645 0.01305</div><div class='input'>
 <span class='co'># -------------------------- GEV model, owtemps data -----------------------</span>
@@ -410,13 +422,13 @@ If <code>mle</code> is supplied then it overrides <code>init</code>.</p></td>
 <span class='no'>gev_loglik</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>pars</span>, <span class='no'>data</span>) {
   <span class='no'>o_pars</span> <span class='kw'>&lt;-</span> <span class='no'>pars</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span>)] + <span class='no'>pars</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>6</span>)]
   <span class='no'>w_pars</span> <span class='kw'>&lt;-</span> <span class='no'>pars</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span>)] - <span class='no'>pars</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>6</span>)]
-  <span class='kw'>if</span> (<span class='no'>o_pars</span>[<span class='fl'>2</span>] <span class='kw'>&lt;=</span> <span class='fl'>0</span> <span class='kw'>|</span> <span class='no'>w_pars</span>[<span class='fl'>2</span>] <span class='kw'>&lt;=</span> <span class='fl'>0</span>) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(-<span class='fl'>Inf</span>)
+  <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/Logic.html'>isTRUE</a></span>(<span class='no'>o_pars</span>[<span class='fl'>2</span>] <span class='kw'>&lt;=</span> <span class='fl'>0</span> <span class='kw'>|</span> <span class='no'>w_pars</span>[<span class='fl'>2</span>] <span class='kw'>&lt;=</span> <span class='fl'>0</span>)) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(-<span class='fl'>Inf</span>)
   <span class='no'>o_data</span> <span class='kw'>&lt;-</span> <span class='no'>data</span>[, <span class='st'>"Oxford"</span>]
   <span class='no'>w_data</span> <span class='kw'>&lt;-</span> <span class='no'>data</span>[, <span class='st'>"Worthing"</span>]
   <span class='no'>check</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span> + <span class='no'>o_pars</span>[<span class='fl'>3</span>] * (<span class='no'>o_data</span> - <span class='no'>o_pars</span>[<span class='fl'>1</span>]) / <span class='no'>o_pars</span>[<span class='fl'>2</span>]
-  <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/any.html'>any</a></span>(<span class='no'>check</span> <span class='kw'>&lt;=</span> <span class='fl'>0</span>)) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(-<span class='fl'>Inf</span>)
+  <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/Logic.html'>isTRUE</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/any.html'>any</a></span>(<span class='no'>check</span> <span class='kw'>&lt;=</span> <span class='fl'>0</span>))) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(-<span class='fl'>Inf</span>)
   <span class='no'>check</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span> + <span class='no'>w_pars</span>[<span class='fl'>3</span>] * (<span class='no'>w_data</span> - <span class='no'>w_pars</span>[<span class='fl'>1</span>]) / <span class='no'>w_pars</span>[<span class='fl'>2</span>]
-  <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/any.html'>any</a></span>(<span class='no'>check</span> <span class='kw'>&lt;=</span> <span class='fl'>0</span>)) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(-<span class='fl'>Inf</span>)
+  <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/Logic.html'>isTRUE</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/any.html'>any</a></span>(<span class='no'>check</span> <span class='kw'>&lt;=</span> <span class='fl'>0</span>))) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(-<span class='fl'>Inf</span>)
   <span class='no'>o_loglik</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='log_gev.html'>log_gev</a></span>(<span class='no'>o_data</span>, <span class='no'>o_pars</span>[<span class='fl'>1</span>], <span class='no'>o_pars</span>[<span class='fl'>2</span>], <span class='no'>o_pars</span>[<span class='fl'>3</span>])
   <span class='no'>w_loglik</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='log_gev.html'>log_gev</a></span>(<span class='no'>w_data</span>, <span class='no'>w_pars</span>[<span class='fl'>1</span>], <span class='no'>w_pars</span>[<span class='fl'>2</span>], <span class='no'>w_pars</span>[<span class='fl'>3</span>])
   <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>o_loglik</span> + <span class='no'>w_loglik</span>)
@@ -505,22 +517,10 @@ If <code>mle</code> is supplied then it overrides <code>init</code>.</p></td>
                              <span class='kw'>V</span> <span class='kw'>=</span> <span class='kw pkg'>sandwich</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sandwich/man/meat.html'>meat</a></span>(<span class='no'>fm_pois</span>) * <span class='no'>n_obs</span>)
 }</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -531,7 +531,7 @@ If <code>mle</code> is supplied then it overrides <code>init</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
