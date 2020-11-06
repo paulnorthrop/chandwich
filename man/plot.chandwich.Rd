@@ -4,8 +4,7 @@
 \alias{plot.chandwich}
 \title{Plot diagnostics for a chandwich object}
 \usage{
-\method{plot}{chandwich}(x, y, type = 1, legend = length(type) > 1,
-  legend_pos = "topleft", ...)
+\method{plot}{chandwich}(x, y, type = 1, legend = length(type) > 1, legend_pos = "topleft", ...)
 }
 \arguments{
 \item{x}{an object of class "chandwich", a result of a call to

@@ -4,9 +4,16 @@
 \alias{conf_intervals}
 \title{Confidence intervals}
 \usage{
-conf_intervals(object, which_pars = NULL, init = NULL, conf = 95,
-  mult = 1.5, num = 10, type = c("vertical", "cholesky", "spectral",
-  "none"), ...)
+conf_intervals(
+  object,
+  which_pars = NULL,
+  init = NULL,
+  conf = 95,
+  mult = 1.5,
+  num = 10,
+  type = c("vertical", "cholesky", "spectral", "none"),
+  ...
+)
 }
 \arguments{
 \item{object}{An object of class \code{"chandwich"} returned by

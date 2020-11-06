@@ -4,8 +4,7 @@
 \alias{print.compmod}
 \title{Print method for objects of class "compmod"}
 \usage{
-\method{print}{compmod}(x, digits = max(3L, getOption("digits") - 3L),
-  ...)
+\method{print}{compmod}(x, digits = max(3L, getOption("digits") - 3L), ...)
 }
 \arguments{
 \item{x}{an object of class "compmod", a result of a call to

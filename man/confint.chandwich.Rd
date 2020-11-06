@@ -4,8 +4,13 @@
 \alias{confint.chandwich}
 \title{Confidence intervals for model parameters}
 \usage{
-\method{confint}{chandwich}(object, parm, level = 0.95,
-  type = c("vertical", "cholesky", "spectral", "none"), ...)
+\method{confint}{chandwich}(
+  object,
+  parm,
+  level = 0.95,
+  type = c("vertical", "cholesky", "spectral", "none"),
+  ...
+)
 }
 \arguments{
 \item{object}{An object of class \code{"chandwich"}, returned by

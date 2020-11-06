@@ -4,8 +4,7 @@
 \alias{print.confint}
 \title{Print method for objects of class "confint"}
 \usage{
-\method{print}{confint}(x, digits = max(3L, getOption("digits") - 3L),
-  ...)
+\method{print}{confint}(x, digits = max(3L, getOption("digits") - 3L), ...)
 }
 \arguments{
 \item{x}{an object of class "confint", a result of a call to

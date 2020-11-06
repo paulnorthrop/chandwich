@@ -4,7 +4,9 @@
 \name{owtemps}
 \alias{owtemps}
 \title{Oxford and Worthing annual maximum temperatures}
-\format{A dataframe with 80 rows and 2 columns, named Oxford and Worthing.}
+\format{
+A dataframe with 80 rows and 2 columns, named Oxford and Worthing.
+}
 \source{
 Tabony, R. C. (1983) Extreme value analysis in meteorology.
  \emph{The Meteorological Magazine}, \strong{112}, 77-98.

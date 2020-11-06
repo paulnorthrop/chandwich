@@ -4,10 +4,18 @@
 \alias{plot.confint}
 \title{Plot diagnostics for a confint object}
 \usage{
-\method{plot}{confint}(x, y = NULL, y2 = NULL, y3 = NULL,
-  which_par = x$which_pars[1], conf = x$conf, add_lines = TRUE,
+\method{plot}{confint}(
+  x,
+  y = NULL,
+  y2 = NULL,
+  y3 = NULL,
+  which_par = x$which_pars[1],
+  conf = x$conf,
+  add_lines = TRUE,
   legend = any(c(!is.null(y), !is.null(y2), !is.null(y3))),
-  legend_pos = "topleft", ...)
+  legend_pos = "topleft",
+  ...
+)
 }
 \arguments{
 \item{x, y, y2, y3}{objects of class "confint", results of calls to

@@ -4,10 +4,23 @@
 \alias{adjust_loglik}
 \title{Loglikelihood adjustment using the sandwich estimator}
 \usage{
-adjust_loglik(loglik = NULL, ..., cluster = NULL, p = NULL,
-  init = NULL, par_names = NULL, fixed_pars = NULL, fixed_at = 0,
-  name = NULL, larger = NULL, alg_deriv = NULL, alg_hess = NULL,
-  mle = NULL, H = NULL, V = NULL)
+adjust_loglik(
+  loglik = NULL,
+  ...,
+  cluster = NULL,
+  p = NULL,
+  init = NULL,
+  par_names = NULL,
+  fixed_pars = NULL,
+  fixed_at = 0,
+  name = NULL,
+  larger = NULL,
+  alg_deriv = NULL,
+  alg_hess = NULL,
+  mle = NULL,
+  H = NULL,
+  V = NULL
+)
 }
 \arguments{
 \item{loglik}{A named function.  Returns a vector of the

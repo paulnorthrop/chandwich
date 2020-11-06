@@ -4,8 +4,7 @@
 \alias{vcov.chandwich}
 \title{Calculate the variance-covariance model for an object of class "chandwich"}
 \usage{
-\method{vcov}{chandwich}(object, complete = FALSE, adjusted = TRUE,
-  ...)
+\method{vcov}{chandwich}(object, complete = FALSE, adjusted = TRUE, ...)
 }
 \arguments{
 \item{object}{an object of class "chandwich", a result of a call to

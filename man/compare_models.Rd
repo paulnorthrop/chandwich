@@ -4,10 +4,16 @@
 \alias{compare_models}
 \title{Comparison of nested models}
 \usage{
-compare_models(larger, smaller = NULL, approx = FALSE,
+compare_models(
+  larger,
+  smaller = NULL,
+  approx = FALSE,
   type = c("vertical", "cholesky", "spectral", "none"),
-  fixed_pars = NULL, fixed_at = rep_len(0, length(fixed_pars)),
-  init = NULL, ...)
+  fixed_pars = NULL,
+  fixed_at = rep_len(0, length(fixed_pars)),
+  init = NULL,
+  ...
+)
 }
 \arguments{
 \item{larger}{An object of class \code{"chandwich"} returned by
