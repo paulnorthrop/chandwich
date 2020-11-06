@@ -5,6 +5,8 @@
 
 * The object returned from `adjust_loglik()` has an extra attribute `loglikVecMLE`, which is a vector containing the contributions of individual observations to the independence log-likelihood evaluated at the MLE.
 
+* `isTRUE()` is used in the GEV example to avoid potential problems owing to the possibility of NAs.
+
 # chandwich 1.1.2
 
 ## Bug fixes and minor improvements
