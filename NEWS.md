@@ -1,5 +1,10 @@
 # chandwich 1.1.2.9000
 
+
+## Bug fixes and minor improvements
+
+* The object returned from `adjust_loglik()` has an extra attribute `loglikVecMLE`, which is a vector containing the contributions of individual observations to the independence log-likelihood evaluated at the MLE.
+
 # chandwich 1.1.2
 
 ## Bug fixes and minor improvements

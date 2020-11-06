@@ -809,6 +809,7 @@ adjust_loglik <- function(loglik = NULL, ..., cluster = NULL, p = NULL,
   attr(adjust_loglik_fn, "name") <- name
   attr(adjust_loglik_fn, "nobs") <- n_loglik
   attr(adjust_loglik_fn, "call") <- match.call()
+  attr(adjust_loglik_fn, "loglikVecMLE") <- do.call(ret_loglik, list(mle))
   class(adjust_loglik_fn) <- "chandwich"
   return(adjust_loglik_fn)
 }
