@@ -27,7 +27,7 @@ An object of class \code{"anova"} inheriting from class
       in the previous row}
     \item{ALRTS}{The adjusted likelihood ratio test statistic}
     \item{Pr(>ALRTS)}{The p-value associated with the test that the
-      model is a valid simplication of the model in the previous row.}
+      model is a valid simplification of the model in the previous row.}
  The row names are the names of the model objects.
 }
 \description{
