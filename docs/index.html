@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">chandwich</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
       </span>
     </div>
 
@@ -106,7 +106,7 @@
 <div id="a-simple-example" class="section level3">
 <h3 class="hasAnchor">
 <a href="#a-simple-example" class="anchor"></a>A simple example</h3>
-<p>The main function in the chandwich package is <code>adjust_loglik</code>. It finds the maximum likelihood estimate (MLE) of model parameters based on an independence loglikelihood in which cluster dependence in the data is ignored. The independence loglikelihood is adjusted in a way that ensures that the Hessian of the adjusted loglikelihood conicides with a robust sandwich estimate of the parameter covariance at the MLE. Three adjustments are available: one in which the independence loglikelihood itself is scaled (vertical scaling) and two others where the scaling is in the parameter vector (horizontal scaling).</p>
+<p>The main function in the chandwich package is <code>adjust_loglik</code>. It finds the maximum likelihood estimate (MLE) of model parameters based on an independence loglikelihood in which cluster dependence in the data is ignored. The independence loglikelihood is adjusted in a way that ensures that the Hessian of the adjusted loglikelihood coincides with a robust sandwich estimate of the parameter covariance at the MLE. Three adjustments are available: one in which the independence loglikelihood itself is scaled (vertical scaling) and two others where the scaling is in the parameter vector (horizontal scaling).</p>
 <p>The <code>rats</code> data contain information about an experiment in which, for each of 71 groups of rats, the total number of rats in the group and the numbers of rats who develop a tumor is recorded. We model these data using a binomial distribution, treating each group of rats as a separate cluster. The argument <code>binom_loglik</code> to <code>adjust_loglik</code> is a function that returns a vector of the loglikelihood contributions from each group of rats. In one-dimensional examples like this the two adjustments using horizontal scaling are identical, but this will not generally hold in more than one dimension.</p>
 <div class="sourceCode" id="cb1"><pre class="r"><span class="no">binom_loglik</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">prob</span>, <span class="no">data</span>) {
   <span class="kw">if</span> (<span class="no">prob</span> <span class="kw">&lt;</span> <span class="fl">0</span> <span class="kw">||</span> <span class="no">prob</span> <span class="kw">&gt;</span> <span class="fl">1</span>) {

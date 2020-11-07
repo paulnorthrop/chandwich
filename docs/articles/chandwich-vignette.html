@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">chandwich</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
       <h1 data-toc-skip>Introducing chandwich: Chandler-Bate Loglikelihood Adjustment</h1>
                         <h4 class="author">Paul Northrop and Richard Chandler</h4>
             
-            <h4 class="date">2020-11-06</h4>
+            <h4 class="date">2020-11-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/paulnorthrop/chandwich/blob/master/vignettes/chandwich-vignette.Rmd"><code>vignettes/chandwich-vignette.Rmd</code></a></small>
       <div class="hidden name"><code>chandwich-vignette.Rmd</code></div>
@@ -124,7 +124,7 @@
 <span class="co">#&gt; p 0.1535 0.008645 0.01305</span>
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">rat_res</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">4</span>, <span class="kw">legend_pos</span> <span class="kw">=</span> <span class="st">"bottom"</span>, <span class="kw">lwd</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">4</span>)</pre></body></html></div>
 <p><img src="chandwich-vignette_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>In the one-dimensional case the (horizontal) Cholesky and spectral adjustments are identical and, over the range in the plot, the vertical adjustment is very similar to the horizontal adjustments. Appreciable differences only becomes apparent towards the edges of the parameter space, where the behaviour of the vertical adjustment, which approaches <span class="math inline">\(-\infty\)</span> as <span class="math inline">\(p\)</span> approaches 0 and 1, may be preferable to the behaviour of the horizonal adjustments. As we expect in this example the adjusted standard error is slightly greater than the unadjusted standard error.</p>
+<p>In the one-dimensional case the (horizontal) Cholesky and spectral adjustments are identical and, over the range in the plot, the vertical adjustment is very similar to the horizontal adjustments. Appreciable differences only becomes apparent towards the edges of the parameter space, where the behaviour of the vertical adjustment, which approaches <span class="math inline">\(-\infty\)</span> as <span class="math inline">\(p\)</span> approaches 0 and 1, may be preferable to the behaviour of the horizontal adjustments. As we expect in this example the adjusted standard error is slightly greater than the unadjusted standard error.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">rat_res</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">4</span>, <span class="kw">legend_pos</span> <span class="kw">=</span> <span class="st">"bottom"</span>, <span class="kw">lwd</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">4</span>,
      <span class="kw">xlim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>))</pre></body></html></div>
 <p><img src="chandwich-vignette_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;"></p>

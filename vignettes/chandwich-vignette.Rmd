@@ -59,7 +59,7 @@ summary(rat_res)
 plot(rat_res, type = 1:4, legend_pos = "bottom", lwd = 2, col = 1:4)
 ```
 
-In the one-dimensional case the (horizontal) Cholesky and spectral adjustments are identical and, over the range in the plot, the vertical adjustment is very similar to the horizontal adjustments.  Appreciable differences only becomes apparent towards the edges of the parameter space, where the behaviour of the vertical adjustment, which approaches $-\infty$ as $p$ approaches 0 and 1, may be preferable to the behaviour of the horizonal adjustments.  As we expect in this example the adjusted standard error is slightly greater than the unadjusted standard error.
+In the one-dimensional case the (horizontal) Cholesky and spectral adjustments are identical and, over the range in the plot, the vertical adjustment is very similar to the horizontal adjustments.  Appreciable differences only becomes apparent towards the edges of the parameter space, where the behaviour of the vertical adjustment, which approaches $-\infty$ as $p$ approaches 0 and 1, may be preferable to the behaviour of the horizontal adjustments.  As we expect in this example the adjusted standard error is slightly greater than the unadjusted standard error.
 
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 plot(rat_res, type = 1:4, legend_pos = "bottom", lwd = 2, col = 1:4, 
