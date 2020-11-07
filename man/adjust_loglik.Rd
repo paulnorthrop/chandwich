@@ -181,6 +181,8 @@ A function of class \code{"chandwich"} to evaluate an adjusted
     supplied in this call, or a previous call.}
   \item{loglik_args}{A list containing the further arguments passed to
     \code{loglik} via ... in this call, or a previous call.}
+  \item{loglikVecMLE}{a vector containing the contributions of individual
+    observations to the independence log-likelihood evaluated at the MLE.}
   \item{name}{The argument \code{name}, or the name of the function
     \code{loglik} if \code{name} isn't supplied.}
   \item{nobs}{The number of observations.}
