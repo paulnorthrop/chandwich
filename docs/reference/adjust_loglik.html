@@ -78,7 +78,7 @@ parameters at particular values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">chandwich</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3.9000</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@ parameters at particular values." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/chandwich-vignette.html">Introducing chandwich: Chandler-Bate Loglikelihood Adjustment</a>
+      <a href="../articles/chandwich-vignette.html">Introducing chandwich: Chandler-Bate Sandwich Loglikelihood Adjustment</a>
     </li>
   </ul>
 </li>
@@ -351,6 +351,8 @@ If <code>mle</code> is supplied then it overrides <code>init</code>.</p></td>
     supplied in this call, or a previous call.</p></dd>
   <dt>loglik_args</dt><dd><p>A list containing the further arguments passed to
     <code>loglik</code> via ... in this call, or a previous call.</p></dd>
+  <dt>loglikVecMLE</dt><dd><p>a vector containing the contributions of individual
+    observations to the independence log-likelihood evaluated at the MLE.</p></dd>
   <dt>name</dt><dd><p>The argument <code>name</code>, or the name of the function
     <code>loglik</code> if <code>name</code> isn't supplied.</p></dd>
   <dt>nobs</dt><dd><p>The number of observations.</p></dd>
