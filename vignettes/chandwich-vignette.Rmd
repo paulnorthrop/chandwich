@@ -1,12 +1,12 @@
 ---
-title: "Introducing chandwich: Chandler-Bate Loglikelihood Adjustment"
+title: "Introducing chandwich: Chandler-Bate Sandwich Loglikelihood Adjustment"
 author: "Paul Northrop and Richard Chandler"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Introducing chandwich: Chandler-Bate Loglikelihood Adjustment}
+  %\VignetteIndexEntry{Introducing chandwich: Chandler-Bate Sandwich Loglikelihood Adjustment}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: chandwich.bib
