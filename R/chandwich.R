@@ -70,5 +70,5 @@ NULL
 #'   \url{http://www.stat.columbia.edu/~gelman/book/data/rats.asc}
 #' @references Tarone, R. E. (1982) The use of historical information in
 #'   testing for a trend in proportions. \emph{Biometrics}, \strong{38},
-#'   215-220. \url{https://www.jstor.org/stable/2530304}
+#'   215-220.
 "rats"
