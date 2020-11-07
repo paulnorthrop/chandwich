@@ -10,4 +10,4 @@
 
 ## Downstream dependencies
 
-None
+The downstream dependencies of revdbayes (exdex and lax) passed R CMD check.
