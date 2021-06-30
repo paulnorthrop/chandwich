@@ -50,7 +50,9 @@ conducted over the corresponding symmetric confidence intervals
 by a factor of the corresponding component of \code{mult}.}
 
 \item{num}{A numeric scalar.  The number of values at which to evaluate the
-profile loglikelihood either side of the MLE.}
+profile loglikelihood either side of the MLE.  Increasing \code{num}
+increases the accuracy of the confidence limits, but the code will take
+longer to run.}
 
 \item{type}{A character scalar.  The argument \code{type} to the function
 returned by \code{\link{adjust_loglik}}, that is, the type of adjustment
@@ -67,14 +69,18 @@ An object of class "confint", a list with components
       confidence interval the profile loglikelihood lies above
       \code{cutoff}.}
     \item{parameter_vals, prof_loglik_vals}{\code{2 * num + 1} by
-      \code{length{which_pars}} numeric matrices.
+      \code{length(which_pars)} numeric matrices.
       Column i of \code{parameter_vals} contains the profiled values of
       parameter \code{which_par[i]}.  Column i of \code{prof_loglik_vals}
       contains the corresponding values of the profile loglikelihood.}
     \item{sym_CI, prof_CI}{\code{length(which_pars)}
       by 2 numeric matrices.  Row i of \code{sym_CI} (\code{prof_CI})
       contains the symmetric (profile loglikelihood-based) confidence
-      intervals for parameter \code{which_pars[i]}.}
+      intervals for parameter \code{which_pars[i]}.}  If a value in
+      \code{prof_CI} is \code{NA} then this means that the search for the
+      confidence limit did no exend far enough.  A remedy is to increase
+      the value of \code{mult}, or the relevant component of \code{mult},
+      and perhaps also increase \code{num}.
     \item{max_loglik}{The value of the adjusted loglikelihood
       at its maximum, stored in \code{object$max_loglik}.}
     \item{type}{The argument \code{type} supplied in the call

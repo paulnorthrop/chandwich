@@ -86,7 +86,11 @@ large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
 confint(large)
 }
 \seealso{
-\code{\link{conf_intervals}}.
+The underlying function \code{\link{conf_intervals}}.  If you would
+  like to plot the profile loglikelihood function for a parameter then call
+  \code{\link{conf_intervals}} directly and then use the associated plot
+  method.  Note that in \code{conf_intervals()} a parameter choice is
+  specified using an argument called \code{which_pars}, not \code{parm}.
 
 \code{\link{conf_region}} for a confidence region for
   pairs of parameters.
