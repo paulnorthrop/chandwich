@@ -1,5 +1,9 @@
 # chandwich 1.1.3.9000
 
+## Bug fixes and minor improvements
+
+* In the description of the arguument `parm` in the documentation of `confint.chandwich()`, `which_pars` has been corrected to `parm` twice.
+
 # chandwich 1.1.3
 
 ## Bug fixes and minor improvements

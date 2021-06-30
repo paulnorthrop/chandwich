@@ -817,8 +817,8 @@ profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
 #'   of those supplied in \code{par_names} in the call to
 #'   \code{\link{adjust_loglik}} that produced \code{object}.
 #'
-#'   \code{which_pars} must not have any parameters in common with
-#'   \code{attr(object, "fixed_pars")}.  \code{which_pars} must not contain
+#'   \code{parm} must not have any parameters in common with
+#'   \code{attr(object, "fixed_pars")}.  \code{parm} must not contain
 #'   all of the unfixed parameters, i.e. there is no point in profiling over
 #'   all the unfixed parameters.
 #' @param level The confidence level required.  A numeric scalar in (0, 1).
