@@ -9,6 +9,7 @@
   parm,
   level = 0.95,
   type = c("vertical", "cholesky", "spectral", "none"),
+  profile = TRUE,
   ...
 )
 }
@@ -36,6 +37,11 @@
 \item{type}{A character scalar.  The argument \code{type} to the function
 returned by \code{\link{adjust_loglik}}, that is, the type of adjustment
 made to the independence loglikelihood function.}
+
+\item{profile}{A logical scalar. If \code{TRUE} then confidence intervals
+based on an (adjusted) profile loglikelihood are returned.  If
+\code{FALSE} then intervals based on approximate large sample normal
+theory, which are symmetric about the MLE, are returned.}
 
 \item{...}{Further arguments to be passed to \code{\link{conf_intervals}}.}
 }
@@ -84,6 +90,7 @@ par_names <- c("mu[0]", "mu[1]", "sigma[0]", "sigma[1]", "xi[0]", "xi[1]")
 large <- adjust_loglik(gev_loglik, data = owtemps, init = init,
                        par_names = par_names)
 confint(large)
+confint(large, profile = FALSE)
 }
 \seealso{
 The underlying function \code{\link{conf_intervals}}.  If you would

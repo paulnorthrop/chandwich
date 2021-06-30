@@ -12,6 +12,7 @@ conf_intervals(
   mult = 1.5,
   num = 10,
   type = c("vertical", "cholesky", "spectral", "none"),
+  profile = TRUE,
   ...
 )
 }
@@ -57,6 +58,11 @@ longer to run.}
 \item{type}{A character scalar.  The argument \code{type} to the function
 returned by \code{\link{adjust_loglik}}, that is, the type of adjustment
 made to the independence loglikelihood function.}
+
+\item{profile}{A logical scalar.  If \code{FALSE} then only intervals based
+on approximate large sample normal theory, which are symmetric about the
+MLE, are returned (in \code{sym_CI}) and \code{prof_CI} in the returned
+object will contain \code{NA}s.}
 
 \item{...}{Further arguments to be passed to \code{\link[stats]{optim}}.
 These may include \code{gr}, \code{method}, \code{lower}, \code{upper}
