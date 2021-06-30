@@ -2,6 +2,8 @@
 
 ## Bug fixes and minor improvements
 
+* In `conf_interals()` the initial estimates used in the profilelog-likelihood were not reset in between the searches for the lower confidence limits and the upper limits.  In some cases this may cause problems for the optimisations.  This has initial estimates are now reset. 
+
 * In the description of the arguument `parm` in the documentation of `confint.chandwich()`, `which_pars` has been corrected to `parm` twice.
 
 # chandwich 1.1.3

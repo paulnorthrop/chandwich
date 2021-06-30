@@ -586,6 +586,8 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
       parameter_vals[num - j + 1, i] <- par_vals[j]
       prof_loglik_vals[num - j + 1, i] <- opt
     }
+    # Reset initial estimates
+    sol <- res_mle[-c(which_pars[i], fixed_pars)]
     # Upper tail ...
     par_up <- upper[i]
     par_vals <- seq(from = which_mle[i], to = par_up, length.out = num + 1)[-1]
@@ -597,6 +599,8 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
       parameter_vals[num + j + 1, i] <- par_vals[j]
       prof_loglik_vals[num + j + 1, i] <- opt
     }
+    plot(parameter_vals, prof_loglik_vals)
+    abline(v = which_mle[i])
     # Use linear interpolation to estimate the confidence limits
     y <- prof_loglik_vals[, i]
     x <- parameter_vals[, i]
