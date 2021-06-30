@@ -2,9 +2,15 @@
 
 ## Bug fixes and minor improvements
 
-* In `conf_interals()` the initial estimates used in the profilelog-likelihood were not reset in between the searches for the lower confidence limits and the upper limits.  In some cases this may cause problems for the optimisations.  This has initial estimates are now reset. 
+* The function `conf_intervals()` now stops evaluating the profile loglikelihood when the required confidence limits have been estimated.
 
-* In the description of the arguument `parm` in the documentation of `confint.chandwich()`, `which_pars` has been corrected to `parm` twice.
+* In `conf_interals()` the initial estimates used in the profile loglikelihood were not reset in between the searches for the lower confidence limits and the upper limits.  In some cases this may cause problems for the optimisations.  This has been corrected: initial estimates are now reset. 
+
+* In `confint.chandwich()` the argument `profile` can be used to choose whether to return confidence intervals based on an (adjusted) profile loglikelihood or based on approximate large sample normal theory.
+
+* The documentation of `conf_intervals()` has been updated: the general nature of the argument `num` is explained and in **Details** advice is given on what to do if one or more of the confidence limits are not found using the default arguments.
+
+* In the description of the argument `parm` in the documentation of `confint.chandwich()`, `which_pars` has been corrected to `parm` twice.
 
 # chandwich 1.1.3
 
