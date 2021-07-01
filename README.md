@@ -18,7 +18,7 @@ Status](https://codecov.io/github/paulnorthrop/chandwich/coverage.svg?branch=mas
 The `chandwich` package performs adjustments of an independence
 loglikelihood using a robust sandwich estimator of the parameter
 covariance matrix, based on the methodology in [Chandler and Bate
-(2007)](http://doi.org/10.1093/biomet/asm015). This can be used for
+(2007)](https://doi.org/10.1093/biomet/asm015). This can be used for
 cluster correlated data when interest lies in the parameters of the
 marginal distributions or for performing inferences that are robust to
 certain types of model misspecification. Functions for profiling the
