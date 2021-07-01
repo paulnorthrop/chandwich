@@ -33,8 +33,7 @@ An object of class \code{"anova"} inheriting from class
 \description{
 \code{anova} method for objects of class \code{"chandwich"}.
 Compares two or more nested models using the adjusted likelihood ratio
-test statistic (ALRTS) described in Section 3.5 of
-\href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
+test statistic (ALRTS) described in Section 3.5 of Chandler and Bate (2007).
 The nesting must result from the simple constraint that a subset of the
 parameters of the larger model is held fixed.
 }
@@ -87,7 +86,7 @@ anova(large, medium, small, tiny)
 \references{
 Chandler, R. E. and Bate, S. (2007). Inference for clustered
   data using the independence loglikelihood. \emph{Biometrika},
-  \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
+  \strong{94}(1), 167-183. \doi{10.1093/biomet/asm015}
 }
 \seealso{
 \code{\link{compare_models}} for an adjusted likelihood ratio test

@@ -74,7 +74,7 @@ conf_intervals and conf_region." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">chandwich</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ conf_intervals and conf_region." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -108,7 +108,7 @@ conf_intervals and conf_region." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/paulnorthrop/chandwich/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -136,14 +136,14 @@ This function is provided primarily so that it can be called by
 <code><a href='conf_intervals.html'>conf_intervals</a></code> and <code><a href='conf_region.html'>conf_region</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>profile_loglik</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>prof_pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>prof_vals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>init</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"vertical"</span>, <span class='st'>"cholesky"</span>, <span class='st'>"spectral"</span>, <span class='st'>"none"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>profile_loglik</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  prof_pars <span class='op'>=</span> <span class='cn'>NULL</span>,
+  prof_vals <span class='op'>=</span> <span class='cn'>NULL</span>,
+  init <span class='op'>=</span> <span class='cn'>NULL</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"vertical"</span>, <span class='st'>"cholesky"</span>, <span class='st'>"spectral"</span>, <span class='st'>"none"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -217,40 +217,42 @@ or <code>control</code>.</p></td>
     <pre class="examples"><div class='input'><span class='co'># -------------------------- GEV model, owtemps data -----------------------</span>
 <span class='co'># ------------ following Section 5.2 of Chandler and Bate (2007) -----------</span>
 
-<span class='no'>gev_loglik</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>pars</span>, <span class='no'>data</span>) {
-  <span class='no'>o_pars</span> <span class='kw'>&lt;-</span> <span class='no'>pars</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span>)] + <span class='no'>pars</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>6</span>)]
-  <span class='no'>w_pars</span> <span class='kw'>&lt;-</span> <span class='no'>pars</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span>)] - <span class='no'>pars</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>6</span>)]
-  <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/Logic.html'>isTRUE</a></span>(<span class='no'>o_pars</span>[<span class='fl'>2</span>] <span class='kw'>&lt;=</span> <span class='fl'>0</span> <span class='kw'>|</span> <span class='no'>w_pars</span>[<span class='fl'>2</span>] <span class='kw'>&lt;=</span> <span class='fl'>0</span>)) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(-<span class='fl'>Inf</span>)
-  <span class='no'>o_data</span> <span class='kw'>&lt;-</span> <span class='no'>data</span>[, <span class='st'>"Oxford"</span>]
-  <span class='no'>w_data</span> <span class='kw'>&lt;-</span> <span class='no'>data</span>[, <span class='st'>"Worthing"</span>]
-  <span class='no'>check</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span> + <span class='no'>o_pars</span>[<span class='fl'>3</span>] * (<span class='no'>o_data</span> - <span class='no'>o_pars</span>[<span class='fl'>1</span>]) / <span class='no'>o_pars</span>[<span class='fl'>2</span>]
-  <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/Logic.html'>isTRUE</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/any.html'>any</a></span>(<span class='no'>check</span> <span class='kw'>&lt;=</span> <span class='fl'>0</span>))) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(-<span class='fl'>Inf</span>)
-  <span class='no'>check</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span> + <span class='no'>w_pars</span>[<span class='fl'>3</span>] * (<span class='no'>w_data</span> - <span class='no'>w_pars</span>[<span class='fl'>1</span>]) / <span class='no'>w_pars</span>[<span class='fl'>2</span>]
-  <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/Logic.html'>isTRUE</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/any.html'>any</a></span>(<span class='no'>check</span> <span class='kw'>&lt;=</span> <span class='fl'>0</span>))) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(-<span class='fl'>Inf</span>)
-  <span class='no'>o_loglik</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='log_gev.html'>log_gev</a></span>(<span class='no'>o_data</span>, <span class='no'>o_pars</span>[<span class='fl'>1</span>], <span class='no'>o_pars</span>[<span class='fl'>2</span>], <span class='no'>o_pars</span>[<span class='fl'>3</span>])
-  <span class='no'>w_loglik</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='log_gev.html'>log_gev</a></span>(<span class='no'>w_data</span>, <span class='no'>w_pars</span>[<span class='fl'>1</span>], <span class='no'>w_pars</span>[<span class='fl'>2</span>], <span class='no'>w_pars</span>[<span class='fl'>3</span>])
-  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>o_loglik</span> + <span class='no'>w_loglik</span>)
-}
+<span class='va'>gev_loglik</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>pars</span>, <span class='va'>data</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>o_pars</span> <span class='op'>&lt;-</span> <span class='va'>pars</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>]</span> <span class='op'>+</span> <span class='va'>pars</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>6</span><span class='op'>)</span><span class='op'>]</span>
+  <span class='va'>w_pars</span> <span class='op'>&lt;-</span> <span class='va'>pars</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>]</span> <span class='op'>-</span> <span class='va'>pars</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>6</span><span class='op'>)</span><span class='op'>]</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Logic.html'>isTRUE</a></span><span class='op'>(</span><span class='va'>o_pars</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>&lt;=</span> <span class='fl'>0</span> <span class='op'>|</span> <span class='va'>w_pars</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>&lt;=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='op'>-</span><span class='cn'>Inf</span><span class='op'>)</span>
+  <span class='va'>o_data</span> <span class='op'>&lt;-</span> <span class='va'>data</span><span class='op'>[</span>, <span class='st'>"Oxford"</span><span class='op'>]</span>
+  <span class='va'>w_data</span> <span class='op'>&lt;-</span> <span class='va'>data</span><span class='op'>[</span>, <span class='st'>"Worthing"</span><span class='op'>]</span>
+  <span class='va'>check</span> <span class='op'>&lt;-</span> <span class='fl'>1</span> <span class='op'>+</span> <span class='va'>o_pars</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span> <span class='op'>*</span> <span class='op'>(</span><span class='va'>o_data</span> <span class='op'>-</span> <span class='va'>o_pars</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span> <span class='op'>/</span> <span class='va'>o_pars</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Logic.html'>isTRUE</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/any.html'>any</a></span><span class='op'>(</span><span class='va'>check</span> <span class='op'>&lt;=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='op'>-</span><span class='cn'>Inf</span><span class='op'>)</span>
+  <span class='va'>check</span> <span class='op'>&lt;-</span> <span class='fl'>1</span> <span class='op'>+</span> <span class='va'>w_pars</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span> <span class='op'>*</span> <span class='op'>(</span><span class='va'>w_data</span> <span class='op'>-</span> <span class='va'>w_pars</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span> <span class='op'>/</span> <span class='va'>w_pars</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Logic.html'>isTRUE</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/any.html'>any</a></span><span class='op'>(</span><span class='va'>check</span> <span class='op'>&lt;=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='op'>-</span><span class='cn'>Inf</span><span class='op'>)</span>
+  <span class='va'>o_loglik</span> <span class='op'>&lt;-</span> <span class='fu'><a href='log_gev.html'>log_gev</a></span><span class='op'>(</span><span class='va'>o_data</span>, <span class='va'>o_pars</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, <span class='va'>o_pars</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>, <span class='va'>o_pars</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>
+  <span class='va'>w_loglik</span> <span class='op'>&lt;-</span> <span class='fu'><a href='log_gev.html'>log_gev</a></span><span class='op'>(</span><span class='va'>w_data</span>, <span class='va'>w_pars</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, <span class='va'>w_pars</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>, <span class='va'>w_pars</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>o_loglik</span> <span class='op'>+</span> <span class='va'>w_loglik</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 <span class='co'># Initial estimates (method of moments for the Gumbel case)</span>
-<span class='no'>sigma</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fl'>6</span> * <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>var</a></span>(<span class='no'>owtemps</span>))) / <span class='no'>pi</span>)
-<span class='no'>mu</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>colMeans</a></span>(<span class='no'>owtemps</span>) - <span class='fl'>0.57722</span> * <span class='no'>sigma</span>)
-<span class='no'>init</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>mu</span>), -<span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span>(<span class='no'>mu</span>) / <span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>sigma</span>), -<span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span>(<span class='no'>sigma</span>) / <span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>0</span>)
+<span class='va'>sigma</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fl'>6</span> <span class='op'>*</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>var</a></span><span class='op'>(</span><span class='va'>owtemps</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>/</span> <span class='va'>pi</span><span class='op'>)</span>
+<span class='va'>mu</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>colMeans</a></span><span class='op'>(</span><span class='va'>owtemps</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>0.57722</span> <span class='op'>*</span> <span class='va'>sigma</span><span class='op'>)</span>
+<span class='va'>init</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mu</span><span class='op'>)</span>, <span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span><span class='op'>(</span><span class='va'>mu</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>sigma</span><span class='op'>)</span>, <span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span><span class='op'>(</span><span class='va'>sigma</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>
 
 <span class='co'># Log-likelihood adjustment of the full model</span>
-<span class='no'>par_names</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mu[0]"</span>, <span class='st'>"mu[1]"</span>, <span class='st'>"sigma[0]"</span>, <span class='st'>"sigma[1]"</span>, <span class='st'>"xi[0]"</span>, <span class='st'>"xi[1]"</span>)
-<span class='no'>large</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='adjust_loglik.html'>adjust_loglik</a></span>(<span class='no'>gev_loglik</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>owtemps</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='no'>init</span>,
-                       <span class='kw'>par_names</span> <span class='kw'>=</span> <span class='no'>par_names</span>)
+<span class='va'>par_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mu[0]"</span>, <span class='st'>"mu[1]"</span>, <span class='st'>"sigma[0]"</span>, <span class='st'>"sigma[1]"</span>, <span class='st'>"xi[0]"</span>, <span class='st'>"xi[1]"</span><span class='op'>)</span>
+<span class='va'>large</span> <span class='op'>&lt;-</span> <span class='fu'><a href='adjust_loglik.html'>adjust_loglik</a></span><span class='op'>(</span><span class='va'>gev_loglik</span>, data <span class='op'>=</span> <span class='va'>owtemps</span>, init <span class='op'>=</span> <span class='va'>init</span>,
+                       par_names <span class='op'>=</span> <span class='va'>par_names</span><span class='op'>)</span>
 
 <span class='co'># Profile loglikelihood for xi1, evaluated at xi1 = 0</span>
-<span class='fu'>profile_loglik</span>(<span class='no'>large</span>, <span class='kw'>prof_pars</span> <span class='kw'>=</span> <span class='st'>"xi[1]"</span>, <span class='kw'>prof_vals</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; [1] -446.0887
+<span class='fu'>profile_loglik</span><span class='op'>(</span><span class='va'>large</span>, prof_pars <span class='op'>=</span> <span class='st'>"xi[1]"</span>, prof_vals <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] -446.0887
 #&gt; attr(,"free_pars")
 #&gt;      mu[0]      mu[1]   sigma[0]   sigma[1]      xi[0] 
 #&gt; 80.9917215  2.5067225  3.7828562  0.2433040 -0.2010567 </div><div class='input'>
 <span class='co'># Model with xi1 fixed at 0</span>
-<span class='no'>medium</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='adjust_loglik.html'>adjust_loglik</a></span>(<span class='kw'>larger</span> <span class='kw'>=</span> <span class='no'>large</span>, <span class='kw'>fixed_pars</span> <span class='kw'>=</span> <span class='st'>"xi[1]"</span>)
+<span class='va'>medium</span> <span class='op'>&lt;-</span> <span class='fu'><a href='adjust_loglik.html'>adjust_loglik</a></span><span class='op'>(</span>larger <span class='op'>=</span> <span class='va'>large</span>, fixed_pars <span class='op'>=</span> <span class='st'>"xi[1]"</span><span class='op'>)</span>
 <span class='co'># Profile loglikelihood for xi0, evaluated at xi0 = -0.1</span>
-<span class='fu'>profile_loglik</span>(<span class='no'>medium</span>, <span class='kw'>prof_pars</span> <span class='kw'>=</span> <span class='st'>"xi[0]"</span>, <span class='kw'>prof_vals</span> <span class='kw'>=</span> -<span class='fl'>0.1</span>)</div><div class='output co'>#&gt; [1] -446.3349
+<span class='fu'>profile_loglik</span><span class='op'>(</span><span class='va'>medium</span>, prof_pars <span class='op'>=</span> <span class='st'>"xi[0]"</span>, prof_vals <span class='op'>=</span> <span class='op'>-</span><span class='fl'>0.1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] -446.3349
 #&gt; attr(,"free_pars")
 #&gt;      mu[0]      mu[1]   sigma[0]   sigma[1] 
 #&gt; 80.9256806  2.4551350  3.6790743  0.4088366 </div></pre>
@@ -269,7 +271,7 @@ or <code>control</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

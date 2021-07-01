@@ -7,13 +7,12 @@
 \description{
 Performs adjustments of an independence loglikelihood using
 a robust sandwich estimator of the parameter covariance matrix, based on
-the methodology in
-\href{http://dx.doi.org/10.1093/biomet/asm015}{Chandler and Bate (2007)}.
-This can be used for cluster correlated data when interest lies in the
-parameters of the marginal distributions.
-Functions for profiling the adjusted loglikelihoods are also provided, as
-are functions for calculating and plotting confidence intervals, for single
-model parameters, and confidence regions, for pairs of model parameters.
+the methodology in Chandler and Bate (2007).  This can be used for cluster
+correlated data when interest lies in the parameters of the marginal
+distributions. Functions for profiling the adjusted loglikelihoods are also
+provided, as are functions for calculating and plotting confidence
+intervals, for single model parameters, and confidence regions, for pairs of
+model parameters.
 }
 \details{
 The main function in the chandwich package is \code{adjust_loglik}.  It
@@ -33,7 +32,7 @@ overview of the package.
 \references{
 Chandler, R. E. and Bate, S. (2007). Inference for clustered
   data using the independence loglikelihood. \emph{Biometrika},
-  \strong{94}(1), 167-183. \url{http://dx.doi.org/10.1093/biomet/asm015}
+  \strong{94}(1), 167-183. \doi{10.1093/biomet/asm015}
 }
 \seealso{
 \code{\link{adjust_loglik}} to adjust a user-supplied

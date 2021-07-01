@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">chandwich</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -105,7 +105,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/paulnorthrop/chandwich/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -130,14 +130,25 @@
 <h1 class="page-header" data-toc-text="1.1.3.9000">
 <a href="#chandwich-1139000" class="anchor"></a>chandwich 1.1.3.9000<small> Unreleased </small>
 </h1>
+<div id="bug-fixes-and-minor-improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li><p>The function <code><a href="../reference/conf_intervals.html">conf_intervals()</a></code> now stops evaluating the profile loglikelihood when the required confidence limits have been estimated.</p></li>
+<li><p>In <code>conf_interals()</code> the initial estimates used in the profile loglikelihood were not reset in between the searches for the lower confidence limits and the upper limits. In some cases this may cause problems for the optimisations. This has been corrected: initial estimates are now reset.</p></li>
+<li><p>In <code><a href="../reference/confint.chandwich.html">confint.chandwich()</a></code> the argument <code>profile</code> can be used to choose whether to return confidence intervals based on an (adjusted) profile loglikelihood or based on approximate large sample normal theory.</p></li>
+<li><p>The documentation of <code><a href="../reference/conf_intervals.html">conf_intervals()</a></code> has been updated: the general nature of the argument <code>num</code> is explained and in <strong>Details</strong> advice is given on what to do if one or more of the confidence limits are not found using the default arguments.</p></li>
+<li><p>In the description of the argument <code>parm</code> in the documentation of <code><a href="../reference/confint.chandwich.html">confint.chandwich()</a></code>, <code>which_pars</code> has been corrected to <code>parm</code> twice.</p></li>
+</ul>
+</div>
 </div>
     <div id="chandwich-113" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.3">
 <a href="#chandwich-113" class="anchor"></a>chandwich 1.1.3<small> 2020-11-07 </small>
 </h1>
-<div id="bug-fixes-and-minor-improvements" class="section level2">
+<div id="bug-fixes-and-minor-improvements-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-minor-improvements" class="anchor"></a>Bug fixes and minor improvements</h2>
+<a href="#bug-fixes-and-minor-improvements-1" class="anchor"></a>Bug fixes and minor improvements</h2>
 <ul>
 <li><p>The object returned from <code><a href="../reference/adjust_loglik.html">adjust_loglik()</a></code> has an extra attribute <code>loglikVecMLE</code>, which is a vector containing the contributions of individual observations to the independence log-likelihood evaluated at the MLE.</p></li>
 <li><p><code><a href="https://rdrr.io/r/base/Logic.html">isTRUE()</a></code> is used in the GEV example to avoid potential problems owing to the possibility of NAs.</p></li>
@@ -148,9 +159,9 @@
 <h1 class="page-header" data-toc-text="1.1.2">
 <a href="#chandwich-112" class="anchor"></a>chandwich 1.1.2<small> 2019-07-11 </small>
 </h1>
-<div id="bug-fixes-and-minor-improvements-1" class="section level2">
+<div id="bug-fixes-and-minor-improvements-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-minor-improvements-1" class="anchor"></a>Bug fixes and minor improvements</h2>
+<a href="#bug-fixes-and-minor-improvements-2" class="anchor"></a>Bug fixes and minor improvements</h2>
 <ul>
 <li><p>A typo meant that the text in the Value section of the description of <code><a href="../reference/confint.chandwich.html">confint.chandwich()</a></code> was cut short. This has been corrected.</p></li>
 <li><p>In <code><a href="../reference/adjust_loglik.html">adjust_loglik()</a></code> if <code>p = 1</code> and the user supplies a scalar <code>H</code> instead of a matrix then an error is thrown by <code><a href="https://rdrr.io/r/base/dimnames.html">dimnames()</a></code> just before the results are returned. The calculations are correct, so the code has been modified trivially to avoid the error.</p></li>
@@ -163,9 +174,9 @@
 <h1 class="page-header" data-toc-text="1.1.1">
 <a href="#chandwich-111" class="anchor"></a>chandwich 1.1.1<small> 2018-11-28 </small>
 </h1>
-<div id="bug-fixes-and-minor-improvements-2" class="section level2">
+<div id="bug-fixes-and-minor-improvements-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-minor-improvements-2" class="anchor"></a>Bug fixes and minor improvements</h2>
+<a href="#bug-fixes-and-minor-improvements-3" class="anchor"></a>Bug fixes and minor improvements</h2>
 <ul>
 <li><p>The attribute <code>nobs</code> has been added to the object returned from <code><a href="../reference/adjust_loglik.html">adjust_loglik()</a></code> and as an attribute to the object returned from <code><a href="../reference/logLik.chandwich.html">logLik.chandwich()</a></code>.</p></li>
 <li><p>In <code><a href="../reference/compare_models.html">compare_models()</a></code> the parameter names (if any) are passed to the (adjusted) loglikelihood function, in case they are required inside the loglikelihood function.</p></li>
@@ -187,9 +198,9 @@
 <li><p>S3 methods <code>coef</code>, <code>vcov</code> and <code>logLik</code> for class “chandwich” have been added.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-and-minor-improvements-3" class="section level2">
+<div id="bug-fixes-and-minor-improvements-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-minor-improvements-3" class="anchor"></a>Bug fixes and minor improvements</h2>
+<a href="#bug-fixes-and-minor-improvements-4" class="anchor"></a>Bug fixes and minor improvements</h2>
 <ul>
 <li><p>A bug in <code><a href="../reference/compare_models.html">compare_models()</a></code> has been fixed. The bug resulted an error in cases where the argument <code>larger</code> corresponded to a simplification of the full model in which element i of the parameter was fixed but some element i+n, for n &gt; 0, was not fixed.</p></li>
 <li><p>Estimated unadjusted (VC) and adjusted (adjVC) variance-covariance matrices of the free model parameters are now available in the object returned by <code><a href="../reference/adjust_loglik.html">adjust_loglik()</a></code>.</p></li>
@@ -218,7 +229,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -74,7 +74,7 @@ one free parameter." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">chandwich</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ one free parameter." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -108,7 +108,7 @@ one free parameter." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/paulnorthrop/chandwich/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -137,7 +137,7 @@ one free parameter.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for chandwich</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>type</span>) <span class='kw'>&gt;</span> <span class='fl'>1</span>, <span class='kw'>legend_pos</span> <span class='kw'>=</span> <span class='st'>"topleft"</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, type <span class='op'>=</span> <span class='fl'>1</span>, legend <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>type</span><span class='op'>)</span> <span class='op'>&gt;</span> <span class='fl'>1</span>, legend_pos <span class='op'>=</span> <span class='st'>"topleft"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -204,18 +204,21 @@ the argument <code>x</code> in <code><a href='https://rdrr.io/r/graphics/legend.
     <pre class="examples"><div class='input'><span class='co'># ------------------------- Binomial model, rats data ----------------------</span>
 
 <span class='co'># Contributions to the independence loglikelihood</span>
-<span class='no'>binom_loglik</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>prob</span>, <span class='no'>data</span>) {
-  <span class='kw'>if</span> (<span class='no'>prob</span> <span class='kw'>&lt;</span> <span class='fl'>0</span> <span class='kw'>||</span> <span class='no'>prob</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>) {
-    <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(-<span class='fl'>Inf</span>)
-  }
-  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>dbinom</a></span>(<span class='no'>data</span>[, <span class='st'>"y"</span>], <span class='no'>data</span>[, <span class='st'>"n"</span>], <span class='no'>prob</span>, <span class='kw'>log</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-}
-<span class='no'>rat_res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='adjust_loglik.html'>adjust_loglik</a></span>(<span class='kw'>loglik</span> <span class='kw'>=</span> <span class='no'>binom_loglik</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>rats</span>, <span class='kw'>par_names</span> <span class='kw'>=</span> <span class='st'>"p"</span>)
+<span class='va'>binom_loglik</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>prob</span>, <span class='va'>data</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>prob</span> <span class='op'>&lt;</span> <span class='fl'>0</span> <span class='op'>||</span> <span class='va'>prob</span> <span class='op'>&gt;</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='op'>-</span><span class='cn'>Inf</span><span class='op'>)</span>
+  <span class='op'>}</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>dbinom</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>[</span>, <span class='st'>"y"</span><span class='op'>]</span>, <span class='va'>data</span><span class='op'>[</span>, <span class='st'>"n"</span><span class='op'>]</span>, <span class='va'>prob</span>, log <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='va'>rat_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='adjust_loglik.html'>adjust_loglik</a></span><span class='op'>(</span>loglik <span class='op'>=</span> <span class='va'>binom_loglik</span>, data <span class='op'>=</span> <span class='va'>rats</span>, par_names <span class='op'>=</span> <span class='st'>"p"</span><span class='op'>)</span>
 
 <span class='co'># Vertically adjusted loglikelihood only</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>rat_res</span>)</div><div class='img'><img src='plot.chandwich-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Three adjusted loglikelihoods and the independence loglikelihood</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>rat_res</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>)</div><div class='img'><img src='plot.chandwich-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Plot over (0,1) and reposition the legend</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>rat_res</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>legend_pos</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>)</div><div class='img'><img src='plot.chandwich-3.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>rat_res</span><span class='op'>)</span>
+</div><div class='img'><img src='plot.chandwich-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Three adjusted loglikelihoods and the independence loglikelihood</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>rat_res</span>, type <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
+</div><div class='img'><img src='plot.chandwich-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Plot over (0,1) and reposition the legend</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>rat_res</span>, type <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, legend_pos <span class='op'>=</span> <span class='st'>"bottom"</span><span class='op'>)</span>
+</div><div class='img'><img src='plot.chandwich-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -231,7 +234,7 @@ the argument <code>x</code> in <code><a href='https://rdrr.io/r/graphics/legend.
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
