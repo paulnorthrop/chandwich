@@ -84,7 +84,7 @@ An object of class "confint", a list with components
       contains the symmetric (profile loglikelihood-based) confidence
       intervals for parameter \code{which_pars[i]}.}  If a value in
       \code{prof_CI} is \code{NA} then this means that the search for the
-      confidence limit did no exend far enough.  A remedy is to increase
+      confidence limit did no extend far enough.  A remedy is to increase
       the value of \code{mult}, or the relevant component of \code{mult},
       and perhaps also increase \code{num}.
     \item{max_loglik}{The value of the adjusted loglikelihood
