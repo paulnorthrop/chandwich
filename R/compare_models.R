@@ -514,11 +514,37 @@ anova.chandwich <- function (object, object2, ...) {
   model_list <- model_list[m_order]
   n_pars <- n_pars[m_order]
   n_models <- length(model_list)
-  # Do the testing
+  # Nested models: the largest model is model_list[[1]]
   alrts <- p_value <- numeric(n_models - 1)
+  # Check whether objects have explicit fixed_pars attributes
+  is_fp <- vapply(model_list, function(x) !is.null(attr(x, "fixed_pars")), NA)
+  # If there are any explicit fixed_pars attributes then we do not execute
+  # part of the code in the loop
   for (i in 2:n_models) {
     larger <- model_list[[i - 1]]
     smaller <- model_list[[i]]
+    # Only execute the code in the if statement if all of is_fp is FALSE
+    if (!any(is_fp)) {
+      all_pars <- attr(larger, "free_pars")
+      larger_names <- names(all_pars)
+      smaller_names <- names(attr(model_list[[i]], "free_pars"))
+      # Check that the names of all the parameters in the smaller model are
+      # present in the larger model
+      if (!all(smaller_names %in% larger_names)) {
+        stop("parameter names are not nested")
+      }
+      # Which parameters have been fixed in moving from larger to smaller?
+      fixed_pars <- which(!(larger_names %in% smaller_names))
+      fixed_pars <- all_pars[fixed_pars]
+      fixed_at <- rep(0, length(fixed_pars))
+      names(fixed_at) <- names(fixed_pars)
+      attr(smaller, "fixed_pars") <- fixed_pars
+      attr(smaller, "fixed_at") <- fixed_at
+      # In comparing smaller to larger, treat larger as the full model,
+      # i.e. having no fixed parameters
+      attr(larger, "fixed_pars") <- NULL
+    }
+    # Do the testing
     res <- do.call(compare_models, c(list(larger = larger, smaller = smaller),
                                      for_compare_models))
     alrts[i - 1] <- res$alrts
