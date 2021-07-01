@@ -82,7 +82,7 @@ test_that("adjusted SEs agree, mle and H supplied", {
 # Use sandwich::bread() and sandwich::meat() to evaluate H and V respectively.
 
 got_sandwich <- requireNamespace("sandwich", quietly = TRUE)
-print(got_sandwich)
+
 if (got_sandwich) {
   n_obs <- stats::nobs(fm_pois)
   pois_res_2b <- adjust_loglik(pois_glm_loglik, y = y, x = x, p = 3,
