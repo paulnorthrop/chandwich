@@ -568,7 +568,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
   prof_CI <- matrix(NA, nrow = n_which_pars, ncol = 2)
   colnames(prof_CI) <- c("lower", "upper")
   parameter_vals <- matrix(NA, nrow = 2 * num + 1, ncol = n_which_pars)
-  prof_loglik_vals <- matrix(NA, nrow = 2 * num + 1, ncol = n_which_pars)
+  prof_loglik_vals <- matrix(-Inf, nrow = 2 * num + 1, ncol = n_which_pars)
   if (!is.null(full_par_names)) {
     rownames(prof_CI) <- full_par_names[which_pars]
     colnames(parameter_vals) <- full_par_names[which_pars]
