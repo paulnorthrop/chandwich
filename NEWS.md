@@ -1,5 +1,9 @@
 # chandwich 1.1.4.9000
 
+## Bug fixes and minor improvements
+
+* In the vignette references section DOIs are render with URLs hyperlinked.
+
 # chandwich 1.1.4
 
 ## Bug fixes and minor improvements
