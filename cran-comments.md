@@ -13,4 +13,4 @@
 
 ## Downstream dependencies
 
-The downstream dependencies of chandwich (exdex and lax) passed R CMD check.
+The downstream dependencies of chandwich (chantrics, exdex and lax) passed R CMD check.

@@ -2,7 +2,7 @@
 
 ## Bug fixes and minor improvements
 
-* In the vignette references section DOIs are render with URLs hyperlinked.
+* In the vignette references section DOIs are rendered with URLs hyperlinked.
 
 # chandwich 1.1.4
 
