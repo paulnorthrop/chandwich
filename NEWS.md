@@ -1,4 +1,4 @@
-# chandwich 1.1.4.9000
+# chandwich 1.1.5
 
 ## Bug fixes and minor improvements
 

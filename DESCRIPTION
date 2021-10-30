@@ -1,6 +1,6 @@
 Package: chandwich
 Title: Chandler-Bate Sandwich Loglikelihood Adjustment
-Version: 1.1.4.9000
+Version: 1.1.5
 Date: 2021-10-30
 Authors@R: c(
     person(c("Paul", "J."), "Northrop", email = "p.northrop@ucl.ac.uk", 
