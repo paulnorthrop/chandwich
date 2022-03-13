@@ -496,9 +496,9 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' conf_intervals(pois_quad)
 #' @export
 conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
-                     mult = 1.5, num = 10,
-                     type = c("vertical", "cholesky", "spectral", "none"),
-                     profile = TRUE, ...) {
+                           mult = 1.5, num = 10, type =
+                             c("vertical", "cholesky", "spectral", "none"),
+                           profile = TRUE, ...) {
   type <- match.arg(type)
   # Fixed parameters, values at which they are fixed and parameter names
   fixed_pars <- attr(object, "fixed_pars")
@@ -563,6 +563,7 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
     upper <- which_mle + mult * z_val * res_adjSE[which_pars]
   }
   sym_CI <- cbind(sym_lower, sym_upper)
+  print(c(z_val, which_mle, res_SE[which_pars], sym_CI))
   colnames(sym_CI) <- c("lower", "upper")
   # Confidence intervals using profile loglikelihood
   prof_CI <- matrix(NA, nrow = n_which_pars, ncol = 2)
@@ -917,10 +918,10 @@ profile_loglik <- function(object, prof_pars = NULL, prof_vals = NULL,
 #' confint(large)
 #' confint(large, profile = FALSE)
 #' @export
-confint.chandwich <- function (object, parm, level = 0.95,
-                               type = c("vertical", "cholesky", "spectral",
-                                        "none"),
-                               profile = TRUE, ...) {
+confint.chandwich <- function(object, parm, level = 0.95,
+                              type = c("vertical", "cholesky", "spectral",
+                                       "none"),
+                              profile = TRUE, ...) {
   if (!inherits(object, "chandwich")) {
     stop("use only with \"chandwich\" objects")
   }
