@@ -563,7 +563,6 @@ conf_intervals <- function(object, which_pars = NULL, init = NULL, conf = 95,
     upper <- which_mle + mult * z_val * res_adjSE[which_pars]
   }
   sym_CI <- cbind(sym_lower, sym_upper)
-  print(c(z_val, which_mle, res_SE[which_pars], sym_CI))
   colnames(sym_CI) <- c("lower", "upper")
   # Confidence intervals using profile loglikelihood
   prof_CI <- matrix(NA, nrow = n_which_pars, ncol = 2)
