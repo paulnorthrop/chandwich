@@ -43,7 +43,7 @@ coef.chandwich <- function(object, complete = FALSE, ...) {
 
 # ============================== vcov.chandwich ==============================
 
-#' Calculate the variance-covariance model for an object of class "chandwich"
+#' Calculate the variance-covariance matrix for an object of class "chandwich"
 #'
 #' \code{vcov} method for class "chandwich".
 #'
