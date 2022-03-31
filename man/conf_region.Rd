@@ -38,14 +38,14 @@ conf_region(
   \code{which_pars} is set to \code{attr(object, "free_pars") = 2}.}
 
 \item{range1, range2}{Numeric vectors of length 2.  Respective ranges (of
-the form \code{lower, upper}) of values of \code{which_pars[1]} and
+the form \code{c(lower, upper)}) of values of \code{which_pars[1]} and
 \code{which_pars[2]} over which to profile.
 Missing values in \code{range1} and/or \code{range2} are
 filled in using \code{conf} and \code{mult}.  See below for details.}
 
 \item{conf}{A numeric scalar in (0, 100).  The highest confidence level
-of interest. This is only relevant if \code{lower} and \code{upper} are
-not supplied (see \code{...} below).  In that event \code{conf} is used,
+of interest. This is only relevant if \code{range1} and/or \code{range2}
+are not completely specified.  In that event \code{conf} is used,
 in combination with \code{mult}, to try to set up the grid of parameter
 values to include the largest confidence region of interest.}
 
