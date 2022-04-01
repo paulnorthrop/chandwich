@@ -426,7 +426,8 @@ conf_region <- function(object, which_pars = NULL, range1 = c(NA, NA),
 #' rat_res <- adjust_loglik(loglik = binom_loglik, data = rats, par_names = "p")
 #'
 #' # 95% likelihood-based confidence intervals, vertically adjusted
-#' conf_intervals(rat_res)
+#' ci <- conf_intervals(rat_res)
+#' plot(ci)
 #' # Unadjusted
 #' conf_intervals(rat_res, type = "none")
 #'
