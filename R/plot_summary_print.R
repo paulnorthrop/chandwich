@@ -458,16 +458,18 @@ plot.confreg <- function(x, y = NULL, y2 = NULL, y3 = NULL, conf = 95,
 #' By default (\code{add_lines = TRUE}) the confidence limits calculated
 #' in \code{\link{conf_intervals}} are indicated on the plot .
 #'
-#' @param x,y,y2,y3 objects of class "confint", results of calls to
+#' @param x,y,y2,y3 objects of class \code{"confint"}, results of calls to
 #'   \code{\link{conf_intervals}} for a common model.  A (profile)
 #'   loglikelihood will be plotted for each object.
 #' @param which_par A scalar specifying the parameter for which the plot
-#'   is produced.  Can be either a numeric vector, specifying index of the
+#'   is produced.  Can be either a numeric scalar, specifying index of the
 #'   component of the \strong{full} parameter vector, or a character scalar
 #'   parameter name.  The former must be in \code{x$which_pars}, the latter
 #'   must be in \code{names(x$which_pars)}.
 #' @param add_lines A logical scalar.  Whether or not to add horizontal lines
-#'   to the plot to identify the confidence limits.
+#'   to the plot to identify the confidence limits.  If there is only one
+#'   input \code{"confint"} object then the values of the confidence limits
+#'   will be added to the horizontal axis.
 #' @param conf A numeric vector of values in (0, 100).  If
 #'   \code{add_lines = TRUE} then a horizontal line is added for each
 #'   value in \code{conf}.  If \code{conf} is not supplied then the
@@ -614,6 +616,13 @@ plot.confint <- function(x, y = NULL, y2 = NULL, y3 = NULL,
   cutoff <- x$max_loglik - stats::qchisq(conf  / 100, 1) / 2
   if (add_lines) {
     graphics::abline(h = cutoff)
+    # If there is only one confidence interval then add the confidence limits
+    # on the horizontal axis
+    if (is.null(y) && is.null(y2) && is.null(y3)) {
+      which_CI <- x$prof_CI[which_index, ]
+      graphics::axis(1, at = which_CI,  labels = round(which_CI, 3),
+                     tick = FALSE, mgp = c(3, 0.15, 0))
+    }
   }
   # Add a legend?
   if (is.character(legend) || legend) {

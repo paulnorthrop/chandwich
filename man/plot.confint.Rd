@@ -18,12 +18,12 @@
 )
 }
 \arguments{
-\item{x, y, y2, y3}{objects of class "confint", results of calls to
+\item{x, y, y2, y3}{objects of class \code{"confint"}, results of calls to
 \code{\link{conf_intervals}} for a common model.  A (profile)
 loglikelihood will be plotted for each object.}
 
 \item{which_par}{A scalar specifying the parameter for which the plot
-is produced.  Can be either a numeric vector, specifying index of the
+is produced.  Can be either a numeric scalar, specifying index of the
 component of the \strong{full} parameter vector, or a character scalar
 parameter name.  The former must be in \code{x$which_pars}, the latter
 must be in \code{names(x$which_pars)}.}
@@ -34,7 +34,9 @@ value in \code{conf}.  If \code{conf} is not supplied then the
 value stored in \code{x$conf} is used.}
 
 \item{add_lines}{A logical scalar.  Whether or not to add horizontal lines
-to the plot to identify the confidence limits.}
+to the plot to identify the confidence limits.  If there is only one
+input \code{"confint"} object then the values of the confidence limits
+will be added to the horizontal axis.}
 
 \item{legend}{A logical scalar or a character vector.  If this is
 supplied then a legend is added to the plot.  If \code{legend} is a
