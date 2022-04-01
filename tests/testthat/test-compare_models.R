@@ -1,4 +1,4 @@
-context("compare_models and anova S3 method")
+#context("compare_models and anova S3 method")
 
 # GEV independence loglikelihood for the Oxford-Worthing annual maximum
 # temperature dataset owtemps
@@ -189,7 +189,8 @@ test_that("anova ALRTS: medium vs. small", {
   testthat::expect_equal(save_medium_small$alrts, anova_res$ALRTS[3])
 })
 test_that("anova p-value: medium vs. small", {
-  testthat::expect_equal(save_medium_small$p_value, anova_res$"Pr(>ALRTS)"[3])
+  testthat::expect_equal(save_medium_small$p_value, anova_res$"Pr(>ALRTS)"[3],
+                         tolerance = 1e-7)
 })
 test_that("anova ALRTS: small vs. tiny", {
   testthat::expect_equal(small_tiny$alrts, anova_res$ALRTS[4])

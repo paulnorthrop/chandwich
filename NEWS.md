@@ -1,5 +1,10 @@
 # chandwich 1.1.5.9000
 
+## Bug fixes and minor improvements
+
+* In `plot.confint()` confidence limits are now added to the horizontal axis in cases where only one interval is plotted.
+* Activated 3rd edition of the `testthat` package
+
 # chandwich 1.1.5
 
 ## Bug fixes and minor improvements

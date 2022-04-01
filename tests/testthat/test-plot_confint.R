@@ -1,4 +1,4 @@
-context("conf_intervals and profile_loglik and confint S3 method")
+#context("conf_intervals and profile_loglik and confint S3 method")
 
 # -------------------------- GEV model, owtemps data -----------------------
 # ------------ following Section 5.2 of Chandler and Bate (2007) -----------

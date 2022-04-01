@@ -27,7 +27,7 @@ pois_lin <- adjust_loglik(pois_glm_loglik, y = y, x = x, par_names = pars,
 
 # ==================================== coef ===================================
 
-context("coef.chandwich")
+#context("coef.chandwich")
 
 test_that("coef.chandwich: complete = TRUE", {
   testthat::expect_identical(attributes(pois_lin)$res_MLE,
@@ -40,7 +40,7 @@ test_that("coef.chandwich: complete = FALSE", {
 
 # ==================================== vcov ===================================
 
-context("vcov.chandwich")
+#context("vcov.chandwich")
 
 test_that("vcov.chandwich: adjusted = TRUE", {
   testthat::expect_identical(attributes(pois_lin)$adjVC,
@@ -51,17 +51,17 @@ test_that("vcov.chandwich: adjusted = FALSE", {
                              vcov(pois_lin, adjusted = FALSE))
 })
 test_that("vcov.chandwich: complete = TRUE, column", {
-  testthat::expect_equivalent(vcov(pois_lin, complete = TRUE)[, "gamma"],
-                              as.numeric(rep(NA, 3)))
+  testthat::expect_equal(vcov(pois_lin, complete = TRUE)[, "gamma"],
+                              as.numeric(rep(NA, 3)), ignore_attr = TRUE)
 })
 test_that("vcov.chandwich: complete = TRUE, row", {
-  testthat::expect_equivalent(vcov(pois_lin, complete = TRUE)["gamma", ],
-                              as.numeric(rep(NA, 3)))
+  testthat::expect_equal(vcov(pois_lin, complete = TRUE)["gamma", ],
+                              as.numeric(rep(NA, 3)), ignore_attr = TRUE)
 })
 
 # =================================== logLik ==================================
 
-context("logLik.chandwich")
+#context("logLik.chandwich")
 
 test_that("logLik.chandwich: logLik and loglik at MLE agree", {
   testthat::expect_identical(as.numeric(logLik(pois_lin)),

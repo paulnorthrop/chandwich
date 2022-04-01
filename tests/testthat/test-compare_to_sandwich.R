@@ -1,4 +1,4 @@
-context("compare_to_sandwich")
+#context("compare_to_sandwich")
 
 # Misspecified Poisson model for negative binomial data ----------
 # ... following Section 5.1 of the

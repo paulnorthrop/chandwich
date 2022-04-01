@@ -1,4 +1,4 @@
-context("loglikVecMLE")
+#context("loglikVecMLE")
 
 # Check that the sum of the loglikelihood contributions at the MLE is
 # equal to the value of max_loglik

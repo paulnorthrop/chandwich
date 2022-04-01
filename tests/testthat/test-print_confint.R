@@ -1,4 +1,4 @@
-context("print_confint")
+#context("print_confint")
 
 # ------------------------- Binomial model, rats data ----------------------
 

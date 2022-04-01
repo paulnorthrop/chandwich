@@ -1,4 +1,4 @@
-context("conf_region")
+#context("conf_region")
 
 # --------- Misspecified Poisson model for negative binomial data ----------
 

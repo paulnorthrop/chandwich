@@ -1,4 +1,4 @@
-context("adjust_loglik")
+#context("adjust_loglik")
 
 # ------------------------- Binomial model, rats data ----------------------
 
