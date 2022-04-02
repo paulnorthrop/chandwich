@@ -8,6 +8,10 @@ Status](https://ci.appveyor.com/api/projects/status/github/paulnorthrop/chandwic
 [![Coverage
 Status](https://codecov.io/github/paulnorthrop/chandwich/coverage.svg?branch=master)](https://codecov.io/github/paulnorthrop/chandwich?branch=master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/chandwich)](https://cran.r-project.org/package=chandwich)
+[![Downloads
+(monthly)](https://cranlogs.r-pkg.org/badges/chandwich?color=brightgreen)](https://cran.r-project.org/package=chandwich)
+[![Downloads
+(total)](https://cranlogs.r-pkg.org/badges/grand-total/chandwich?color=brightgreen)](https://cran.r-project.org/package=chandwich)
 
 ## Chandler-Bate Sandwich Loglikelihood Adjustment
 
