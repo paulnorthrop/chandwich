@@ -37,7 +37,7 @@
 #' @seealso \code{\link{conf_region}} to calculate a confidence region
 #'   for a pair of model parameters.
 #' @docType package
-#' @aliases chandwich-package
+#' @aliases chandwich-package chandwich
 #' @import methods
 "_PACKAGE"
 
