@@ -29,6 +29,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -41,23 +43,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">chandwich</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.6</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -74,7 +70,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/paulnorthrop/chandwich/">
+  <a href="https://github.com/paulnorthrop/chandwich/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -91,43 +87,43 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="chandwich" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#chandwich" class="anchor"></a>chandwich</h1></div>
-
-<div id="chandler-bate-sandwich-loglikelihood-adjustment" class="section level2">
-<h2 class="hasAnchor">
-<a href="#chandler-bate-sandwich-loglikelihood-adjustment" class="anchor"></a>Chandler-Bate Sandwich Loglikelihood Adjustment</h2>
-<div id="what-does-chandwich-do" class="section level3">
-<h3 class="hasAnchor">
-<a href="#what-does-chandwich-do" class="anchor"></a>What does chandwich do?</h3>
-<p>The <code>chandwich</code> package performs adjustments of an independence loglikelihood using a robust sandwich estimator of the parameter covariance matrix, based on the methodology in <a href="https://doi.org/10.1093/biomet/asm015">Chandler and Bate (2007)</a>. This can be used for cluster correlated data when interest lies in the parameters of the marginal distributions or for performing inferences that are robust to certain types of model misspecification. Functions for profiling the adjusted loglikelihoods are also provided, as are functions for calculating and plotting confidence intervals, for single model parameters, and confidence regions, for pairs of model parameters. Nested models can be compared using an adjusted likelihood ratio test.</p>
+<div class="section level1">
+<div class="page-header"><h1 id="chandwich">chandwich<a class="anchor" aria-label="anchor" href="#chandwich"></a>
+</h1></div>
+<p><a href="https://ci.appveyor.com/project/paulnorthrop/chandwich" class="external-link"><img src="https://ci.appveyor.com/api/projects/status/github/paulnorthrop/chandwich?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a> <a href="https://github.com/paulnorthrop/chandwich/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/paulnorthrop/chandwich/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://app.codecov.io/github/paulnorthrop/chandwich?branch=master" class="external-link"><img src="https://app.codecov.io/github/paulnorthrop/chandwich/coverage.svg?branch=master" alt="Coverage Status"></a> <a href="https://cran.r-project.org/package=chandwich" class="external-link"><img src="https://www.r-pkg.org/badges/version/chandwich" alt="CRAN_Status_Badge"></a> <a href="https://cran.r-project.org/package=chandwich" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/chandwich?color=brightgreen" alt="Downloads (monthly)"></a> <a href="https://cran.r-project.org/package=chandwich" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/chandwich?color=brightgreen" alt="Downloads (total)"></a></p>
+<div class="section level2">
+<h2 id="chandler-bate-sandwich-loglikelihood-adjustment">Chandler-Bate Sandwich Loglikelihood Adjustment<a class="anchor" aria-label="anchor" href="#chandler-bate-sandwich-loglikelihood-adjustment"></a>
+</h2>
+<div class="section level3">
+<h3 id="what-does-chandwich-do">What does chandwich do?<a class="anchor" aria-label="anchor" href="#what-does-chandwich-do"></a>
+</h3>
+<p>The <code>chandwich</code> package performs adjustments of an independence loglikelihood using a robust sandwich estimator of the parameter covariance matrix, based on the methodology in <a href="https://doi.org/10.1093/biomet/asm015" class="external-link">Chandler and Bate (2007)</a>. This can be used for cluster correlated data when interest lies in the parameters of the marginal distributions or for performing inferences that are robust to certain types of model misspecification. Functions for profiling the adjusted loglikelihoods are also provided, as are functions for calculating and plotting confidence intervals, for single model parameters, and confidence regions, for pairs of model parameters. Nested models can be compared using an adjusted likelihood ratio test.</p>
 </div>
-<div id="a-simple-example" class="section level3">
-<h3 class="hasAnchor">
-<a href="#a-simple-example" class="anchor"></a>A simple example</h3>
+<div class="section level3">
+<h3 id="a-simple-example">A simple example<a class="anchor" aria-label="anchor" href="#a-simple-example"></a>
+</h3>
 <p>The main function in the chandwich package is <code>adjust_loglik</code>. It finds the maximum likelihood estimate (MLE) of model parameters based on an independence loglikelihood in which cluster dependence in the data is ignored. The independence loglikelihood is adjusted in a way that ensures that the Hessian of the adjusted loglikelihood coincides with a robust sandwich estimate of the parameter covariance at the MLE. Three adjustments are available: one in which the independence loglikelihood itself is scaled (vertical scaling) and two others where the scaling is in the parameter vector (horizontal scaling).</p>
 <p>The <code>rats</code> data contain information about an experiment in which, for each of 71 groups of rats, the total number of rats in the group and the numbers of rats who develop a tumor is recorded. We model these data using a binomial distribution, treating each group of rats as a separate cluster. The argument <code>binom_loglik</code> to <code>adjust_loglik</code> is a function that returns a vector of the loglikelihood contributions from each group of rats. In one-dimensional examples like this the two adjustments using horizontal scaling are identical, but this will not generally hold in more than one dimension.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">binom_loglik</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">prob</span>, <span class="va">data</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="va">prob</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">||</span> <span class="va">prob</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span><span class="op">)</span>
-  <span class="op">}</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">dbinom</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="st">"y"</span><span class="op">]</span>, <span class="va">data</span><span class="op">[</span>, <span class="st">"n"</span><span class="op">]</span>, <span class="va">prob</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">rat_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/adjust_loglik.html">adjust_loglik</a></span><span class="op">(</span>loglik <span class="op">=</span> <span class="va">binom_loglik</span>, data <span class="op">=</span> <span class="va">rats</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">rat_res</span>, type <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, legend_pos <span class="op">=</span> <span class="st">"bottom"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">binom_loglik</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">prob</span>, <span class="va">data</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">prob</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">||</span> <span class="va">prob</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">dbinom</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="st">"y"</span><span class="op">]</span>, <span class="va">data</span><span class="op">[</span>, <span class="st">"n"</span><span class="op">]</span>, <span class="va">prob</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">rat_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/adjust_loglik.html">adjust_loglik</a></span><span class="op">(</span>loglik <span class="op">=</span> <span class="va">binom_loglik</span>, data <span class="op">=</span> <span class="va">rats</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rat_res</span>, type <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, legend_pos <span class="op">=</span> <span class="st">"bottom"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="installation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h3>
+<div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
 <p>To get the current released version from CRAN:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"chandwich"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"chandwich"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="vignette" class="section level3">
-<h3 class="hasAnchor">
-<a href="#vignette" class="anchor"></a>Vignette</h3>
+<div class="section level3">
+<h3 id="vignette">Vignette<a class="anchor" aria-label="anchor" href="#vignette"></a>
+</h3>
 <p>See <code><a href="articles/chandwich-vignette.html">vignette("chandwich-vignette", package = "chandwich")</a></code> for an overview of the package.</p>
 </div>
 </div>
@@ -136,49 +132,51 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=chandwich">https://​cloud.r-project.org/​package=chandwich</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/paulnorthrop/chandwich/">https://​github.com/​paulnorthrop/​chandwich/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/paulnorthrop/chandwich/issues">https://​github.com/​paulnorthrop/​chandwich/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=chandwich" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/paulnorthrop/chandwich/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/paulnorthrop/chandwich/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>GPL (&gt;= 2)</li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing chandwich</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Paul J. Northrop <br><small class="roles"> Author, maintainer, copyright holder </small>  </li>
 <li>Richard E. Chandler <br><small class="roles"> Author, copyright holder </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://travis-ci.org/paulnorthrop/chandwich"><img src="https://travis-ci.org/paulnorthrop/chandwich.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://ci.appveyor.com/project/paulnorthrop/chandwich"><img src="https://ci.appveyor.com/api/projects/status/github/paulnorthrop/chandwich?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
-<li><a href="https://codecov.io/github/paulnorthrop/chandwich?branch=master"><img src="https://codecov.io/github/paulnorthrop/chandwich/coverage.svg?branch=master" alt="Coverage Status"></a></li>
-<li><a href="https://cran.r-project.org/package=chandwich"><img src="https://www.r-pkg.org/badges/version/chandwich" alt="CRAN_Status_Badge"></a></li>
-</ul>
-</div>
-</div>
+
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Paul J. Northrop, Richard E. Chandler.</p>
+  <p></p>
+<p>Developed by Paul J. Northrop, Richard E. Chandler.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -186,6 +184,8 @@
 
   
 
+
+  
 
   </body>
 </html>

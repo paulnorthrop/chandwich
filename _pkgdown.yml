@@ -24,6 +24,7 @@ reference:
       - "print.compmod"
       - "confint.chandwich"
       - "plot.confint"
+      - "print.confint"
       - "conf_intervals"
       - "conf_region"
       - "plot.confreg"
