@@ -1,6 +1,8 @@
-# chandwich 1.1.5.9000
+# chandwich 1.1.6
 
 ## Bug fixes and minor improvements
+
+* Create the help file for the package correctly, using "_PACKAGE".
 
 * In `plot.confint()` confidence limits are now added to the horizontal axis in cases where only one interval is plotted.
 

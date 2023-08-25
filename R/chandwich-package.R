@@ -37,9 +37,9 @@
 #' @seealso \code{\link{conf_region}} to calculate a confidence region
 #'   for a pair of model parameters.
 #' @docType package
-#' @name chandwich
+#' @aliases chandwich-package
 #' @import methods
-NULL
+"_PACKAGE"
 
 #' Oxford and Worthing annual maximum temperatures
 #'
