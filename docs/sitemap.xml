@@ -1,93 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/chandwich-vignette.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/adjust_loglik.html</loc>
-  </url>
-  <url>
-    <loc>/reference/anova.chandwich.html</loc>
-  </url>
-  <url>
-    <loc>/reference/chandwich-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/chandwich.html</loc>
-  </url>
-  <url>
-    <loc>/reference/coef.chandwich.html</loc>
-  </url>
-  <url>
-    <loc>/reference/compare_models.html</loc>
-  </url>
-  <url>
-    <loc>/reference/confint.chandwich.html</loc>
-  </url>
-  <url>
-    <loc>/reference/conf_intervals.html</loc>
-  </url>
-  <url>
-    <loc>/reference/conf_region.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/logLik.chandwich.html</loc>
-  </url>
-  <url>
-    <loc>/reference/log_gev.html</loc>
-  </url>
-  <url>
-    <loc>/reference/owtemps.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot.chandwich.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot.confint.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot.confreg.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.chandwich.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.compmod.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.confint.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.summary.chandwich.html</loc>
-  </url>
-  <url>
-    <loc>/reference/profile_loglik.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rats.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summary.chandwich.html</loc>
-  </url>
-  <url>
-    <loc>/reference/vcov.chandwich.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://github.com/paulnorthrop/chandwich/404.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/articles/chandwich-vignette.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/articles/index.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/authors.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/index.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/news/index.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/adjust_loglik.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/anova.chandwich.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/chandwich-package.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/coef.chandwich.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/compare_models.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/confint.chandwich.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/conf_intervals.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/conf_region.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/index.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/logLik.chandwich.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/log_gev.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/owtemps.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/plot.chandwich.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/plot.confint.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/plot.confreg.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/print.chandwich.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/print.compmod.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/print.confint.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/print.summary.chandwich.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/profile_loglik.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/rats.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/summary.chandwich.html</loc></url>
+<url><loc>https://github.com/paulnorthrop/chandwich/reference/vcov.chandwich.html</loc></url>
 </urlset>
+
