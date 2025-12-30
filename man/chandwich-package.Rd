@@ -3,7 +3,6 @@
 \docType{package}
 \name{chandwich-package}
 \alias{chandwich-package}
-\alias{_PACKAGE}
 \alias{chandwich}
 \title{chandwich: Chandler-Bate Sandwich Loglikelihood Adjustment}
 \description{
