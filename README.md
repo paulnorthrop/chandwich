@@ -3,8 +3,6 @@
 
 # chandwich
 
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/paulnorthrop/chandwich?branch=master&svg=true)](https://ci.appveyor.com/project/paulnorthrop/chandwich)
 [![R-CMD-check](https://github.com/paulnorthrop/chandwich/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/paulnorthrop/chandwich/actions/workflows/R-CMD-check.yaml)
 [![Coverage
 Status](https://codecov.io/github/paulnorthrop/chandwich/coverage.svg?branch=master)](https://app.codecov.io/github/paulnorthrop/chandwich?branch=master)
