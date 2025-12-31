@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# chandwich <a href="https://paulnorthrop.github.io/chandwich/"><img src="man/figures/chandwich_logo.png" align="right" style="float:right; height:150px;" alt="chandwich logo"/></a>
+# chandwich <a href="https://paulnorthrop.github.io/chandwich/"><img src="man/figures/chandwich_logo.png" align="right" style="float:right; height:150px;" alt = "chandwich logo"/></a>
 
 [![R-CMD-check](https://github.com/paulnorthrop/chandwich/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/paulnorthrop/chandwich/actions/workflows/R-CMD-check.yaml)
 [![Coverage
