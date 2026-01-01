@@ -12,3 +12,4 @@
 ^checks$
 ^\.github$
 ^CRAN-SUBMISSION$
+^LICENSE\.md$
