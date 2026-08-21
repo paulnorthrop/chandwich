@@ -778,7 +778,7 @@ print.compmod <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   }
   cat("\n")
   if (x$approx) {
-    cat("Using using approximation (18) of Chandler and Bate (2007):", "\n")
+    cat("Using approximation (18) of Chandler and Bate (2007):", "\n")
   }
   out <- character()
   out <- c(out, paste("test statistic", "=", format(signif(x$alrts, digits))))
